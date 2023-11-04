@@ -1,34 +1,47 @@
 import React from 'react';
+import { Divider, Space, Tag } from 'antd';
 import pic_4 from '../../public/gym_picture_4.jpg';
 
-const Post = () => {
+const Post = ({ postItem }) => {
     return (
-        <div className='w-[800px] h-[275px] '>
-            <div className='flex'>
+        <div className='w-[800px]  bg-white rounded-md p-[20px] space-y-4'>
+            <div className='flex w-full space-x-4'>
                 <img
-                    className='w-[20px] h-[20px] rounded-full'
-                    src={pic_4}
+                    className='w-[256px] h-[160px]'
+                    src={postItem.postImg}
                     alt='blog avatar'
                 />
-                <label htmlFor=''>Author name</label>
-            </div>
-            <div className='flex w-full'>
-                <img
-                    className='w-[256px] h-[190px]'
-                    src={pic_4}
-                    alt='blog avatar'
-                />
-                <div>
-                    <label htmlFor=''>
-                        <strong>Title for blog</strong>
+                <div className='space-y-2'>
+                    <label htmlFor='' className='text-xl'>
+                        <strong>{postItem.title}</strong>
                     </label>
-                    <p>subcription</p>
+                    <p className='text-sm  text-gray-500'>
+                        {postItem.description}
+                    </p>
+
+                    <div className='flex items-center space-x-2'>
+                        <img
+                            className='w-[16px] h-[16px] rounded-full '
+                            src={postItem.user.userImg}
+                            alt='blog avatar'
+                        />
+                        <label htmlFor='' className='text-xs'>
+                            {postItem.user.userName}
+                        </label>
+                    </div>
+
+                    <p className='text-xs'>
+                        {postItem.postTime} · {postItem.postTime}
+                    </p>
+
                     <div className='flex '>
-                        <span>tag</span>
-                        <span>tag</span>
-                        <span>tag</span>
-                        <p>time</p>
-                        <p>estimate time</p>
+                        <Space size={[0, 8]} wrap>
+                            <Tag color='success'>success</Tag>
+                            <Tag color='processing'>processing</Tag>
+                            <Tag color='error'>error</Tag>
+                            <Tag color='warning'>warning</Tag>
+                            <Tag color='default'>default</Tag>
+                        </Space>
                     </div>
                 </div>
             </div>
