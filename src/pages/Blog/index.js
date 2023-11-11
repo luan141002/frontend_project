@@ -157,6 +157,9 @@ const Blog = () => {
                             bodybuilding
                         </p>
                     </div>
+                    <div>
+                        
+                    </div>
                     {ListBlog.map((postItem, index) => (
                         <Post postItem={postItem} key={index} />
                     ))}
