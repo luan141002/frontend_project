@@ -6,7 +6,7 @@ import DefaultLayout from './defaultLayout';
 function Layout() {
     return (
         <Router>
-            <div className='w-full h-screen bg-[#151212]'>
+            <div className="w-full h-screen bg-[#151212]">
                 <Routes>
                     {publicRoutes.map((route, index) => {
                         const Page = route.component;

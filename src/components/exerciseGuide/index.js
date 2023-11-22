@@ -2,7 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShare, faLightbulb } from '@fortawesome/free-solid-svg-icons';
 
-const ExerciseGuide = ({ GuideInfo }) => {
+const ExerciseGuide = ({ exercise }) => {
     const liSteps = [
         {
             step: '1',
@@ -49,36 +49,42 @@ const ExerciseGuide = ({ GuideInfo }) => {
         },
     ];
     return (
-        <div className='w-[1000px] p-5 rounded-md'>
+        <div className="w-[1000px] p-5 rounded-md">
             {/* guide header */}
-            <div className='w-full text-white h-[60px] p-5 flex justify-between items-center bg-[#151212]'>
-                <h3 className='uppercase text-lg'>GuideInfo.title</h3>
-                <button className='text-white'>
+            <div className="w-full text-white h-[60px] p-5 flex justify-between items-center bg-[#151212]">
+                <h3 className="uppercase text-lg">{exercise?.name}</h3>
+                <button className="text-white">
                     <FontAwesomeIcon icon={faShare} />
                 </button>
             </div>
             {/* Guide Video */}
-            <div>
-                <iframe
-                    className='w-full h-[500px]'
-                    src='https://www.youtube.com/embed/5Tz66MJvuck?list=RD5Tz66MJvuck'></iframe>
+            <div className="w-full flex ">
+                {exercise?.videoUrls?.map((url, index) => {
+                    return (
+                        <iframe
+                            className="w-[50%] h-[500px]"
+                            src={`${url}`}
+                        ></iframe>
+                    );
+                })}
             </div>
             {/* Steps */}
-            <h1 className='text-[28px] font-bold uppercase tracking-wide my-4'>
+            <h1 className="text-[28px] font-bold uppercase tracking-wide my-4">
                 Exercise Instructions
             </h1>
-            <div className='w-full px-3'>
-                <ul class='flex-col items-center w-full space-y-3   '>
+            <div className="w-full px-3">
+                <ul class="flex-col items-center w-full space-y-3   ">
                     {liSteps.map((step, index) => {
                         return (
                             <li
-                                class='flex w-full items-center  dark:text-blue-500 space-x-2.5'
-                                key={index}>
-                                <span class='flex items-center justify-center w-9 h-9  bg-white border font-semibold   text-red-700 rounded-full shrink-0 dark:border-blue-500'>
+                                class="flex w-full items-center  dark:text-blue-500 space-x-2.5"
+                                key={index}
+                            >
+                                <span class="flex items-center justify-center w-9 h-9  bg-white border font-semibold   text-red-700 rounded-full shrink-0 dark:border-blue-500">
                                     {step.step}
                                 </span>
-                                <span className=' w-full text-gray-900 rounded-md  p-2'>
-                                    <h3 class='font-medium text-lg leading-tight'>
+                                <span className=" w-full text-gray-900 rounded-md  p-2">
+                                    <h3 class="font-medium text-lg leading-tight">
                                         {step.instruction}
                                     </h3>
                                 </span>
@@ -88,21 +94,22 @@ const ExerciseGuide = ({ GuideInfo }) => {
                 </ul>
             </div>
             {/* Tips */}
-            <h1 className='text-[28px] font-bold uppercase tracking-wide my-4'>
+            <h1 className="text-[28px] font-bold uppercase tracking-wide my-4">
                 Exercise Tips
             </h1>
-            <div className='w-full px-3'>
-                <ul class='flex-col items-center w-full space-y-3   '>
+            <div className="w-full px-3">
+                <ul class="flex-col items-center w-full space-y-3   ">
                     {liTips.map((tip, index) => {
                         return (
                             <li
-                                class='flex w-full items-center  dark:text-blue-500 space-x-2.5'
-                                key={index}>
-                                <span class='flex items-center pt-[3px] justify-center font-bold text-lg w-9 h-9 border bg-white border-red-600 text-red-600 rounded-full shrink-0 dark:border-blue-500'>
+                                class="flex w-full items-center  dark:text-blue-500 space-x-2.5"
+                                key={index}
+                            >
+                                <span class="flex items-center pt-[3px] justify-center font-bold text-lg w-9 h-9 border bg-white border-red-600 text-red-600 rounded-full shrink-0 dark:border-blue-500">
                                     <FontAwesomeIcon icon={faLightbulb} />
                                 </span>
-                                <span className=' w-full text-gray-900 rounded-md  p-2'>
-                                    <h3 class='font-medium text-lg leading-tight'>
+                                <span className=" w-full text-gray-900 rounded-md  p-2">
+                                    <h3 class="font-medium text-lg leading-tight">
                                         {tip.instruction}
                                     </h3>
                                 </span>
