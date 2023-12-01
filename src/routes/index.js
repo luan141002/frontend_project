@@ -7,13 +7,17 @@ import Exercises from '../pages/Exercises';
 import PartTrainGuide from '../pages/PartTrainGuide';
 import TextEditor from '../components/addPost';
 import Schedule from '../pages/Schedule';
-import LoginPage from '../pages/Login';
-import RegisterPage from '../pages/Register';
 import ExercisesByCategoryName from '../pages/ExercisesByCategory';
 import UserProfile from '../pages/UserProfile';
 import UploadExercise from '../pages/UploadExcercise';
 import Table from '../components/Table';
 import Center from '../pages/Schedule/Center';
+import CaloriesCalculator from '../pages/CalorieCalculator';
+import PickTrainer from '../pages/PickTrainerPage';
+import ForgetPassword from '../pages/ForgetPassword';
+import ResetPassword from '../pages/ResetPassword';
+import OTPVerification from '../pages/OTPVerification';
+
 // Layouts
 import DefaultLayout from '../components/layouts/defaultLayout';
 import AdminLayout from '../components/layouts/adminLayout';
@@ -50,22 +54,12 @@ const publicRoutes = [
         layout: null,
     },
     {
-        path: '/login',
-        component: LoginPage,
-        layout: AdminLayout,
-    },
-    {
-        path: '/register',
-        component: RegisterPage,
-        layout: null,
-    },
-    {
         path: '/exercises/exercise-category/name/:categoryName',
         component: ExercisesByCategoryName,
         layout: DefaultLayout,
     },
     {
-        path: '/user/:id/user-profile',
+        path: '/user/user-profile',
         component: UserProfile,
         layout: DefaultLayout,
     },
@@ -78,6 +72,36 @@ const publicRoutes = [
         path: '/dashboard',
         component: Center,
         layout: AdminLayout,
+    },
+    {
+        path: '/table',
+        component: Table,
+        layout: AdminLayout,
+    },
+    {
+        path: '/calories-calculator',
+        component: CaloriesCalculator,
+        layout: DefaultLayout,
+    },
+    {
+        path: '/trainer-pick',
+        component: PickTrainer,
+        layout: DefaultLayout,
+    },
+    {
+        path: '/forget-password',
+        component: ForgetPassword,
+        layout: null,
+    },
+    {
+        path: '/reset-password',
+        component: ResetPassword,
+        layout: null,
+    },
+    {
+        path: '/otp',
+        component: OTPVerification,
+        layout: null,
     },
 ];
 const privateRoutes = [

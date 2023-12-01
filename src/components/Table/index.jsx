@@ -9,6 +9,7 @@ import {
 import { USERS } from './data.js';
 import { useState } from 'react';
 import DebouncedInput from './DebouncedInput';
+import UploadExercise from '../../pages/UploadExcercise';
 
 const TanStackTable = () => {
     const columnHelper = createColumnHelper();
@@ -63,7 +64,7 @@ const TanStackTable = () => {
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
     });
-
+    const [openAddExerciseModel, setOpenAddExerciseModel] = useState(false);
     return (
         <div className="p-2 max-w-6xl mx-auto text-white fill-gray-400">
             <div className="flex justify-between mb-2">
@@ -75,6 +76,17 @@ const TanStackTable = () => {
                         className="p-2 bg-transparent outline-none border-b-2 w-1/5 focus:w-1/3 duration-300 border-indigo-500"
                         placeholder="Search all columns..."
                     />
+                </div>
+                <div>
+                    <button
+                        type="reset"
+                        className="bg-red-700 text-white h-[40px] w-[120px] hover:border-3  px-2 hover:opacity-80"
+                        onClick={() =>
+                            setOpenAddExerciseModel((state) => !state)
+                        }
+                    >
+                        + add Exercise
+                    </button>
                 </div>
             </div>
             <table className="border border-gray-700 w-full text-left">
@@ -177,6 +189,11 @@ const TanStackTable = () => {
                     ))}
                 </select>
             </div>
+            {openAddExerciseModel && (
+                <UploadExercise
+                    setOpenAddExerciseModel={setOpenAddExerciseModel}
+                />
+            )}
         </div>
     );
 };

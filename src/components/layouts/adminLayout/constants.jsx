@@ -17,47 +17,27 @@ export const DASHBOARD_SIDEBAR_LINKS = [
         icon: <HiOutlineViewGrid />,
     },
     {
-        key: 'userSchedules',
-        label: 'User Schedules',
-        path: '/kanban',
-        icon: <HiOutlineCube />,
-        subMenu: [
-            {
-                key: 'user_1',
-                label: 'user_2',
-                path: '/products',
-                icon: <HiOutlineCube />,
-            },
-            {
-                key: 'products',
-                label: 'Products',
-                path: '/products',
-                icon: <HiOutlineCube />,
-            },
-        ],
-    },
-    {
         key: 'Management',
         label: 'Management',
-        path: '/management',
+        path: '/table',
         icon: <HiOutlineShoppingCart />,
         subMenu: [
             {
                 key: 'Trainers',
                 label: 'Trainers',
-                path: '/trainers',
+                path: '/table',
                 icon: <HiOutlineCube />,
             },
             {
                 key: 'Trainees',
                 label: 'Trainees',
-                path: '/trainees',
+                path: '/table',
                 icon: <HiOutlineCube />,
             },
             {
                 key: 'Exercises',
                 label: 'Exercises',
-                path: '/exercises',
+                path: '/table',
                 icon: <HiOutlineCube />,
             },
         ],

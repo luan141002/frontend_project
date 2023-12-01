@@ -24,6 +24,11 @@ const ExerciseService = {
         );
         return await response.json();
     },
+    addExercise: async (newExercise) => {
+        console.log(newExercise);
+        const response = await WebService.postForm(`/exercises`, newExercise);
+        return await response.json();
+    },
 };
 
 export default ExerciseService;

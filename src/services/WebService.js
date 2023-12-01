@@ -15,13 +15,11 @@ const WebService = {
     request: async (endpoint, init) => {
         const { headers, ...initRest } = init || {};
         const authHeaders = { ...AuthService.getHeader(), ...headers };
-        console.log(authHeaders);
         try {
             const result = await fetch(`${API_URL}${endpoint}`, {
                 headers: authHeaders,
                 ...initRest,
             });
-            console.log(result);
             if (!result.ok) {
                 const reason = await result.json();
                 throw new WebError(

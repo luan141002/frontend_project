@@ -1,4 +1,5 @@
 import WebService from './WebService';
+import axios from 'axios';
 
 const AuthService = {
     findRedirectUrl: (kind) => {
@@ -20,15 +21,16 @@ const AuthService = {
 
     login: async (email, password, nextUrl) => {
         const body = { email, password };
-        const response = await WebService.postJson('/auth/login', body);
-        console.log(response);
+        console.log(body);
+        localStorage.removeItem('token');
+        const response = await WebService.postJson('/login', body);
         if (response.ok) {
             const token = await response.json();
-            localStorage.setItem('token', token.token);
+            console.log(token);
+            localStorage.setItem('token', token.jwtToken);
             if (!nextUrl) {
                 nextUrl = '/';
             }
-
             token.nextUrl = nextUrl;
             return token;
         }
@@ -36,9 +38,9 @@ const AuthService = {
         return null;
     },
 
-    register: async (email) => {
-        const body = { email };
-        await WebService.postJson('/auth/register', body);
+    register: async (email, password, matchingPassword) => {
+        const body = { email, password, matchingPassword };
+        await WebService.postJson('/users', body);
     },
 
     verifyCode: async (email, code, password, repeat) => {
@@ -72,6 +74,16 @@ const AuthService = {
 
     getToken: () => {
         return localStorage.getItem('token');
+    },
+
+    forgotPassword: async (email) => {
+        await WebService.post(`/users/forgot-password?email=${email}`);
+    },
+
+    changePassword: async (id, password, verifyCode) => {
+        await WebService.post(
+            `/users/change-password?userId=${id}&verifyCode=${verifyCode}&newPassword=${password}`,
+        );
     },
 };
 
