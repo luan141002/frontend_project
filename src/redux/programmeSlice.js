@@ -1,14 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import data from '../pages/Schedule/data/mockProgram.json';
-import ProgramService from '../services/ProgramService';
-const fetchProgramme = async (id) => {
-    const response = await ProgramService.getProgrammeById(id);
-    console.log(response);
-    return response;
-};
+import data from '../pages/Schedule/data/realData.json';
+
 const boardsSlice = createSlice({
-    name: 'boards',
-    initialState: data.boards,
+    name: 'programmes',
+    initialState: data,
     reducers: {
         addBoard: (state, action) => {
             const isActive = state.length > 0 ? false : true;

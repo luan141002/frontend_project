@@ -13,6 +13,10 @@ const PostService = {
         const response = await WebService.get('/tags', queries);
         return await response.json();
     },
+    addPost: async (queries) => {
+        const response = await WebService.postJson('/posts', queries);
+        return await response.json();
+    },
 };
 
 export default PostService;

@@ -17,8 +17,8 @@ import './exercises.css';
 const Exercises = () => {
     const [TopArticles, setTopArticles] = useState();
     const loadPage = async () => {
-        const topArticleList = await PostService.getTopPosts();
-        setTopArticles(topArticleList.slice(0, 5));
+        //const topArticleList = await PostService.getTopPosts();
+        //setTopArticles(topArticleList.slice(0, 5));
     };
 
     useEffect(() => {
@@ -163,21 +163,21 @@ const Exercises = () => {
                 </p>
             </div>
             <div class="lg:grid lg:grid-cols-4 md:grid-cols-3 items-center container mx-auto my-auto mt-[3%]">
-                {ListEquipment.map((equipment, index) => {
+                {ListEquipment?.map((equipment, index) => {
                     return (
                         <div
                             class="lg:m-4 shadow-md hover:shadow-lg hover:bg-gray-100 rounded-lg bg-transparent my-12 mx-8"
                             key={index}
                         >
                             <img
-                                src={equipment.EquipmentImg}
+                                src={equipment?.EquipmentImg}
                                 alt=""
                                 class="overflow-hidden"
                             />
 
                             <div class="p-4 text-center">
                                 <h3 class="font-semibold tracking-wide text-gray-800 text-lg my-2 leading-5 uppercase">
-                                    {equipment.EquipmentName}
+                                    {equipment?.EquipmentName}
                                 </h3>
                             </div>
                         </div>
@@ -194,21 +194,21 @@ const Exercises = () => {
                 </p>
             </div>
             <div class="lg:grid lg:grid-cols-2 p-4 items-center container mx-auto my-auto mt-[3%] ">
-                {ListMechanics.map((mechanic, index) => {
+                {ListMechanics?.map((mechanic, index) => {
                     return (
                         <div
                             class=" w-[70%] mx-auto shadow-md hover:shadow-lg hover:bg-gray-100 rounded-lg bg-transparent my-12 "
                             key={index}
                         >
                             <img
-                                src={mechanic.EquipmentImg}
+                                src={mechanic?.EquipmentImg}
                                 alt=""
                                 className="overflow-hidden w-full"
                             />
 
                             <div class="p-4 text-center">
                                 <h3 class="font-semibold tracking-wide text-gray-800 text-lg my-2 leading-5 uppercase">
-                                    {mechanic.EquipmentName}
+                                    {mechanic?.EquipmentName}
                                 </h3>
                             </div>
                         </div>

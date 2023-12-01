@@ -3,6 +3,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { TweenOneGroup } from 'rc-tween-one';
 import { Input, Tag, theme } from 'antd';
 import PostService from '../../services/PostService.js';
+import AddPost from '../../components/addPost/index.js';
 
 import TopRank from '../../components/top_rank';
 import Post from '../../components/post';
@@ -19,7 +20,7 @@ const Blog = () => {
 
         setListBlog(posts);
         setTopArticles(topArticleList.slice(0, 5));
-        setTags(listTags.map((tag) => tag.name));
+        setTags(listTags.map((tag) => tag.name).slice(1, 5));
     };
 
     useEffect(() => {
@@ -59,11 +60,14 @@ const Blog = () => {
         background: token.colorBgContainer,
         borderStyle: 'dashed',
     };
+
+    const [openAddBlogModal, setOpenAddBlogModal] = useState(false);
+
     return (
         <div className="bg-[#151212] w-full min-h-min ">
-            <div className="flex  items-center justify-around  ">
+            <div className="flex items-center justify-around  ">
                 <div className="flex-col space-y-3">
-                    <div className="text-white flex flex-col self-start mb-[10%]">
+                    <div className="text-white flex flex-col self-start mb-[5%]">
                         <label className="text-[40px] font-bold ">
                             Outstanding Articles
                         </label>
@@ -71,7 +75,19 @@ const Blog = () => {
                             Collection of articles sharing experiences in
                             bodybuilding
                         </p>
+                        <div className="flex w-full justify-end">
+                            <button
+                                type="reset"
+                                className="bg-red-700 text-white h-[40px] w-[120px] hover:border-3 float-right  px-2 hover:opacity-80"
+                                onClick={() =>
+                                    setOpenAddBlogModal((state) => !state)
+                                }
+                            >
+                                + Add Post
+                            </button>
+                        </div>
                     </div>
+
                     {listBlog?.map((postItem, index) => (
                         <Post postItem={postItem} key={index} />
                     ))}
@@ -80,7 +96,7 @@ const Blog = () => {
                     <div>
                         <div className="flex flex-col space-y-3 p-5">
                             <div style={{}} className="space-y-2">
-                                {tags.map((tag) => {
+                                {tags?.map((tag) => {
                                     return (
                                         <span
                                             key={tag}
@@ -153,6 +169,9 @@ const Blog = () => {
                     </div>
                 </div>
             </div>
+            {openAddBlogModal && (
+                <AddPost setOpenAddBlogModal={setOpenAddBlogModal} />
+            )}
         </div>
     );
 };

@@ -2,17 +2,20 @@ import React from 'react';
 import ExerciseService from '../../services/ExerciseService.js';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import data from '../../components/data/data.js';
 
 import ExerciseCard from '../../components/ExcerciseCard';
 
 const ExercisesByCategoryName = () => {
     const { categoryName } = useParams();
+    console.log(categoryName);
     const [exercises, setExercises] = useState();
 
     const loadPage = async () => {
         const exercises = await ExerciseService.getExercisesByCategoryName(
             categoryName,
         );
+
         setExercises(exercises);
     };
 
@@ -29,7 +32,7 @@ const ExercisesByCategoryName = () => {
                     Collection of Exercise with {categoryName} training
                 </p>
             </div>
-            <div className="grid md:grid-cols-4 space-x-4">
+            <div className="grid md:grid-cols-4 gap-3">
                 {exercises?.map((exercise, index) => (
                     <ExerciseCard exercise={exercise} key={index} />
                 ))}

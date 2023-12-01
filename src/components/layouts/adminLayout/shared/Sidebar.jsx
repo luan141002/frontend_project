@@ -31,7 +31,7 @@ export default function Sidebar() {
     const boards = useSelector((state) => state.boards);
 
     return (
-        <div className="bg-neutral-900 w-60 p-3 flex flex-col">
+        <div className="bg-neutral-900 w-60 p-3 flex flex-col ">
             <div className="flex items-center gap-2 px-1 py-3">
                 <div className="inline-flex justify-between items-center">
                     <img
@@ -46,7 +46,7 @@ export default function Sidebar() {
                     </label>
                 </div>
             </div>
-            <div className="py-8 flex flex-1 flex-col gap-0.5">
+            <div className="py-2 flex flex-1 flex-col gap-0.5">
                 {DASHBOARD_SIDEBAR_LINKS.map((link) => (
                     <div>
                         <SidebarLink key={link.key} link={link} />
@@ -61,54 +61,65 @@ export default function Sidebar() {
                         })}
                     </div>
                 ))}
-            </div>
-            <div className="py-8 flex flex-1 flex-col gap-0.5">
-                <Link
-                    className={classNames(
-                        'bg-neutral-700 text-white',
-
-                        linkClass,
-                    )}
-                >
-                    <span className="text-2xl">
-                        <HiOutlineLogout />
-                    </span>
-                    User Schedules
-                </Link>
-                {boards?.map((board, index) => (
-                    <div
+                <div className="flex flex-1 flex-col gap-0.5">
+                    <Link
+                        to={'/dashboard'}
                         className={classNames(
-                            board.isActive
-                                ? 'bg-neutral-700 text-white '
-                                : 'text-neutral-400',
+                            'bg-neutral-700 text-white',
+
                             linkClass,
-                            'pl-8',
                         )}
-                        key={index}
-                        onClick={() => {
-                            dispatch(
-                                boardsSlice.actions.setBoardActive({
-                                    index: index,
-                                }),
-                            );
-                        }}
                     >
                         <span className="text-2xl">
-                            <HiOutlineCube />
+                            <HiOutlineLogout />
                         </span>
-                        {board.name}
+                        User Schedules
+                    </Link>
+                    {boards?.map((board, index) => (
+                        <div
+                            className={classNames(
+                                board.isActive
+                                    ? 'bg-neutral-700 text-white '
+                                    : 'text-neutral-400',
+                                linkClass,
+                                'pl-8',
+                            )}
+                            key={index}
+                            onClick={() => {
+                                dispatch(
+                                    boardsSlice.actions.setBoardActive({
+                                        index: index,
+                                    }),
+                                );
+                            }}
+                        >
+                            <span className="text-2xl">
+                                <HiOutlineCube />
+                            </span>
+                            {board.name}
+                        </div>
+                    ))}
+                    <div
+                        className={classNames(
+                            linkClass,
+                            'pl-8 text-white bg-red-900',
+                        )}
+                        onClick={() => {
+                            setBoardModalOpen(true);
+                        }}
+                    >
+                        + Create New Board
                     </div>
-                ))}
-                <div
-                    className=" flex  items-baseline space-x-2  mr-8 rounded-r-full duration-500 ease-in-out cursor-pointer text-[#635fc7] px-5 py-4 hover:bg-[#635fc71a] hover:text-[#635fc7] dark:hover:bg-white  "
-                    onClick={() => {
-                        setBoardModalOpen(true);
-                    }}
-                >
-                    <HiOutlineCube />
-                    <p className=" text-lg font-bold  ">Create New Board </p>
+
+                    {boardModalOpen && (
+                        <AddEditBoardModal
+                            type="add"
+                            setBoardModalOpen={setBoardModalOpen}
+                        />
+                    )}
                 </div>
             </div>
+
             <div className="flex flex-col gap-0.5 pt-2 border-t border-neutral-700">
                 {DASHBOARD_SIDEBAR_BOTTOM_LINKS.map((link) => (
                     <SidebarLink key={link.key} link={link} />

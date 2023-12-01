@@ -6,10 +6,21 @@ import Vietnamese from '../../public/Vietnamese-logo.svg.png';
 import { Menu, Popover, Transition } from '@headlessui/react';
 import { HiOutlineBell } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
+import LoginModal from '../../pages/Login';
+import RegisterPage from '../../pages/Register';
+import AuthService from '../../services/AuthService';
+
+import accountsSlices from '../../redux/accountsSlice.js';
 const Header = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const account = useSelector((state) => state.account);
     const [authenticated, setAuthenticated] = useState(false);
+    const [openLoginModal, setOpenLoginModal] = useState(false);
+    const [openRegisterModal, setOpenRegisterModal] = useState(false);
     return (
         <div className="bg-[#151212] w-[95%] h-[80px] fixed flex justify-between items-center border-b border-b-[#3D3030] p-4 z-40">
             <div className="flex justify-between items-center">
@@ -55,7 +66,7 @@ const Header = () => {
                     alt="vietnamese logo"
                     className="w-[25px] h-4 border border-stone-50"
                 />
-                {authenticated ? (
+                {account.email != null ? (
                     <div className="flex space-x-2 items-center px-3">
                         <Popover className="relative">
                             {({ open }) => (
@@ -157,6 +168,19 @@ const Header = () => {
                                                     active && 'bg-gray-100',
                                                     'active:bg-gray-200 rounded-sm px-4 py-2 text-gray-700 cursor-pointer focus:bg-gray-200',
                                                 )}
+                                                onClick={async () => {
+                                                    await AuthService.logout();
+
+                                                    dispatch(
+                                                        accountsSlices.actions.setAccount(
+                                                            {
+                                                                email: null,
+                                                                id: '',
+                                                                roles: '',
+                                                            },
+                                                        ),
+                                                    );
+                                                }}
                                             >
                                                 Sign out
                                             </div>
@@ -171,19 +195,38 @@ const Header = () => {
                         <button
                             type="submit"
                             className="bg-transparent box-border text-white h-[40px] w-[120px] hover:border-3  hover:hover:opacity-80"
+                            onClick={() => {
+                                setOpenRegisterModal((state) => !state);
+                            }}
                         >
                             Sign In
                         </button>
                         <button
                             type="reset"
                             className="bg-red-700 text-white h-[40px] w-[120px] hover:border-3  hover:opacity-80"
-                            onClick={() => setAuthenticated((state) => !state)}
+                            onClick={() => {
+                                setOpenLoginModal((state) => !state);
+                            }}
                         >
                             Sign up
                         </button>
                     </div>
                 )}
             </div>
+
+            {openLoginModal && (
+                <LoginModal
+                    setOpenLoginModal={setOpenLoginModal}
+                    setAuthenticated={setAuthenticated}
+                    setOpenRegisterModal={setOpenRegisterModal}
+                />
+            )}
+            {openRegisterModal && (
+                <RegisterPage
+                    setOpenRegisterModal={setOpenRegisterModal}
+                    setOpenLoginModal={setOpenLoginModal}
+                />
+            )}
         </div>
     );
 };

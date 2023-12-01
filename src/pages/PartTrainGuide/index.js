@@ -3,12 +3,14 @@ import ExerciseGuide from '../../components/exerciseGuide';
 import ExerciseSideBar from '../../components/exerciseSideBar';
 import { useParams } from 'react-router-dom';
 import ExerciseService from '../../services/ExerciseService';
+//import data from '../../components/data/data.js';
 
 const PartTrainGuide = () => {
     const { exerciseId } = useParams();
     const [exercise, setExercise] = useState();
     const loadPage = async () => {
         const exercise = await ExerciseService.getExercise(exerciseId);
+        console.log(exercise);
         setExercise(exercise);
     };
 

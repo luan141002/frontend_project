@@ -105,16 +105,13 @@ const AddEditTaskModal = ({
                 }
                 setOpenAddEditTask(false);
             }}
-            className={
-                device === 'mobile'
-                    ? 'py-6 px-6 pb-40 absolute overflow-y-scroll left-0 flex right-0 bottom-[-100vh] top-0 bg-[#0000080]'
-                    : 'py-6 px-6 pb-40 absolute overflow-y-scroll left-0 flex right-0 bottom-0 top-0 bg-[#0000080]'
-            }
+            className="fixed right-0 left-0 top-0 bottom-0 px-2 scrollbar-hide py-4 overflow-scroll z-50
+        justify-center items-center flex bg-[#00000080]"
         >
             {/* Modal Section */}
             <div
-                className="scrollbar-hide overflow-y-scroll max-h-[95vh] my-auto bg-white text-black font-bold shadow-md shadow-[#364e7e1a] 
-                max-w-md mx-auto w-full px-8 py-8 rounded-xl"
+                className=" scrollbar-hide overflow-y-scroll max-h-[95vh] my-auto bg-white text-black font-bold shadow-md shadow-[#364e7e1a] 
+                max-w-md mx-auto w-full px-8 py-8 rounded-xl "
             >
                 <h3 className="text-lg">
                     {type === 'edit' ? 'Edit' : 'Add New '} Task
@@ -142,7 +139,7 @@ const AddEditTaskModal = ({
                     <textarea
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                        className="bg-transparent min-h-[200px] items-start px-4 py-2 outline-none 
+                        className="bg-transparent min-h-[150px] items-start px-4 py-2 outline-none 
                         focus:border-0 rounded-md text-sm border border-gray-600
                         focus:outline-[#635fc7] ring-0"
                         placeholder="e.g Take coffee break e.g Take coffee break e.g Take coffee break e.g Take coffee break e.g Take coffee break"

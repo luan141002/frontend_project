@@ -1,23 +1,48 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
+import AuthService from '../../services/AuthService';
 
-const Register = () => {
+const Register = ({ setOpenRegisterModal, setOpenLoginModal }) => {
     const {
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
         watch,
     } = useForm();
+    const navigate = useNavigate();
 
     const password = watch('password', '');
     const confirmPassword = watch('confirmPassword', '');
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         console.log(data); // You can handle form submission logic here
+        try {
+            const response = await AuthService.register(
+                data.email,
+                data.password,
+                data.matchingPassword,
+            );
+            setOpenLoginModal(true);
+            setOpenRegisterModal(false);
+        } catch (err) {}
     };
     return (
-        <div class="h-full bg-gray-400 dark:bg-gray-900">
-            <div class="mx-auto">
+        <div
+            class="fixed right-0 left-0 top-0 bottom-0 px-2 scrollbar-hide py-4 overflow-scroll z-50
+            justify-center items-center flex bg-[#00000080] "
+            onClick={(e) => {
+                if (e.target !== e.currentTarget) {
+                    return;
+                }
+                setOpenRegisterModal(false);
+            }}
+        >
+            <div
+                class=" scrollbar-hide overflow-y-scroll max-h-[95vh]
+                bg-white text-black font-bold shadow-md shadow-[#364e7e1a]
+                max-w-6xl mx-auto w-full px-1  rounded-xl"
+            >
                 <div class="flex justify-center px-6 py-12">
                     <div class="w-full xl:w-3/4 lg:w-11/12 flex">
                         <div
@@ -138,14 +163,14 @@ const Register = () => {
                                     <div className="mb-4 w-[45%]">
                                         <label
                                             className="block text-gray-700 text-sm font-bold mb-2"
-                                            htmlFor="confirmPassword"
+                                            htmlFor="matchingPassword"
                                         >
                                             Confirm Password
                                         </label>
                                         <input
                                             type="password"
-                                            id="confirmPassword"
-                                            {...register('confirmPassword', {
+                                            id="matchingPassword"
+                                            {...register('matchingPassword', {
                                                 required:
                                                     'Confirm Password is required',
                                                 validate: (value) =>
@@ -154,9 +179,12 @@ const Register = () => {
                                             })}
                                             className="w-full p-2 border border-gray-300 rounded-md"
                                         />
-                                        {errors.confirmPassword && (
+                                        {errors.matchingPassword && (
                                             <p className="text-red-500 text-xs mt-1">
-                                                {errors.confirmPassword.message}
+                                                {
+                                                    errors.matchingPassword
+                                                        .message
+                                                }
                                             </p>
                                         )}
                                     </div>

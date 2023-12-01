@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { shuffle } from 'lodash';
 import boardsSlice from '../../redux/boardsSlice.js';
 import Task from './Task.js';
+import AddEditTaskModal from './modals/addEditTaskModal.js';
 
 const Column = ({ colIndex }) => {
     const colors = [
@@ -18,6 +19,7 @@ const Column = ({ colIndex }) => {
     ];
 
     const [color, setColor] = useState(null);
+    const [openAddEditTask, setOpenAddEditTask] = useState(false);
 
     const dispatch = useDispatch();
     const boards = useSelector((state) => state.boards);
@@ -60,6 +62,21 @@ const Column = ({ colIndex }) => {
             {col.tasks?.map((task, index) => (
                 <Task key={index} taskIndex={index} colIndex={colIndex} />
             ))}
+            <button
+                className=" button hidden md:block py-2 px-6 bg-gray-500 w-full mt-4"
+                onClick={() => {
+                    setOpenAddEditTask((state) => !state);
+                }}
+            >
+                + Add New Task
+            </button>
+            {openAddEditTask && (
+                <AddEditTaskModal
+                    setOpenAddEditTask={setOpenAddEditTask}
+                    device="mobile"
+                    type="add"
+                />
+            )}
         </div>
     );
 };
