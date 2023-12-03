@@ -4,8 +4,9 @@ import { shuffle } from 'lodash';
 import boardsSlice from '../../redux/boardsSlice.js';
 import Task from './Task.js';
 import AddEditTaskModal from './modals/addEditTaskModal.js';
+import ProgramService from '../../services/ProgramService.js';
 
-const Column = ({ colIndex }) => {
+const Column = ({ colIndex, boards, setBoards, setReloadPage }) => {
     const colors = [
         'bg-red-500',
         'bg-orange-500',
@@ -17,12 +18,10 @@ const Column = ({ colIndex }) => {
         'bg-pink-500',
         'bg-sky-500',
     ];
-
+    const dispatch = useDispatch();
     const [color, setColor] = useState(null);
     const [openAddEditTask, setOpenAddEditTask] = useState(false);
 
-    const dispatch = useDispatch();
-    const boards = useSelector((state) => state.boards);
     const board = boards.find((board) => board.isActive);
     const col = board.columns.find((col, i) => i === colIndex);
     useEffect(() => {
@@ -30,18 +29,23 @@ const Column = ({ colIndex }) => {
     }, [dispatch]);
 
     const handleOnDrop = (e) => {
-        const { prevColIndex, taskIndex } = JSON.parse(
+        const { prevColIndex, taskIndex, taskId } = JSON.parse(
             e.dataTransfer.getData('text'),
         );
-
+        console.log(prevColIndex, taskIndex, taskId, colIndex);
         if (colIndex !== prevColIndex) {
-            dispatch(
-                boardsSlice.actions.dragTask({
-                    colIndex,
-                    prevColIndex,
-                    taskIndex,
-                }),
-            );
+            switch (colIndex) {
+                case 0:
+                    ProgramService.changeSessionStatusToTodo(taskId);
+                    break;
+                case 1:
+                    ProgramService.changeSessionStatusToDoing(taskId);
+                    break;
+                case 2:
+                    ProgramService.changeSessionStatusToDone(taskId);
+                    break;
+            }
+            setReloadPage((state) => state + 1);
         }
     };
 
@@ -60,7 +64,15 @@ const Column = ({ colIndex }) => {
             </p>
 
             {col.tasks?.map((task, index) => (
-                <Task key={index} taskIndex={index} colIndex={colIndex} />
+                <Task
+                    key={index}
+                    taskIndex={index}
+                    taskId={task.id}
+                    colIndex={colIndex}
+                    boards={boards}
+                    setOpenAddEditTask={setOpenAddEditTask}
+                    setReloadPage={setReloadPage}
+                />
             ))}
             <button
                 className=" button hidden md:block py-2 px-6 bg-gray-500 w-full mt-4"
@@ -75,6 +87,9 @@ const Column = ({ colIndex }) => {
                     setOpenAddEditTask={setOpenAddEditTask}
                     device="mobile"
                     type="add"
+                    setReloadPage={setReloadPage}
+                    programId={board?.id}
+                    boards={boards}
                 />
             )}
         </div>

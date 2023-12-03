@@ -7,16 +7,22 @@ import Subtask from '../Subtask.js';
 import AddEditTaskModal from './addEditBoardModal.js';
 import DeleteModal from './DeleteModal.js';
 
-function TaskModal({ taskIndex, colIndex, setIsTaskModalOpen }) {
+function TaskModal({
+    taskIndex,
+    colIndex,
+    setIsTaskModalOpen,
+    boards,
+    setReloadPage,
+}) {
     const dispatch = useDispatch();
     const [isElipsisMenuOpen, setIsElipsisMenuOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const boards = useSelector((state) => state.boards);
-    const board = boards.find((board) => board.isActive === true);
-    const columns = board.columns;
-    const col = columns.find((col, i) => i === colIndex);
-    const task = col.tasks.find((task, i) => i === taskIndex);
-    const subtasks = task.subtasks;
+
+    const board = boards?.find((board) => board.isActive === true);
+    const columns = board?.columns;
+    const col = columns?.find((col, i) => i === colIndex);
+    const task = col?.tasks.find((task, i) => i === taskIndex);
+    const subtasks = task?.subtasks;
 
     let completed = 0;
     subtasks.forEach((subtask) => {
@@ -110,10 +116,13 @@ function TaskModal({ taskIndex, colIndex, setIsTaskModalOpen }) {
                     {subtasks.map((subtask, index) => {
                         return (
                             <Subtask
+                                boards={boards}
                                 index={index}
                                 taskIndex={taskIndex}
                                 colIndex={colIndex}
                                 key={index}
+                                setReloadPage={setReloadPage}
+                                setIsTaskModalOpen={setIsTaskModalOpen}
                             />
                         );
                     })}

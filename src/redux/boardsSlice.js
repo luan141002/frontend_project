@@ -1,11 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
-import data from '../pages/Schedule/data/mockProgram.json';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import data from '../pages/Schedule/data/realData.json';
 import ProgramService from '../services/ProgramService';
-const fetchProgramme = async (id) => {
-    const response = await ProgramService.getProgrammeById(id);
-    console.log(response);
-    return response;
-};
+// Thunk để fetch dữ liệu từ API
+
 const boardsSlice = createSlice({
     name: 'boards',
     initialState: data.boards,

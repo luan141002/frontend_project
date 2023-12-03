@@ -2,50 +2,71 @@
     "boards": [
         {
             "id": 4,
-            "name": "Loose weith program",
+            "name": "Loose weight program",
             "description": "For member 1, this is the specific personal program to help this member loose weigth and gaining muscle!",
             "isActive": true,
-            "columns": {
-                "name": "todo",
-                "tasks": [
-                    {
-                        "id": 13,
-                        "dayNumber": 1,
-                        "dayName": "leg day",
-                        "dayTarget": "leg",
-                        "hourNumber": 90,
-                        "status": null,
-                        "subtasks": []
-                    },
-                    {
-                        "id": 14,
-                        "dayNumber": 1,
-                        "dayName": "chest day",
-                        "dayTarget": "leg",
-                        "hourNumber": 90,
-                        "status": null,
-                        "subtasks": []
-                    },
-                    {
-                        "id": 15,
-                        "dayNumber": 1,
-                        "dayName": "shoulder day",
-                        "dayTarget": "leg",
-                        "hourNumber": 90,
-                        "status": null,
-                        "subtasks": []
-                    },
-                    {
-                        "id": 16,
-                        "dayNumber": 3,
-                        "dayName": "back day",
-                        "dayTarget": "leg",
-                        "hourNumber": 90,
-                        "status": null,
-                        "subtasks": []
-                    }
-                ]
-            }
+            "columns": [
+                {
+                    "name": "todo",
+                    "tasks": [
+                        {
+                            "id": 13,
+                            "dayNumber": 1,
+                            "dayName": "leg day",
+                            "dayTarget": "leg",
+                            "hourNumber": 90,
+                            "status": "todo",
+                            "subtasks": []
+                        }
+                    ]
+                },
+                {
+                    "name": "doing",
+                    "tasks": [
+                        {
+                            "id": 13,
+                            "dayNumber": 1,
+                            "dayName": "leg day",
+                            "dayTarget": "leg",
+                            "hourNumber": 90,
+                            "status": "todo",
+                            "subtasks": []
+                        },
+                        {
+                            "id": 14,
+                            "dayNumber": 1,
+                            "dayName": "chest day",
+                            "dayTarget": "leg",
+                            "hourNumber": 90,
+                            "status": null,
+                            "subtasks": []
+                        }
+                    ]
+                },
+                {
+                    "name": "done",
+                    "tasks": [
+                        {
+                            "id": 13,
+                            "dayNumber": 1,
+                            "dayName": "leg day",
+                            "dayTarget": "leg",
+                            "hourNumber": 90,
+                            "status": "todo",
+                            "subtasks": []
+                        },
+                        {
+                            "id": 14,
+                            "dayNumber": 1,
+                            "dayName": "chest day",
+                            "dayTarget": "leg",
+                            "hourNumber": 90,
+                            "status": null,
+                            "subtasks": []
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }

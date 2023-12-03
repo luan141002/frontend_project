@@ -84,7 +84,7 @@ const publicRoutes = [
         layout: DefaultLayout,
     },
     {
-        path: '/trainer-pick',
+        path: ' ',
         component: PickTrainer,
         layout: DefaultLayout,
     },
