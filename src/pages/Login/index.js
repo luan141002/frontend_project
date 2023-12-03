@@ -27,18 +27,37 @@ const LoginPage = ({
         setOpenLoginModal(false);
         try {
             const { user } = await AuthService.login(data.email, data.password);
-            console.log(user);
-            const member = await MemberService.getMemberByEmail(data.email);
-            dispatch(
-                accountSlices.actions.setAccount({
-                    memberId: member.id,
-                    firstName: member.firstName,
-                    lastName: member.lastName,
-                    email: user.email,
-                    id: user.id,
-                    roles: user.roles,
-                }),
-            );
+            console.log(user.roles[0].name);
+            if (user.roles[0].name === 'MEMBER') {
+                const member = await MemberService.getMemberByEmail(data.email);
+                dispatch(
+                    accountSlices.actions.setAccount({
+                        memberId: member.id,
+                        firstName: member.firstName,
+                        lastName: member.lastName,
+                        email: user.email,
+                        id: user.id,
+                        roles: user.roles,
+                    }),
+                );
+            }
+            if (user.roles[0].name === 'PERSONAL_TRAINER') {
+                const pts = await MemberService.getPTs();
+                console.log(pts);
+                const pt = pts.find((pt) => pt.user.id === user.id);
+                console.log(pt);
+                dispatch(
+                    accountSlices.actions.setAccount({
+                        memberId: pt.id,
+                        firstName: pt.firstName,
+                        lastName: pt.lastName,
+                        email: pt.user.email,
+                        id: user.id,
+                        roles: user.roles,
+                    }),
+                );
+            }
+
             navigate('/');
         } catch (err) {}
     };

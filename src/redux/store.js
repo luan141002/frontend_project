@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import boardsSlice from './boardsSlice.js';
+import boardsSlice, { fetchBoards } from './boardsSlice.js';
 import accountsSlices from './accountsSlice.js';
 
 const store = configureStore({
