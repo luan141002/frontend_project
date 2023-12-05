@@ -7,25 +7,57 @@ import { IconName, AiFillHome } from 'react-icons/ai';
 
 const SideBar = () => {
     const [open, setOpen] = useState(false);
+    const navigate = useNavigate();
     const account = useSelector((state) => state.account);
+
     const Menu = [
-        { title: 'Exercises', link: '/exercises', icon: '' },
-        { title: 'Blogs', link: '/blogs', icon: '' },
-        { title: 'Dashboard', link: '/dashboard', spacing: true, icon: '' },
-        { title: 'Calorie Calculation', link: '/', icon: '' },
+        { title: 'Exercises', link: '/exercises', clicked: false, icon: '' },
+        { title: 'Blogs', link: '/blogs', clicked: false, icon: '' },
+        {
+            title: 'Dashboard',
+            link: '/dashboard',
+            clicked: false,
+            spacing: true,
+            icon: '',
+        },
+        {
+            title: 'Tools',
+            link: '/',
+            icon: '',
+            clicked: true,
+            subMenu: [
+                {
+                    title: 'Calories Calculator',
+                    link: `/tools/calories-calculator`,
+                    clicked: false,
+                    icon: '',
+                },
+                {
+                    title: 'BMI Calculator',
+                    link: `/tools/bmi-calculator`,
+                    clicked: false,
+                    icon: '',
+                },
+            ],
+        },
         {
             title: 'Profile',
             link: `/user/user-profile`,
+            clicked: false,
             icon: '',
         },
     ];
+    const [isClicked, setIsClicked] = useState(false);
     return (
         <div
             className={`bg-[#151212] fixed h-screen p-2 pt-3  ${
                 open ? 'w-60' : 'w-20'
             } duration-300  z-50`}
             onMouseEnter={() => setOpen(true)}
-            onMouseLeave={() => setOpen(false)}
+            onMouseLeave={() => {
+                setOpen(false);
+                setIsClicked((state) => !state);
+            }}
         >
             {/* <FaArrowLeft
                 className={`bg-white text-black text-xl rounded-full absolute -right-2 top-9 border cursor-pointer ${
@@ -69,23 +101,52 @@ const SideBar = () => {
             <ul className="pt-2 mt-6">
                 {Menu.map((menu, index) => (
                     <>
-                        <Link to={menu.link}>
-                            <li
-                                key={index}
-                                className={`text-gray-300 text-sm flex items-center justify-center duration-200 gap-x-4 mx-auto cursor-pointer p-4 hover:bg-gray-500 rounded-md mt-2`}
+                        <li
+                            key={index}
+                            className={`text-gray-300 text-sm flex items-center justify-center duration-200 gap-x-4 mx-auto cursor-pointer p-4 hover:bg-gray-500 rounded-md mt-2`}
+                            onClick={() => {
+                                if (menu?.clicked === true) {
+                                    setIsClicked((state) => !state);
+                                } else {
+                                    navigate(menu?.link);
+                                }
+                            }}
+                        >
+                            <span className="text-2xl block float-left  ">
+                                <AiFillHome />
+                            </span>
+
+                            <span
+                                className={`text-medium font-medium flex-1 duration-200 ${
+                                    !open && 'hidden'
+                                }`}
                             >
-                                <span className="text-2xl block float-left  ">
-                                    <AiFillHome />
-                                </span>
-                                <span
-                                    className={`text-medium font-medium flex-1 duration-200 ${
-                                        !open && 'hidden'
-                                    }`}
-                                >
-                                    {menu.title}
-                                </span>
-                            </li>
-                        </Link>
+                                {menu.title}
+                            </span>
+                        </li>
+
+                        {isClicked && (
+                            <ul className="pl-8">
+                                {menu.subMenu?.map((subMenu, index) => (
+                                    <li
+                                        key={index}
+                                        className={`text-gray-300 text-sm flex items-center justify-center duration-200 gap-x-4 mx-auto cursor-pointer p-4 hover:bg-gray-500 rounded-md mt-2`}
+                                        onClick={() => navigate(subMenu.link)}
+                                    >
+                                        <span className="text-2xl block float-left  ">
+                                            <AiFillHome />
+                                        </span>
+                                        <span
+                                            className={`text-medium font-medium flex-1 duration-200 ${
+                                                !open && 'hidden'
+                                            }`}
+                                        >
+                                            {subMenu.title}
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                     </>
                 ))}
             </ul>

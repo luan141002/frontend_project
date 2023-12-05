@@ -6,7 +6,7 @@ import Task from './Task.js';
 import AddEditTaskModal from './modals/addEditTaskModal.js';
 import ProgramService from '../../services/ProgramService.js';
 
-const Column = ({ colIndex, boards, setBoards, setReloadPage }) => {
+const Column = ({ colIndex, boards, setBoards, setReloadPage, memberId }) => {
     const colors = [
         'bg-red-500',
         'bg-orange-500',
@@ -18,6 +18,7 @@ const Column = ({ colIndex, boards, setBoards, setReloadPage }) => {
         'bg-pink-500',
         'bg-sky-500',
     ];
+    console.log(memberId);
     const dispatch = useDispatch();
     const [color, setColor] = useState(null);
     const [openAddEditTask, setOpenAddEditTask] = useState(false);
@@ -90,6 +91,7 @@ const Column = ({ colIndex, boards, setBoards, setReloadPage }) => {
                     setReloadPage={setReloadPage}
                     programId={board?.id}
                     boards={boards}
+                    memberId={memberId}
                 />
             )}
         </div>

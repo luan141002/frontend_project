@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import MemberService from '../../services/MemberService';
 
-const UserProfile = () => {
+const UserProfile = (isPT, memberId) => {
     const {
         register,
         handleSubmit,
@@ -17,10 +17,16 @@ const UserProfile = () => {
     const [isAccountEdit, setIsAccountEdit] = useState(false);
     const account = useSelector((state) => state.account);
     const [userProfile, setUserProfile] = useState();
+    const isPTs = account.roles[0]?.name === 'PERSONAL_TRAINER';
 
     const loadPage = async () => {
-        const userProfile = await MemberService.getMemberByEmail(account.email);
-
+        console.log(account);
+        let userProfile;
+        if (account.roles[0]?.name === 'PERSONAL_TRAINER') {
+            userProfile = await MemberService.getPTById(account.memberId);
+        } else {
+            userProfile = await MemberService.getMemberByEmail(account.email);
+        }
         setUserProfile(userProfile);
     };
 
@@ -78,7 +84,7 @@ const UserProfile = () => {
                             <input
                                 id="firstName"
                                 type="text"
-                                placeholder={userProfile?.firstName}
+                                defaultValue={userProfile?.firstName}
                                 class="block w-full px-4 py-2 mt-2 te/xt-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                                 {...register('firstName')}
                             />
@@ -94,7 +100,7 @@ const UserProfile = () => {
                             <input
                                 id="lastName"
                                 type="text"
-                                placeholder={userProfile?.lastName}
+                                defaultValue={userProfile?.lastName}
                                 class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                                 {...register('lastName')}
                             />
@@ -122,34 +128,43 @@ const UserProfile = () => {
                                 class="text-gray-800 dark:text-gray-200"
                                 for="memberLevel"
                             >
-                                Member Level
+                                {account.roles[0]?.name === 'PERSONAL_TRAINER'
+                                    ? 'PT'
+                                    : 'Member'}{' '}
+                                Level
                             </label>
                             <input
                                 id="memberLevel"
                                 type="text"
-                                value={userProfile?.memberLevel}
+                                value={
+                                    isPTs
+                                        ? userProfile?.ptLevel
+                                        : userProfile?.memberLevel
+                                }
                                 disabled
                                 class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                                 {...register('memberLevel')}
                             />
                         </div>
 
-                        <div>
-                            <label
-                                class="text-gray-800 dark:text-gray-200"
-                                for="personalLevel"
-                            >
-                                Personal Level
-                            </label>
-                            <input
-                                id="personalLevel"
-                                type="text"
-                                value={userProfile?.personalLevel}
-                                class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-                                memberLevel
-                                {...register('personalLevel')}
-                            />
-                        </div>
+                        {!isPTs && (
+                            <div>
+                                <label
+                                    class="text-gray-800 dark:text-gray-200"
+                                    for="personalLevel"
+                                >
+                                    Personal Level
+                                </label>
+                                <input
+                                    id="personalLevel"
+                                    type="text"
+                                    value={userProfile?.personalLevel}
+                                    class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                                    memberLevel
+                                    {...register('personalLevel')}
+                                />
+                            </div>
+                        )}
 
                         <div>
                             <label
@@ -164,25 +179,28 @@ const UserProfile = () => {
                                 class="block w-full px-4 py-2 mt-2 text-g/ray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                             />
                         </div>
-                        <div>
-                            <label
-                                class="text-gray-800 dark:text-gray-200"
-                                for="personalTrainer"
-                            >
-                                Personal Trainer
-                            </label>
-                            <input
-                                id="personalTrainer"
-                                type="textarea"
-                                disabled
-                                value={
-                                    userProfile?.personalTrainer?.firstName +
-                                    ' ' +
-                                    userProfile?.personalTrainer?.lastName
-                                }
-                                class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-                            ></input>
-                        </div>
+                        {!isPTs && (
+                            <div>
+                                <label
+                                    class="text-gray-800 dark:text-gray-200"
+                                    for="personalTrainer"
+                                >
+                                    Personal Trainer
+                                </label>
+                                <input
+                                    id="personalTrainer"
+                                    type="textarea"
+                                    disabled
+                                    value={
+                                        userProfile?.personalTrainer
+                                            ?.firstName +
+                                        ' ' +
+                                        userProfile?.personalTrainer?.lastName
+                                    }
+                                    class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                                ></input>
+                            </div>
+                        )}
                         <div>
                             <label class="block text-sm font-medium text-gray-800">
                                 Image

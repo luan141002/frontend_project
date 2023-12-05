@@ -71,7 +71,7 @@ const publicRoutes = [
     {
         path: '/dashboard',
         component: Center,
-        layout: AdminLayout,
+        layout: null,
     },
     {
         path: '/table',
@@ -79,12 +79,25 @@ const publicRoutes = [
         layout: AdminLayout,
     },
     {
-        path: '/calories-calculator',
+        path: '/tools/calories-calculator',
         component: CaloriesCalculator,
         layout: DefaultLayout,
+        type: 'calories-calculator',
     },
     {
-        path: ' ',
+        path: '/tools/bmi-calculator',
+        component: CaloriesCalculator,
+        layout: DefaultLayout,
+        type: 'bmi-calculator',
+    },
+    {
+        path: '/members/personal-config',
+        component: CaloriesCalculator,
+        layout: AdminLayout,
+        type: 'personal-information-config',
+    },
+    {
+        path: '/trainer-pick',
         component: PickTrainer,
         layout: DefaultLayout,
     },
@@ -101,6 +114,11 @@ const publicRoutes = [
     {
         path: '/otp',
         component: OTPVerification,
+        layout: null,
+    },
+    {
+        path: '/members/:memberIdTerm/schedule',
+        component: Center,
         layout: null,
     },
 ];

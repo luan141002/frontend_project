@@ -39,6 +39,43 @@ const ProgramService = {
         console.log(modifiedData);
         return modifiedData;
     },
+    getProgrammeByMemberId: async (memberId) => {
+        const response = await WebService.get(`/members/${memberId}/programs`);
+        const jsonResponse = await response.json();
+        const realResponse = {
+            boards: [
+                {
+                    ...jsonResponse,
+                    columns: [
+                        {
+                            name: 'todo',
+                            tasks: jsonResponse?.tasks?.filter(
+                                (task) => task.status === 'Todo',
+                            ),
+                        },
+                        {
+                            name: 'doing',
+                            tasks: jsonResponse?.tasks?.filter(
+                                (task) => task.status === 'Doing',
+                            ),
+                        },
+                        {
+                            name: 'done',
+                            tasks: jsonResponse?.tasks?.filter(
+                                (task) => task.status === 'Done',
+                            ),
+                        },
+                    ],
+                },
+            ],
+        };
+        const {
+            boards: [{ tasks, ...restBoard }, ...restBoards],
+        } = realResponse;
+        const modifiedData = { boards: [{ ...restBoard }, ...restBoards] };
+
+        return modifiedData;
+    },
     changeSessionStatusToDoing: async (sessionId) => {
         await WebService.putJson(
             `/workout-sessions/${sessionId}/change-doing`,
@@ -80,6 +117,18 @@ const ProgramService = {
         return response.json();
     },
 
+    addProgram: async (memberId, name, description) => {
+        const body = {
+            name,
+            description,
+            member: {
+                id: memberId,
+            },
+        };
+        console.log(body);
+        // const response = await WebService.postJson('/programs', body);
+        // return response.json;
+    },
     addSubtask: async (workoutId, subtaskId) => {
         const body = { id: subtaskId };
 

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import AddEditBoardModal from './modals/addEditBoardModal';
 
-const EmptyBoard = ({ type }) => {
+const EmptyBoard = ({ type, memberId, setReloadPage }) => {
     const [boardModalOpen, setBoardModalOpen] = useState(false);
     return (
-        <div className=" bg-white dark:bg-[#2b2c37] h-screen w-screen flex flex-col  items-center justify-center">
+        <div className=" bg-white dark:bg-[#2b2c37] h-screen w-screen flex flex-col  items-center justify-center scrollbar-hide">
             <h3 className=" text-gray-500 font-bold">
                 {type === 'edit'
                     ? 'This board is empty. Create a new column to get started.'
@@ -20,6 +20,8 @@ const EmptyBoard = ({ type }) => {
             </button>
             {boardModalOpen && (
                 <AddEditBoardModal
+                    setReloadPage={setReloadPage}
+                    memberId={memberId}
                     type="add"
                     setBoardModalOpen={setBoardModalOpen}
                 />

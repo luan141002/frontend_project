@@ -13,13 +13,43 @@ export const DASHBOARD_SIDEBAR_LINKS = [
     {
         key: 'dashboard',
         label: 'Dashboard',
+        roles: ['PERSONAL_TRAINER'],
         path: '/',
         icon: <HiOutlineViewGrid />,
+    },
+
+    {
+        key: 'Management',
+        label: 'Management',
+        path: '/table',
+        roles: ['PERSONAL_TRAINER'],
+        icon: <HiOutlineShoppingCart />,
+        subMenu: [
+            {
+                key: 'Trainers',
+                label: 'Trainers',
+                path: '/table',
+                icon: <HiOutlineCube />,
+            },
+            {
+                key: 'Trainees',
+                label: 'Trainees',
+                path: '/table',
+                icon: <HiOutlineCube />,
+            },
+            {
+                key: 'Exercises',
+                label: 'Exercises',
+                path: '/table',
+                icon: <HiOutlineCube />,
+            },
+        ],
     },
     {
         key: 'Management',
         label: 'Management',
         path: '/table',
+        roles: ['MEMBER'],
         icon: <HiOutlineShoppingCart />,
         subMenu: [
             {
@@ -44,8 +74,9 @@ export const DASHBOARD_SIDEBAR_LINKS = [
     },
     {
         key: 'Personal',
-        label: 'Customers',
-        path: '/customers',
+        label: 'Personal Information Update',
+        roles: ['MEMBER'],
+        path: '/members/personal-config',
         icon: <HiOutlineUsers />,
     },
 ];

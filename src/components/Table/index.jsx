@@ -14,43 +14,58 @@ import UploadExercise from '../../pages/UploadExcercise';
 const TanStackTable = () => {
     const columnHelper = createColumnHelper();
 
+    // const columns = [
+    //     columnHelper.accessor('', {
+    //         id: 'S.No',
+    //         cell: (info) => <span>{info.row.index + 1}</span>,
+    //         header: 'S.No',
+    //     }),
+    //     columnHelper.accessor('profile', {
+    //         cell: (info) => (
+    //             <img
+    //                 src={info?.getValue()}
+    //                 alt="..."
+    //                 className="rounded-full w-10 h-10 object-cover"
+    //             />
+    //         ),
+    //         header: 'Profile',
+    //     }),
+    //     columnHelper.accessor('firstName', {
+    //         cell: (info) => <span>{info.getValue()}</span>,
+    //         header: 'First Name',
+    //     }),
+    //     columnHelper.accessor('lastName', {
+    //         cell: (info) => <span>{info.getValue()}</span>,
+    //         header: 'Last Name',
+    //     }),
+    //     columnHelper.accessor('age', {
+    //         cell: (info) => <span>{info.getValue()}</span>,
+    //         header: 'Age',
+    //     }),
+    //     columnHelper.accessor('visits', {
+    //         cell: (info) => <span>{info.getValue()}</span>,
+    //         header: 'Visits',
+    //     }),
+    //     columnHelper.accessor('progress', {
+    //         cell: (info) => <span>{info.getValue()}</span>,
+    //         header: 'Progress',
+    //     }),
+    // ];
     const columns = [
         columnHelper.accessor('', {
             id: 'S.No',
             cell: (info) => <span>{info.row.index + 1}</span>,
             header: 'S.No',
         }),
-        columnHelper.accessor('profile', {
-            cell: (info) => (
-                <img
-                    src={info?.getValue()}
-                    alt="..."
-                    className="rounded-full w-10 h-10 object-cover"
-                />
-            ),
-            header: 'Profile',
-        }),
-        columnHelper.accessor('firstName', {
-            cell: (info) => <span>{info.getValue()}</span>,
-            header: 'First Name',
-        }),
-        columnHelper.accessor('lastName', {
-            cell: (info) => <span>{info.getValue()}</span>,
-            header: 'Last Name',
-        }),
-        columnHelper.accessor('age', {
-            cell: (info) => <span>{info.getValue()}</span>,
-            header: 'Age',
-        }),
-        columnHelper.accessor('visits', {
-            cell: (info) => <span>{info.getValue()}</span>,
-            header: 'Visits',
-        }),
-        columnHelper.accessor('progress', {
-            cell: (info) => <span>{info.getValue()}</span>,
-            header: 'Progress',
+        ...Object.keys(USERS[0])?.map((field) => {
+            return columnHelper.accessor(field, {
+                cell: (info) => <span>{info.getValue()}</span>,
+                header: camelToCapitalize(field),
+            });
         }),
     ];
+
+    // console.log(rawColumns);
     const [data] = useState(() => [...USERS]);
     const [globalFilter, setGlobalFilter] = useState('');
 
@@ -208,4 +223,9 @@ const SearchIcon = () => {
         </svg>
     );
 };
+function camelToCapitalize(inputStr) {
+    return inputStr
+        .replace(/([a-z])([A-Z])/g, '$1 $2')
+        .replace(/^./, (str) => str.toUpperCase());
+}
 export default TanStackTable;

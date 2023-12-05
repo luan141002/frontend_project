@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { CircleSlider } from 'react-circle-slider';
 import { useForm, Controller } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 import ToolService from '../../services/ToolService';
+import MemberService from '../../services/MemberService';
 
-const CaloriesCalculator = () => {
+const CaloriesCalculator = ({ type }) => {
     const {
         register,
         handleSubmit,
@@ -11,46 +13,99 @@ const CaloriesCalculator = () => {
         formState: { errors, isSubmitting },
         watch,
     } = useForm();
+    const account = useSelector((state) => state.account);
     const [age, setAge] = useState(25);
     const [height, setHeight] = useState(165);
     const [weight, setWeight] = useState(50);
-
-    const [result, setResult] = useState();
+    const [result, setResult] = useState(null);
 
     const onSubmit = async (data) => {
         // Xử lý logic khi form được submit
+        console.log(type);
         console.log(data);
-        const response = await ToolService.getCaloriesResult(
-            data.activityLevel,
-            data.goal,
-            height,
-            weight,
-            age,
-            data.calculator.gender,
-        );
-        setResult(response);
+        let response;
+        switch (type) {
+            case 'calories-calculator':
+                response = await ToolService.getCaloriesResult(
+                    data.activityLevel,
+                    data.goal,
+                    height,
+                    weight,
+                    age,
+                    data.calculator.gender,
+                );
+                break;
+            case 'bmi-calculator':
+                response = await ToolService.getBMIResult(
+                    height,
+                    weight,
+                    age,
+                    data.calculator.gender,
+                );
+                break;
+            case 'personal-information-config':
+                response = await MemberService.updatePersonalInfoConfig(
+                    account.memberId,
+                    height,
+                    weight,
+                    age,
+                    data.calculator.gender,
+                    data.bmi,
+                    data.fat,
+                );
+                break;
+        }
 
+        setResult(response);
         console.log(response);
     };
     return (
         <div className="bg-[#151212] w-full min-h-min p-6">
-            <div className="text-white flex flex-col self-start mb-[10%]">
-                <label className="text-[40px] font-bold ">
-                    Calorie Calculator
-                </label>
-                <p className="text-white text-[15px] font-thin italic w-[500px]">
-                    The Calorie Calculator can be used to estimate the calories
-                    you need to consume each day. This calculator can also
-                    provide some simple guidelines if you want to gain or lose
-                    weight. This calculator uses the Revised Harris-Benedict
-                    equation to calculate your calorie needs.
-                </p>
-            </div>
+            {type === 'calories-calculator' && (
+                <div className="text-white flex flex-col self-start mb-[10%]">
+                    <label className="text-[40px] font-bold ">
+                        Calorie Calculator
+                    </label>
+                    <p className="text-white text-[15px] font-thin italic w-[500px]">
+                        The Calorie Calculator can be used to estimate the
+                        calories you need to consume each day. This calculator
+                        can also provide some simple guidelines if you want to
+                        gain or lose weight. This calculator uses the Revised
+                        Harris-Benedict equation to calculate your calorie
+                        needs.
+                    </p>
+                </div>
+            )}
+
+            {type === 'bmi-calculator' && (
+                <div className="text-white flex flex-col self-start mb-[10%]">
+                    <label className="text-[40px] font-bold ">
+                        BMI Calculator
+                    </label>
+                    <p className="text-white text-[15px] font-thin italic w-[500px]">
+                        Macronutrients (macros) are typically defined as the
+                        three substrates that are used by the body for the
+                        production of energy. Those energy substrates are
+                        carbohydrates, fats, and proteins. Together, the
+                        macronutrients create the caloric total for a food
+                    </p>
+                </div>
+            )}
+            {type === 'personal-information-config' && (
+                <div className="text-white flex flex-col self-start mb-[10%]">
+                    <label className="text-[40px] font-bold ">
+                        Update Personal information
+                    </label>
+                    <p className="text-white text-[15px] font-thin italic w-[500px]">
+                        Update your information for tracking your progress
+                    </p>
+                </div>
+            )}
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex">
-                    <div class="container mx-auto mt-8 p-4 bg-white w-[40%] h-[200px]">
+                    <div class="container mx-auto mt-8 p-4 bg-white w-[40%] h-[100px]">
                         <form className="flex flex-col items-center">
-                            <div class="mb-4 w-full flex flex-col items-center space-x-3">
+                            {/* <div class="mb-4 w-full flex flex-col items-center space-x-3">
                                 <label class="block text-gray-700 font-bold mb-2">
                                     Units:
                                 </label>
@@ -73,24 +128,29 @@ const CaloriesCalculator = () => {
                                             class="form-radio text-blue-500"
                                             {...register('calculator.units')}
                                         />
+
                                         <span class="ml-2">Metric</span>
                                     </label>
                                 </div>
-                            </div>
+                            </div> */}
 
                             <div class="mb-4 w-full flex flex-col items-center space-x-3">
                                 <label class="block text-gray-700 font-bold mb-2">
                                     Sex:
                                 </label>
-                                <div class="flex justify-between w-full px-8 items-center">
+                                <div class="flex  justify-between w-full px-10 items-center">
                                     <label class="inline-flex items-center mr-4">
                                         <input
                                             type="radio"
                                             name="calculator.sex"
                                             value="male"
                                             class="form-radio text-blue-500"
-                                            {...register('calculator.gender')}
+                                            {...register('calculator.gender', {
+                                                required:
+                                                    'This field is required',
+                                            })}
                                         />
+
                                         <span class="ml-2">Male</span>
                                     </label>
                                     <label class="inline-flex items-center">
@@ -99,11 +159,19 @@ const CaloriesCalculator = () => {
                                             name="calculator.sex"
                                             value="female"
                                             class="form-radio text-blue-500"
-                                            {...register('calculator.gender')}
+                                            {...register('calculator.gender', {
+                                                required:
+                                                    'This field is required',
+                                            })}
                                         />
                                         <span class="ml-2">Female</span>
                                     </label>
                                 </div>
+                                {errors.calculator?.gender && (
+                                    <p className="text-red-500 text-xs mt-1">
+                                        {errors.calculator?.gender.message}
+                                    </p>
+                                )}
                             </div>
                         </form>
                     </div>
@@ -143,7 +211,7 @@ const CaloriesCalculator = () => {
                                 </div>
                                 <div className="my-3">{weight}</div>
                                 <div className="text-[18px] leading-[15px] ">
-                                    LBS
+                                    Kilograms
                                 </div>
                             </div>
                             <CircleSlider
@@ -171,7 +239,7 @@ const CaloriesCalculator = () => {
                                 </div>
                                 <div className="my-3">{height}</div>
                                 <div className="text-[18px] leading-[15px] ">
-                                    Feet/Inches
+                                    Metres
                                 </div>
                             </div>
                             <CircleSlider
@@ -193,73 +261,195 @@ const CaloriesCalculator = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flex justify-between mt-[5%]">
-                    <select
-                        id="countries"
-                        {...register('activityLevel')}
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[48%] p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    >
-                        <option selected>Choose a Activity Level</option>
-                        <option value="SEDENTARY">Little to no exercise</option>
-                        <option value="LIGHTLY_ACTIVE">
-                            Light exercise (1-3 days per week)
-                        </option>
-                        <option value="MODERATELY_ACTIVE">
-                            Moderate exercise (3-5 days per week){' '}
-                        </option>
-                        <option value="VERY_ACTIVE">
-                            Heavy exercise (6-7 days per week){' '}
-                        </option>
-                        <option value="EXTRA_ACTIVE">
-                            Very heavy exercise (twice per day, extra heavy
-                            workouts)
-                        </option>
-                    </select>
+                {type === 'personal-information-config' && (
+                    <div className="w-full">
+                        <div className="mt-8 ">
+                            <div className="mb-4">
+                                <label
+                                    htmlFor="fat"
+                                    className="block text-white text-sm font-bold mb-2"
+                                >
+                                    Fat
+                                </label>
+                                <input
+                                    {...register('fat', {
+                                        required: 'This field is required',
+                                    })}
+                                    type="number"
+                                    defaultValue={0}
+                                    className="w-full p-2 border"
+                                />
+                                {errors.fat && (
+                                    <p className="text-red-500 text-xs mt-1">
+                                        {errors.fat.message}
+                                    </p>
+                                )}
+                            </div>
+                            {/* 
+                        <div className="mb-4">
+                            <label
+                                htmlFor="date"
+                                className="block text-white text-sm font-bold mb-2"
+                            >
+                                Date
+                            </label>
+                            <input
+                                {...register('date')}
+                                type="date"
+                                defaultValue="2023-12-04"
+                                className="w-full p-2 border"
+                            />
+                        </div> */}
 
-                    <select
-                        id="countries"
-                        {...register('goal')}
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[48%] p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    >
-                        <option selected>Goal Per Week</option>
-                        <option value="WEIGHT_LOSS">
-                            Lose 2 Pounds per Week{' '}
-                        </option>
-                        <option value="WEIGHT_LOSS">
-                            Lose 1.5 Pounds per Week{' '}
-                        </option>
-                        <option value="WEIGHT_LOSS">
-                            Lose 1 Pounds per Week{' '}
-                        </option>
-                        <option value="WEIGHT_LOSS">
-                            Lose 0.5 Pounds per Week
-                        </option>
-                        <option value="MAINTENANCE">
-                            Stay the Same Weight{' '}
-                        </option>
-                        <option value="WEIGHT_GAIN">
-                            Gain 0.5 Pound per Week
-                        </option>
-                        <option value="WEIGHT_GAIN">
-                            Gain 1 Pound per Week{' '}
-                        </option>
-                        <option value="WEIGHT_GAIN">
-                            Gain 1.5 Pounds per Week{' '}
-                        </option>
-                        <option value="WEIGHT_GAIN">
-                            Gain 2 Pounds per Week{' '}
-                        </option>
-                    </select>
-                </div>
+                            <div className="mb-4">
+                                <label
+                                    htmlFor="bmi"
+                                    className="block text-white text-sm font-bold mb-2"
+                                >
+                                    BMI
+                                </label>
+                                <input
+                                    {...register('bmi', {
+                                        required: 'This field is required',
+                                    })}
+                                    type="number"
+                                    defaultValue={0}
+                                    className="w-full p-2 border"
+                                />
+                                {errors.bmi && (
+                                    <p className="text-red-500 text-xs mt-1">
+                                        {errors.bmi.message}
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )}
+                {type === 'calories-calculator' && (
+                    <div className="flex justify-between mt-[5%] w-full">
+                        <div className="w-[48%]">
+                            <select
+                                id="countries"
+                                {...register('activityLevel', {
+                                    required: 'This field is required',
+                                })}
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full focus:ring-blue-500 focus:border-blue-500 block  p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            >
+                                <option value="" disabled selected>
+                                    Choose a Activity Level
+                                </option>
+                                <option value="SEDENTARY">
+                                    Little to no exercise
+                                </option>
+                                <option value="LIGHTLY_ACTIVE">
+                                    Light exercise (1-3 days per week)
+                                </option>
+                                <option value="MODERATELY_ACTIVE">
+                                    Moderate exercise (3-5 days per week){' '}
+                                </option>
+                                <option value="VERY_ACTIVE">
+                                    Heavy exercise (6-7 days per week){' '}
+                                </option>
+                                <option value="EXTRA_ACTIVE">
+                                    Very heavy exercise (twice per day, extra
+                                    heavy workouts)
+                                </option>
+                            </select>
+                            {errors.activityLevel && (
+                                <p className="text-red-500 text-xs mt-1">
+                                    {errors.activityLevel.message}
+                                </p>
+                            )}
+                        </div>
+
+                        <div className="w-[48%]">
+                            <select
+                                id="countries"
+                                {...register('goal', {
+                                    required: 'This field is required',
+                                })}
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            >
+                                <option value="" disabled selected>
+                                    Goal Per Week
+                                </option>
+                                <option value="WEIGHT_LOSS">
+                                    Lose 2 Pounds per Week{' '}
+                                </option>
+                                <option value="WEIGHT_LOSS">
+                                    Lose 1.5 Pounds per Week{' '}
+                                </option>
+                                <option value="WEIGHT_LOSS">
+                                    Lose 1 Pounds per Week{' '}
+                                </option>
+                                <option value="WEIGHT_LOSS">
+                                    Lose 0.5 Pounds per Week
+                                </option>
+                                <option value="MAINTENANCE">
+                                    Stay the Same Weight{' '}
+                                </option>
+                                <option value="WEIGHT_GAIN">
+                                    Gain 0.5 Pound per Week
+                                </option>
+                                <option value="WEIGHT_GAIN">
+                                    Gain 1 Pound per Week{' '}
+                                </option>
+                                <option value="WEIGHT_GAIN">
+                                    Gain 1.5 Pounds per Week{' '}
+                                </option>
+                                <option value="WEIGHT_GAIN">
+                                    Gain 2 Pounds per Week{' '}
+                                </option>
+                            </select>
+                            {errors.goal && (
+                                <p className="text-red-500 text-xs mt-1">
+                                    {errors.goal.message}
+                                </p>
+                            )}
+                        </div>
+                    </div>
+                )}
                 <div class="mt-6">
-                    <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        class=" text-red-800 py-2 px-4 w-full border-2 border-red-800 bg-white rounded hover:bg-red-900 hover:border-white hover:text-white focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
-                    >
-                        You would have to consume:{' '}
-                        {result === null ? '0' : result}
-                    </button>
+                    {type === 'calories-calculator' && (
+                        <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            class=" text-red-800 py-2 px-4 w-full border-2 border-red-800 bg-white rounded hover:bg-red-900 hover:border-white hover:text-white focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
+                        >
+                            You would have to consume:{' '}
+                            {result === null ? '0' : result}
+                        </button>
+                    )}
+
+                    {type === 'bmi-calculator' && (
+                        <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            class=" text-red-800 py-2 px-4 w-full border-2 border-red-800 bg-white rounded hover:bg-red-900 hover:border-white hover:text-white focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
+                        >
+                            {result !== null
+                                ? `Fat: ${result?.fat}g, BMI: ${result?.bmi}g, Rating: ${result?.rating}`
+                                : `Calculate BMI`}
+                        </button>
+                    )}
+                    {type === 'personal-information-config' && (
+                        <div>
+                            <button
+                                type="submit"
+                                disabled={isSubmitting}
+                                class=" text-red-800 py-2 px-4 w-full border-2 border-red-800 bg-white rounded hover:bg-red-900 hover:border-white hover:text-white focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
+                            >
+                                Update
+                            </button>
+                            {result !== null ? (
+                                <p className="text-green-700 text-xs mt-1">
+                                    Updated Successfully
+                                </p>
+                            ) : (
+                                `Calculate BMI`
+                            )}
+                        </div>
+                    )}
                 </div>
             </form>
         </div>
