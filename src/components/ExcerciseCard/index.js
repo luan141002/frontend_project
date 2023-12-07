@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const ExerciseCard = ({ exercise }) => {
     const video_thumbnail = get_youtube_thumbnail(
-        'https://www.youtube.com/watch?v=hSTm7yQEggI',
+        exercise.videoUrls[2],
         'medium',
     );
     return (

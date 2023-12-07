@@ -16,6 +16,16 @@ const ToolService = {
         );
         return response.json();
     },
+    getBMIResult: async (height, weight, age, gender) => {
+        height = height / 100;
+        const body = { height, weight, age, gender };
+        console.log(body);
+        const response = await WebService.postJson(
+            `/tools/calculate-bmi`,
+            body,
+        );
+        return response.json();
+    },
 };
 
 export default ToolService;

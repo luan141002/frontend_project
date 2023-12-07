@@ -4,28 +4,77 @@ import LogoImage from '../../public/logo-image.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { IconName, AiFillHome } from 'react-icons/ai';
+import {
+    FaWeightHanging,
+    FaNewspaper,
+    FaWeightScale,
+    FaChalkboardUser,
+} from 'react-icons/fa6';
+import { FaRegUserCircle, FaClipboard, FaCheckCircle } from 'react-icons/fa';
 
 const SideBar = () => {
     const [open, setOpen] = useState(false);
+    const navigate = useNavigate();
     const account = useSelector((state) => state.account);
+
     const Menu = [
-        { title: 'Exercises', link: '/exercises', icon: '' },
-        { title: 'Blogs', link: '/blogs', icon: '' },
-        { title: 'Dashboard', link: '/dashboard', spacing: true, icon: '' },
-        { title: 'Calorie Calculation', link: '/', icon: '' },
+        {
+            title: 'Exercises',
+            link: '/exercises',
+            clicked: false,
+            icon: <FaWeightHanging />,
+        },
+        {
+            title: 'Blogs',
+            link: '/blogs',
+            clicked: false,
+            icon: <FaNewspaper />,
+        },
+        {
+            title: 'Dashboard',
+            link: '/dashboard',
+            clicked: false,
+            spacing: true,
+            icon: <FaChalkboardUser />,
+        },
+        {
+            title: 'Tools',
+            link: '/',
+            icon: <FaWeightScale />,
+            clicked: true,
+            subMenu: [
+                {
+                    title: 'Calories Calculator',
+                    link: `/tools/calories-calculator`,
+                    clicked: false,
+                    icon: <FaClipboard />,
+                },
+                {
+                    title: 'BMI Calculator',
+                    link: `/tools/bmi-calculator`,
+                    clicked: false,
+                    icon: <FaClipboard />,
+                },
+            ],
+        },
         {
             title: 'Profile',
             link: `/user/user-profile`,
-            icon: '',
+            clicked: false,
+            icon: <FaRegUserCircle />,
         },
     ];
+    const [isClicked, setIsClicked] = useState(false);
     return (
         <div
             className={`bg-[#151212] fixed h-screen p-2 pt-3  ${
                 open ? 'w-60' : 'w-20'
             } duration-300  z-50`}
             onMouseEnter={() => setOpen(true)}
-            onMouseLeave={() => setOpen(false)}
+            onMouseLeave={() => {
+                setOpen(false);
+                setIsClicked(false);
+            }}
         >
             {/* <FaArrowLeft
                 className={`bg-white text-black text-xl rounded-full absolute -right-2 top-9 border cursor-pointer ${
@@ -69,23 +118,52 @@ const SideBar = () => {
             <ul className="pt-2 mt-6">
                 {Menu.map((menu, index) => (
                     <>
-                        <Link to={menu.link}>
-                            <li
-                                key={index}
-                                className={`text-gray-300 text-sm flex items-center justify-center duration-200 gap-x-4 mx-auto cursor-pointer p-4 hover:bg-gray-500 rounded-md mt-2`}
+                        <li
+                            key={index}
+                            className={`text-gray-300 text-sm flex items-center justify-center duration-200 gap-x-4 mx-auto cursor-pointer p-4 hover:bg-gray-500 rounded-md mt-2`}
+                            onClick={() => {
+                                if (menu?.clicked === true) {
+                                    setIsClicked((state) => !state);
+                                } else {
+                                    navigate(menu?.link);
+                                }
+                            }}
+                        >
+                            <span className="text-2xl block float-left  ">
+                                {menu.icon}
+                            </span>
+
+                            <span
+                                className={`text-medium font-medium flex-1 duration-200 ${
+                                    !open && 'hidden'
+                                }`}
                             >
-                                <span className="text-2xl block float-left  ">
-                                    <AiFillHome />
-                                </span>
-                                <span
-                                    className={`text-medium font-medium flex-1 duration-200 ${
-                                        !open && 'hidden'
-                                    }`}
-                                >
-                                    {menu.title}
-                                </span>
-                            </li>
-                        </Link>
+                                {menu.title}
+                            </span>
+                        </li>
+
+                        {isClicked && (
+                            <ul className="pl-8">
+                                {menu.subMenu?.map((subMenu, index) => (
+                                    <li
+                                        key={index}
+                                        className={`text-gray-300 text-sm flex items-center justify-center duration-200 gap-x-4 mx-auto cursor-pointer p-4 hover:bg-gray-500 rounded-md mt-2`}
+                                        onClick={() => navigate(subMenu.link)}
+                                    >
+                                        <span className="text-2xl block float-left  ">
+                                            {subMenu.icon}
+                                        </span>
+                                        <span
+                                            className={`text-medium font-medium flex-1 duration-200 ${
+                                                !open && 'hidden'
+                                            }`}
+                                        >
+                                            {subMenu.title}
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                     </>
                 ))}
             </ul>

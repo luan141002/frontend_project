@@ -64,7 +64,7 @@ const Blog = () => {
     const [openAddBlogModal, setOpenAddBlogModal] = useState(false);
 
     return (
-        <div className="bg-[#151212] w-full min-h-min ">
+        <div className="bg-[#151212] w-full min-h-min p-6">
             <div className="flex items-center justify-around  ">
                 <div className="flex-col space-y-3">
                     <div className="text-white flex flex-col self-start mb-[5%]">
@@ -78,12 +78,12 @@ const Blog = () => {
                         <div className="flex w-full justify-end">
                             <button
                                 type="reset"
-                                className="bg-red-700 text-white h-[40px] w-[120px] hover:border-3 float-right  px-2 hover:opacity-80"
+                                className="bg-red-700 text-xl text-white h-[60px] w-[150px] hover:border-3 float-right font-semibold  px-2 hover:opacity-80"
                                 onClick={() =>
                                     setOpenAddBlogModal((state) => !state)
                                 }
                             >
-                                + Add Post
+                                Add Post
                             </button>
                         </div>
                     </div>

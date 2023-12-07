@@ -17,8 +17,8 @@ import './exercises.css';
 const Exercises = () => {
     const [TopArticles, setTopArticles] = useState();
     const loadPage = async () => {
-        //const topArticleList = await PostService.getTopPosts();
-        //setTopArticles(topArticleList.slice(0, 5));
+        const topArticleList = await PostService.getTopPosts();
+        setTopArticles(topArticleList.slice(0, 5));
     };
 
     useEffect(() => {

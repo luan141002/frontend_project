@@ -19,10 +19,10 @@ const AddEditTaskModal = ({
     colIndex,
     taskId,
     prevColIndex = 0,
-    programId,
     setReloadPage,
     isPT,
     boards,
+    memberId,
 }) => {
     const {
         register,
@@ -44,7 +44,7 @@ const AddEditTaskModal = ({
     // get board list data
     const board = boards?.find((board) => board.isActive);
     const columns = board?.columns;
-
+    const [programId, setProgramId] = useState(board?.id);
     const [subtasks, setSubtasks] = useState([]);
 
     // FUNCTIONS
@@ -70,14 +70,14 @@ const AddEditTaskModal = ({
     const onDelete = async (id) => {
         setSubtasks((prevState) => prevState.filter((el) => el.id !== id));
         await ProgramService.deleteSubtask(workoutSession.id, id);
-        setReloadPage((state) => state + 1);
         setReloadModal((state) => state + 1);
+        setReloadPage((state) => state + 1);
     };
 
     const onCreateSubtask = async (id) => {
         await ProgramService.addSubtask(workoutSession.id, id);
-        setReloadPage((state) => state + 1);
         setReloadModal((state) => state + 1);
+        setReloadPage((state) => state + 1);
     };
 
     // handle column input
@@ -101,7 +101,7 @@ const AddEditTaskModal = ({
         if (type === 'add') {
             data['subtasks'] = subtasks;
             console.log(data);
-            await ProgramService.addWorkoutSessions(4, data);
+            await ProgramService.addWorkoutSessions(programId, data);
             console.log(data);
             setOpenAddEditTask(false);
             setReloadPage((state) => state + 1);

@@ -17,6 +17,8 @@ import PickTrainer from '../pages/PickTrainerPage';
 import ForgetPassword from '../pages/ForgetPassword';
 import ResetPassword from '../pages/ResetPassword';
 import OTPVerification from '../pages/OTPVerification';
+import BlogPage from '../pages/BlogPage';
+import About from '../pages/About';
 
 // Layouts
 import DefaultLayout from '../components/layouts/defaultLayout';
@@ -71,7 +73,7 @@ const publicRoutes = [
     {
         path: '/dashboard',
         component: Center,
-        layout: AdminLayout,
+        layout: null,
     },
     {
         path: '/table',
@@ -79,12 +81,25 @@ const publicRoutes = [
         layout: AdminLayout,
     },
     {
-        path: '/calories-calculator',
+        path: '/tools/calories-calculator',
         component: CaloriesCalculator,
         layout: DefaultLayout,
+        type: 'calories-calculator',
     },
     {
-        path: ' ',
+        path: '/tools/bmi-calculator',
+        component: CaloriesCalculator,
+        layout: DefaultLayout,
+        type: 'bmi-calculator',
+    },
+    {
+        path: '/members/personal-config',
+        component: CaloriesCalculator,
+        layout: AdminLayout,
+        type: 'personal-information-config',
+    },
+    {
+        path: '/trainer-pick',
         component: PickTrainer,
         layout: DefaultLayout,
     },
@@ -102,6 +117,51 @@ const publicRoutes = [
         path: '/otp',
         component: OTPVerification,
         layout: null,
+    },
+    {
+        path: '/members/:memberIdTerm/schedule',
+        component: Center,
+        layout: null,
+    },
+    {
+        path: '/posts/:blogId',
+        component: BlogPage,
+        layout: DefaultLayout,
+    },
+    {
+        path: '/members/personal-information',
+        component: Table,
+        layout: AdminLayout,
+        type: 'personal-config',
+    },
+    {
+        path: '/members',
+        component: Table,
+        layout: AdminLayout,
+        type: 'members',
+    },
+    {
+        path: '/pts',
+        component: Table,
+        layout: AdminLayout,
+        type: 'pts',
+    },
+    {
+        path: '/exercises-management',
+        component: Table,
+        layout: AdminLayout,
+        type: 'exercises',
+    },
+    {
+        path: '/management/personal-trainer/members',
+        component: Table,
+        layout: AdminLayout,
+        type: 'membersOfPT',
+    },
+    {
+        path: '/about',
+        component: About,
+        layout: DefaultLayout,
     },
 ];
 const privateRoutes = [
