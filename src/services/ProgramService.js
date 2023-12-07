@@ -1,5 +1,6 @@
 import { async } from 'q';
 import WebService from './WebService';
+import data from '../pages/Schedule/data/realData.json';
 
 const ProgramService = {
     getProgrammeById: async (programmeId) => {
@@ -29,6 +30,7 @@ const ProgramService = {
                             ),
                         },
                     ],
+                    isActive: true,
                 },
             ],
         };
@@ -41,6 +43,17 @@ const ProgramService = {
     },
     getProgrammeByMemberId: async (memberId) => {
         const response = await WebService.get(`/members/${memberId}/programs`);
+        if (response) {
+            try {
+                // Cố gắng phân tích JSON
+                const parsedData = JSON.parse(response);
+                console.log(parsedData);
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+            }
+        } else {
+            console.warn('Empty response from API');
+        }
         const jsonResponse = await response.json();
         const realResponse = {
             boards: [
@@ -66,14 +79,17 @@ const ProgramService = {
                             ),
                         },
                     ],
+                    isActive: true,
+                    id: memberId,
                 },
             ],
         };
         const {
             boards: [{ tasks, ...restBoard }, ...restBoards],
         } = realResponse;
+        console.log(realResponse);
         const modifiedData = { boards: [{ ...restBoard }, ...restBoards] };
-
+        console.log(modifiedData);
         return modifiedData;
     },
     changeSessionStatusToDoing: async (sessionId) => {

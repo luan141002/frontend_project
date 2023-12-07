@@ -9,6 +9,7 @@ import ProgramService from '../../services/ProgramService.js';
 import MemberService from '../../services/MemberService.js';
 import AdminLayout from '../../components/layouts/adminLayout';
 import boardsSlice from '../../redux/boardsSlice.js';
+import data from './data/realData.json';
 import { useParams } from 'react-router-dom';
 
 const Center = () => {
@@ -58,6 +59,7 @@ const Center = () => {
                     boardMemberId,
                 );
                 setBoards(response.boards);
+                console.log(boards);
             }
         }
     };
@@ -66,6 +68,7 @@ const Center = () => {
         await loadPage();
     }, [boardMemberId, reloadPage]);
     const board = boards?.find((board) => board?.isActive === true);
+
     const columns = board?.columns;
 
     return (

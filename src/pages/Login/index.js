@@ -38,6 +38,8 @@ const LoginPage = ({
                         email: user.email,
                         id: user.id,
                         roles: user.roles,
+
+                        avatar: user.avatar,
                     }),
                 );
             }
@@ -54,6 +56,7 @@ const LoginPage = ({
                         email: pt.user.email,
                         id: user.id,
                         roles: user.roles,
+                        avatar: pt.ptImage,
                     }),
                 );
             }

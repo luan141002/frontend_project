@@ -7,9 +7,11 @@ import {
 } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
+import { useSelector } from 'react-redux';
 
 export default function Header() {
     const navigate = useNavigate();
+    const account = useSelector((state) => state.account);
 
     return (
         <div className="bg-white h-16 px-4 flex items-center border-b border-gray-200 justify-between p-4 fixed left-[240px] z-50 right-0">
@@ -100,8 +102,7 @@ export default function Header() {
                             <div
                                 className="h-10 w-10 rounded-full bg-sky-500 bg-cover bg-no-repeat bg-center"
                                 style={{
-                                    backgroundImage:
-                                        'url("https://source.unsplash.com/80x80?face")',
+                                    backgroundImage: `url(${account.avatar})`,
                                 }}
                             >
                                 <span className="sr-only">Marc Backes</span>

@@ -23,8 +23,8 @@ const Column = ({ colIndex, boards, setBoards, setReloadPage, memberId }) => {
     const [color, setColor] = useState(null);
     const [openAddEditTask, setOpenAddEditTask] = useState(false);
 
-    const board = boards.find((board) => board.isActive);
-    const col = board.columns.find((col, i) => i === colIndex);
+    const board = boards?.find((board) => board.isActive) || [];
+    const col = board?.columns.find((col, i) => i === colIndex) || [];
     useEffect(() => {
         setColor(shuffle(colors).pop());
     }, [dispatch]);

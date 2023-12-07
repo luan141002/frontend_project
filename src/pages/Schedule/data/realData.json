@@ -8,63 +8,15 @@
             "columns": [
                 {
                     "name": "todo",
-                    "tasks": [
-                        {
-                            "id": 13,
-                            "dayNumber": 1,
-                            "dayName": "leg day",
-                            "dayTarget": "leg",
-                            "hourNumber": 90,
-                            "status": "todo",
-                            "subtasks": []
-                        }
-                    ]
+                    "tasks": []
                 },
                 {
                     "name": "doing",
-                    "tasks": [
-                        {
-                            "id": 13,
-                            "dayNumber": 1,
-                            "dayName": "leg day",
-                            "dayTarget": "leg",
-                            "hourNumber": 90,
-                            "status": "todo",
-                            "subtasks": []
-                        },
-                        {
-                            "id": 14,
-                            "dayNumber": 1,
-                            "dayName": "chest day",
-                            "dayTarget": "leg",
-                            "hourNumber": 90,
-                            "status": null,
-                            "subtasks": []
-                        }
-                    ]
+                    "tasks": []
                 },
                 {
                     "name": "done",
-                    "tasks": [
-                        {
-                            "id": 13,
-                            "dayNumber": 1,
-                            "dayName": "leg day",
-                            "dayTarget": "leg",
-                            "hourNumber": 90,
-                            "status": "todo",
-                            "subtasks": []
-                        },
-                        {
-                            "id": 14,
-                            "dayNumber": 1,
-                            "dayName": "chest day",
-                            "dayTarget": "leg",
-                            "hourNumber": 90,
-                            "status": null,
-                            "subtasks": []
-                        }
-                    ]
+                    "tasks": []
                 }
             ]
         }
