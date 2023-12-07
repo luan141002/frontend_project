@@ -38,9 +38,25 @@ const AuthService = {
         return null;
     },
 
-    register: async (email, password, matchingPassword) => {
-        const body = { email, password, matchingPassword };
-        await WebService.postJson('/users', body);
+    register: async (
+        firstName,
+        lastName,
+        email,
+        password,
+        matchingPassword,
+    ) => {
+        const body = {
+            personalLevel: 'a',
+            firstName: firstName,
+            lastName: lastName,
+            memberLevel: 'D',
+            user: {
+                password: password,
+                email: email,
+            },
+        };
+        console.log(body);
+        await WebService.postJson('/members', body);
     },
 
     verifyCode: async (email, code, password, repeat) => {

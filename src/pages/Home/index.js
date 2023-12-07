@@ -18,10 +18,13 @@ const Home = () => {
     const [backgroundIndex, setBackgroundIndex] = useState(0);
 
     const backgroundImages = [
-        'https://img.ws.mms.shopee.vn/vn-11134210-7qukw-lih5tbrcplho9b',
-        'https://vcdn-giaitri.vnecdn.net/2022/04/29/image001-2296-1651230581.jpg',
-        'https://icdn.dantri.com.vn/thumb_w/680/2022/07/04/1656907628444levents-l-dantridocx-1656921163686.png',
-        'https://tq4.mediacdn.vn/pr/2022/photo1656471307625-16564713077131202000349-63792200649093.jpg',
+        'https://bestprint.vn/wp-content/uploads/2022/08/gymshark_header_image.png',
+        'https://images.ctfassets.net/8urtyqugdt2l/2c8YKdEPsP9CfRhbmzT3CX/8f46c3d884d12e14a2b8eed10dcf291c/Gymshark_Legacy_Collection_2023.jpg',
+        'https://cdn.oktra.co.uk/content/uploads/2020/01/27122959/DSC_6421_19.08.01_GYMSHARK_GSLC_HI-RES_19.08.01_GYMSHARK_GSLC_JPG_2640x1980_acf_cropped.jpg',
+        'https://images.ctfassets.net/8urtyqugdt2l/292uEh1TWV6d9hcqUL2izM/132e3f0c7bed523929502e837f2690e2/The_Official_Gymshark_Story_2023_-_How_Ben_Francis_Created_Gymshark.jpg',
+        'https://i.pinimg.com/736x/31/93/3b/31933bc8416f9684447062e39e4cc2f2.jpg',
+        'https://www.buyandship.com.sg/contents/uploads/2022/11/image.png',
+        'https://images.ctfassets.net/8urtyqugdt2l/5IOTxbsIxbVgaIPUBBSSBp/a8a78fb93d93c451f83839ec393da191/Three_Bodybuilders_Wearing_Gymshark_Heritage_Collection.jpg',
     ];
     const currentBackground = useMemo(
         () => backgroundImages[backgroundIndex],
@@ -125,7 +128,7 @@ const Home = () => {
                 <div
                     className="flex bg-cover p-[25px] lg:w-[600px] min-[320px]:w-full lg:h-[300px] min-[320px]:h-[200px] m-auto"
                     style={{
-                        backgroundImage: `url(${pic_1})`,
+                        backgroundImage: `url('https://sport.exeter.ac.uk/media/universityofexeter/campusservices/sport/images930x500/Tracey_spot_checking_-_website.png')`,
                     }}
                 >
                     <div className="text-white flex flex-col self-start">
@@ -146,7 +149,7 @@ const Home = () => {
                 <div
                     className="flex bg-cover p-[25px] lg:w-[600px] min-[320px]:w-full lg:h-[300px] min-[320px]:h-[200px] m-auto"
                     style={{
-                        backgroundImage: `url(${pic_2})`,
+                        backgroundImage: `url('https://sport.exeter.ac.uk/media/universityofexeter/campusservices/sport/images930x500/healthandfitness/UoE18032019_RobCoombe-430-930x500.jpg')`,
                     }}
                 >
                     <div className="text-white flex flex-col self-start">
@@ -167,7 +170,7 @@ const Home = () => {
                 <div
                     className="flex bg-cover p-[25px] lg:w-[600px] min-[320px]:w-full lg:h-[300px] min-[320px]:h-[200px] m-auto"
                     style={{
-                        backgroundImage: `url(${pic_3})`,
+                        backgroundImage: `url('https://sport.exeter.ac.uk/media/universityofexeter/campusservices/sport/images930x500/Ride_Class.png')`,
                     }}
                 >
                     <div className="text-white flex flex-col self-start">
@@ -188,7 +191,7 @@ const Home = () => {
                 <div
                     className="flex bg-cover p-[25px] lg:w-[600px] min-[320px]:w-full lg:h-[300px] min-[320px]:h-[200px] m-auto"
                     style={{
-                        backgroundImage: `url(${pic_4})`,
+                        backgroundImage: `url('https://canadianfitness.net/wp-content/uploads/2021/11/group-fitness-class-2021.jpg')`,
                     }}
                 >
                     <div className="text-white flex flex-col self-start">

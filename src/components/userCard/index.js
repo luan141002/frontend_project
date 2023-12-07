@@ -23,7 +23,7 @@ const UserCard = ({ PT }) => {
                 <div className="flex flex-col w-[40%]">
                     <img
                         class="w-full h-[165px]"
-                        src="https://toplist.vn/images/800px/roronoa-zoro-one-piece-1175911.jpg"
+                        src={PT.ptImage}
                         alt="Sunset in the mountains"
                     />
                 </div>
@@ -51,10 +51,10 @@ const UserCard = ({ PT }) => {
             </div>
             <div className="mt-[20px] space-y-1">
                 <label className="text-gray-600 font-bold text-lg ">
-                    Bio :
+                    Achievement :
                 </label>
                 <p class="text-gray-700 text-base w-full bg-white h-[100px] rounded-md p-2">
-                    Best trainer of the year
+                    {PT.achievement}
                 </p>
             </div>
 

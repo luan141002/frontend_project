@@ -4,6 +4,13 @@ import LogoImage from '../../public/logo-image.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { IconName, AiFillHome } from 'react-icons/ai';
+import {
+    FaWeightHanging,
+    FaNewspaper,
+    FaWeightScale,
+    FaChalkboardUser,
+} from 'react-icons/fa6';
+import { FaRegUserCircle, FaClipboard, FaCheckCircle } from 'react-icons/fa';
 
 const SideBar = () => {
     const [open, setOpen] = useState(false);
@@ -11,32 +18,42 @@ const SideBar = () => {
     const account = useSelector((state) => state.account);
 
     const Menu = [
-        { title: 'Exercises', link: '/exercises', clicked: false, icon: '' },
-        { title: 'Blogs', link: '/blogs', clicked: false, icon: '' },
+        {
+            title: 'Exercises',
+            link: '/exercises',
+            clicked: false,
+            icon: <FaWeightHanging />,
+        },
+        {
+            title: 'Blogs',
+            link: '/blogs',
+            clicked: false,
+            icon: <FaNewspaper />,
+        },
         {
             title: 'Dashboard',
             link: '/dashboard',
             clicked: false,
             spacing: true,
-            icon: '',
+            icon: <FaChalkboardUser />,
         },
         {
             title: 'Tools',
             link: '/',
-            icon: '',
+            icon: <FaWeightScale />,
             clicked: true,
             subMenu: [
                 {
                     title: 'Calories Calculator',
                     link: `/tools/calories-calculator`,
                     clicked: false,
-                    icon: '',
+                    icon: <FaClipboard />,
                 },
                 {
                     title: 'BMI Calculator',
                     link: `/tools/bmi-calculator`,
                     clicked: false,
-                    icon: '',
+                    icon: <FaClipboard />,
                 },
             ],
         },
@@ -44,7 +61,7 @@ const SideBar = () => {
             title: 'Profile',
             link: `/user/user-profile`,
             clicked: false,
-            icon: '',
+            icon: <FaRegUserCircle />,
         },
     ];
     const [isClicked, setIsClicked] = useState(false);
@@ -56,7 +73,7 @@ const SideBar = () => {
             onMouseEnter={() => setOpen(true)}
             onMouseLeave={() => {
                 setOpen(false);
-                setIsClicked((state) => !state);
+                setIsClicked(false);
             }}
         >
             {/* <FaArrowLeft
@@ -113,7 +130,7 @@ const SideBar = () => {
                             }}
                         >
                             <span className="text-2xl block float-left  ">
-                                <AiFillHome />
+                                {menu.icon}
                             </span>
 
                             <span
@@ -134,7 +151,7 @@ const SideBar = () => {
                                         onClick={() => navigate(subMenu.link)}
                                     >
                                         <span className="text-2xl block float-left  ">
-                                            <AiFillHome />
+                                            {subMenu.icon}
                                         </span>
                                         <span
                                             className={`text-medium font-medium flex-1 duration-200 ${

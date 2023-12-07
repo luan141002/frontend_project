@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from '../../header';
 import SideBar from '../../sidebar';
+import Footer from '../../Footer';
 // import Footer from '../../Footer';
 const defaultLayout = ({ children }) => {
     return (
@@ -10,7 +11,9 @@ const defaultLayout = ({ children }) => {
                 <Header />
                 <div className=" w-full bg-[#151212] justify-self-center mt-[90px] h-[100px]  ">
                     {children}
+                    {/* <Footer /> */}
                 </div>
+
                 {/* <Footer /> */}
             </div>
         </div>

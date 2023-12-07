@@ -60,7 +60,7 @@ const CaloriesCalculator = ({ type }) => {
         console.log(response);
     };
     return (
-        <div className="bg-[#151212] w-full min-h-min p-6">
+        <div className="bg-[#151212] w-full min-h-min p-6 mb-[10%]">
             {type === 'calories-calculator' && (
                 <div className="text-white flex flex-col self-start mb-[10%]">
                     <label className="text-[40px] font-bold ">
@@ -262,68 +262,69 @@ const CaloriesCalculator = ({ type }) => {
                     </div>
                 </div>
                 {type === 'personal-information-config' && (
-                    <div className="w-full">
-                        <div className="mt-8 ">
-                            <div className="mb-4">
-                                <label
-                                    htmlFor="fat"
-                                    className="block text-white text-sm font-bold mb-2"
-                                >
-                                    Fat
-                                </label>
-                                <input
-                                    {...register('fat', {
-                                        required: 'This field is required',
-                                    })}
-                                    type="number"
-                                    defaultValue={0}
-                                    className="w-full p-2 border"
-                                />
-                                {errors.fat && (
-                                    <p className="text-red-500 text-xs mt-1">
-                                        {errors.fat.message}
-                                    </p>
-                                )}
-                            </div>
-                            {/* 
-                        <div className="mb-4">
-                            <label
-                                htmlFor="date"
-                                className="block text-white text-sm font-bold mb-2"
-                            >
-                                Date
-                            </label>
-                            <input
-                                {...register('date')}
-                                type="date"
-                                defaultValue="2023-12-04"
-                                className="w-full p-2 border"
-                            />
-                        </div> */}
+                    <div></div>
+                    // <div className="w-full">
+                    //     <div className="mt-8 ">
+                    //         <div className="mb-4">
+                    //             <label
+                    //                 htmlFor="fat"
+                    //                 className="block text-white text-sm font-bold mb-2"
+                    //             >
+                    //                 Fat
+                    //             </label>
+                    //             <input
+                    //                 {...register('fat', {
+                    //                     required: 'This field is required',
+                    //                 })}
+                    //                 type="number"
+                    //                 defaultValue={0}
+                    //                 className="w-full p-2 border"
+                    //             />
+                    //             {errors.fat && (
+                    //                 <p className="text-red-500 text-xs mt-1">
+                    //                     {errors.fat.message}
+                    //                 </p>
+                    //             )}
+                    //         </div>
+                    //         {/*
+                    //     <div className="mb-4">
+                    //         <label
+                    //             htmlFor="date"
+                    //             className="block text-white text-sm font-bold mb-2"
+                    //         >
+                    //             Date
+                    //         </label>
+                    //         <input
+                    //             {...register('date')}
+                    //             type="date"
+                    //             defaultValue="2023-12-04"
+                    //             className="w-full p-2 border"
+                    //         />
+                    //     </div> */}
 
-                            <div className="mb-4">
-                                <label
-                                    htmlFor="bmi"
-                                    className="block text-white text-sm font-bold mb-2"
-                                >
-                                    BMI
-                                </label>
-                                <input
-                                    {...register('bmi', {
-                                        required: 'This field is required',
-                                    })}
-                                    type="number"
-                                    defaultValue={0}
-                                    className="w-full p-2 border"
-                                />
-                                {errors.bmi && (
-                                    <p className="text-red-500 text-xs mt-1">
-                                        {errors.bmi.message}
-                                    </p>
-                                )}
-                            </div>
-                        </div>
-                    </div>
+                    //         <div className="mb-4">
+                    //             <label
+                    //                 htmlFor="bmi"
+                    //                 className="block text-white text-sm font-bold mb-2"
+                    //             >
+                    //                 BMI
+                    //             </label>
+                    //             <input
+                    //                 {...register('bmi', {
+                    //                     required: 'This field is required',
+                    //                 })}
+                    //                 type="number"
+                    //                 defaultValue={0}
+                    //                 className="w-full p-2 border"
+                    //             />
+                    //             {errors.bmi && (
+                    //                 <p className="text-red-500 text-xs mt-1">
+                    //                     {errors.bmi.message}
+                    //                 </p>
+                    //             )}
+                    //         </div>
+                    //     </div>
+                    // </div>
                 )}
                 {type === 'calories-calculator' && (
                     <div className="flex justify-between mt-[5%] w-full">

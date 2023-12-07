@@ -29,7 +29,7 @@ const Column = ({ colIndex, boards, setBoards, setReloadPage, memberId }) => {
         setColor(shuffle(colors).pop());
     }, [dispatch]);
 
-    const handleOnDrop = (e) => {
+    const handleOnDrop = async (e) => {
         const { prevColIndex, taskIndex, taskId } = JSON.parse(
             e.dataTransfer.getData('text'),
         );
@@ -37,13 +37,13 @@ const Column = ({ colIndex, boards, setBoards, setReloadPage, memberId }) => {
         if (colIndex !== prevColIndex) {
             switch (colIndex) {
                 case 0:
-                    ProgramService.changeSessionStatusToTodo(taskId);
+                    await ProgramService.changeSessionStatusToTodo(taskId);
                     break;
                 case 1:
-                    ProgramService.changeSessionStatusToDoing(taskId);
+                    await ProgramService.changeSessionStatusToDoing(taskId);
                     break;
                 case 2:
-                    ProgramService.changeSessionStatusToDone(taskId);
+                    await ProgramService.changeSessionStatusToDone(taskId);
                     break;
             }
             setReloadPage((state) => state + 1);

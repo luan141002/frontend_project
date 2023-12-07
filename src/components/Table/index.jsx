@@ -7,12 +7,211 @@ import {
     useReactTable,
 } from '@tanstack/react-table';
 import { USERS } from './data.js';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DebouncedInput from './DebouncedInput';
 import UploadExercise from '../../pages/UploadExcercise';
+import { useDispatch, useSelector } from 'react-redux';
+import MemberService from '../../services/MemberService.js';
+import ExerciseService from '../../services/ExerciseService.js';
 
-const TanStackTable = () => {
+const TanStackTable = ({ type }) => {
     const columnHelper = createColumnHelper();
+    const account = useSelector((state) => state.account);
+    const isPT = account.roles[0]?.name === 'PERSONAL_TRAINER' ? true : false;
+
+    const [data, setData] = useState(() => {
+        switch (type) {
+            case 'personal-config':
+                return [
+                    {
+                        id: 1,
+                        height: 0,
+                        weight: 0,
+                        age: 0,
+                        fat: 0,
+                        bmi: 0,
+                        date: '2023-11-30',
+                    },
+                ];
+                break;
+            case 'members':
+                return [
+                    {
+                        id: 0,
+                        personalLevel: '',
+                        firstName: '',
+                        lastName: '',
+                        memberLevel: '',
+                        email: '',
+                        avatar: null,
+                        activated: 'true',
+                    },
+                ];
+                break;
+            case 'pts':
+                return [
+                    {
+                        id: 0,
+                        firstName: 'string',
+                        lastName: 'string',
+                        ptLevel: 'string',
+                        email: 'string',
+                        activated: true,
+                    },
+                ];
+                break;
+            case 'exercises':
+                return [
+                    {
+                        id: 0,
+                        name: '',
+                        experienceLevel: '',
+                        equipment: '',
+                        forceType: '',
+                        secondaryMuscles: '',
+                        type: '',
+                        steps: 0,
+                        category: '',
+                        tips: '',
+                    },
+                ];
+                break;
+            case 'membersOfPT':
+                return [
+                    {
+                        id: 0,
+                        personalLevel: '',
+                        firstName: '',
+                        lastName: '',
+                        memberLevel: '',
+                        email: '',
+                        avatar: null,
+                        activated: 'true',
+                    },
+                ];
+                break;
+        }
+    });
+
+    const loadPage = async () => {
+        let result;
+
+        switch (type) {
+            case 'personal-config':
+                result = await MemberService.getMembersPhysicalInformation(
+                    account?.memberId,
+                );
+
+                if (result.length !== 0) {
+                    const processedResults = result.map((element) => ({
+                        id: element.id,
+                        height: element.height,
+                        weight: element.weight,
+                        age: element.age,
+                        fat: element.fat,
+                        bmi: element.bmi,
+                        date: element.date.toString(),
+                    }));
+                    setData([...processedResults]);
+                } else {
+                    setData([
+                        {
+                            id: 0,
+                            height: 0,
+                            weight: 0,
+                            age: 0,
+                            fat: 0,
+                            bmi: 0,
+                            date: '2023-11-30',
+                        },
+                    ]);
+                }
+
+                break;
+            case 'members':
+                result = await MemberService.getMembers();
+
+                if (result.length !== 0) {
+                    const processedResults = result.map((element) => ({
+                        id: element.id,
+                        personalLevel: element.personalLevel,
+                        firstName: element.firstName,
+                        lastName: element.lastName,
+                        memberLevel: element.memberLevel,
+                        Email: element.user.email,
+                        Activated: element.user.activated.toString(),
+                    }));
+
+                    console.log(processedResults);
+                    setData([...processedResults]);
+                }
+                break;
+            case 'pts':
+                result = await MemberService.getPTs();
+
+                if (result.length !== 0) {
+                    const processedResults = result.map((element) => ({
+                        id: element.id,
+                        firstName: element.firstName,
+                        lastName: element.lastName,
+                        ptLevel: element.ptLevel,
+                        email: element.user.email,
+                        activated: element.user.activated.toString(),
+                    }));
+
+                    console.log(processedResults);
+                    setData([...processedResults]);
+                }
+                break;
+            case 'exercises':
+                result = await ExerciseService.getExercises();
+
+                if (result.length !== 0) {
+                    const processedResults = result.map((element) => ({
+                        id: element.id,
+                        name: element.name,
+                        experienceLevel: element.experienceLevel,
+                        equipment: element.equipment,
+                        forceType: element.forceType,
+                        secondaryMuscles: element.secondaryMuscles,
+                        type: element.type,
+                        steps: element.steps.length,
+                        category: element.category,
+                        tips: element.tips,
+                    }));
+
+                    console.log(processedResults);
+                    setData([...processedResults]);
+                }
+                break;
+            case 'membersOfPT':
+                result = await MemberService.getMembersByPTId(account.memberId);
+
+                if (result.length !== 0) {
+                    const processedResults = result.map((element) => ({
+                        id: element.id,
+                        personalLevel: element.personalLevel,
+                        firstName: element.firstName,
+                        lastName: element.lastName,
+                        memberLevel: element.memberLevel,
+                        Email: element.user.email,
+                        Activated: element.user.activated.toString(),
+                    }));
+
+                    console.log(processedResults);
+                    setData([...processedResults]);
+                }
+                break;
+            default:
+                break;
+        }
+
+        console.log(result);
+    };
+
+    useEffect(() => {
+        loadPage();
+    }, [type]);
 
     // const columns = [
     //     columnHelper.accessor('', {
@@ -52,12 +251,12 @@ const TanStackTable = () => {
     //     }),
     // ];
     const columns = [
-        columnHelper.accessor('', {
-            id: 'S.No',
-            cell: (info) => <span>{info.row.index + 1}</span>,
-            header: 'S.No',
-        }),
-        ...Object.keys(USERS[0])?.map((field) => {
+        // columnHelper.accessor('', {
+        //     id: 'S.No',
+        //     cell: (info) => <span>{info.row.index + 1}</span>,
+        //     header: 'S.No',
+        // }),
+        ...Object.keys(data[0])?.map((field) => {
             return columnHelper.accessor(field, {
                 cell: (info) => <span>{info.getValue()}</span>,
                 header: camelToCapitalize(field),
@@ -66,7 +265,7 @@ const TanStackTable = () => {
     ];
 
     // console.log(rawColumns);
-    const [data] = useState(() => [...USERS]);
+    // const [data] = useState(() => [...USERS]);
     const [globalFilter, setGlobalFilter] = useState('');
 
     const table = useReactTable({
@@ -81,7 +280,7 @@ const TanStackTable = () => {
     });
     const [openAddExerciseModel, setOpenAddExerciseModel] = useState(false);
     return (
-        <div className="p-2 max-w-6xl mx-auto text-white fill-gray-400">
+        <div className="p-2 max-w-8xl mx-auto text-white fill-gray-400">
             <div className="flex justify-between mb-2">
                 <div className="w-full flex items-center gap-1">
                     <SearchIcon />
@@ -92,20 +291,23 @@ const TanStackTable = () => {
                         placeholder="Search all columns..."
                     />
                 </div>
-                <div>
-                    <button
-                        type="reset"
-                        className="bg-red-700 text-white h-[40px] w-[120px] hover:border-3  px-2 hover:opacity-80"
-                        onClick={() =>
-                            setOpenAddExerciseModel((state) => !state)
-                        }
-                    >
-                        + add Exercise
-                    </button>
-                </div>
+
+                {isPT && (
+                    <div>
+                        <button
+                            type="reset"
+                            className="bg-red-700 text-white h-[40px] w-[120px] hover:border-3  px-2 hover:opacity-80"
+                            onClick={() =>
+                                setOpenAddExerciseModel((state) => !state)
+                            }
+                        >
+                            + add Exercise
+                        </button>
+                    </div>
+                )}
             </div>
             <table className="border border-gray-700 w-full text-left">
-                <thead className="bg-indigo-600">
+                <thead className="bg-red-800">
                     {table.getHeaderGroups().map((headerGroup) => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map((header) => (

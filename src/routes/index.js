@@ -17,6 +17,8 @@ import PickTrainer from '../pages/PickTrainerPage';
 import ForgetPassword from '../pages/ForgetPassword';
 import ResetPassword from '../pages/ResetPassword';
 import OTPVerification from '../pages/OTPVerification';
+import BlogPage from '../pages/BlogPage';
+import About from '../pages/About';
 
 // Layouts
 import DefaultLayout from '../components/layouts/defaultLayout';
@@ -120,6 +122,46 @@ const publicRoutes = [
         path: '/members/:memberIdTerm/schedule',
         component: Center,
         layout: null,
+    },
+    {
+        path: '/posts/:blogId',
+        component: BlogPage,
+        layout: DefaultLayout,
+    },
+    {
+        path: '/members/personal-information',
+        component: Table,
+        layout: AdminLayout,
+        type: 'personal-config',
+    },
+    {
+        path: '/members',
+        component: Table,
+        layout: AdminLayout,
+        type: 'members',
+    },
+    {
+        path: '/pts',
+        component: Table,
+        layout: AdminLayout,
+        type: 'pts',
+    },
+    {
+        path: '/exercises-management',
+        component: Table,
+        layout: AdminLayout,
+        type: 'exercises',
+    },
+    {
+        path: '/management/personal-trainer/members',
+        component: Table,
+        layout: AdminLayout,
+        type: 'membersOfPT',
+    },
+    {
+        path: '/about',
+        component: About,
+        layout: DefaultLayout,
     },
 ];
 const privateRoutes = [

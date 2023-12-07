@@ -3,7 +3,6 @@ import WebService from './WebService';
 const MemberService = {
     getMemberByEmail: async (email) => {
         const response = await WebService.get(`/members/get-by-email/${email}`);
-
         return await response.json();
     },
     getPTById: async (id) => {
@@ -21,11 +20,26 @@ const MemberService = {
 
         return response.json();
     },
+    getMembersPhysicalInformation: async (memberId) => {
+        const response = await WebService.get(
+            `/members/${memberId}/history-body-data`,
+        );
+        return response.json();
+    },
     assignPT: async (memberId, ptId) => {
         await WebService.post(
             `/members/assignPersonalTrainer?memberId=${memberId}&personalTrainerId=${ptId}`,
         );
     },
+    getMembers: async () => {
+        const response = await WebService.get(`/members`);
+        return response.json();
+    },
+    getMemberById: async (memberId) => {
+        const response = await WebService.get(`/members/${memberId}`);
+        return response.json();
+    },
+
     updatePersonalInfoConfig: async (
         memberId,
         height,

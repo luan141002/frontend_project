@@ -17,6 +17,10 @@ const PostService = {
         const response = await WebService.postJson('/posts', queries);
         return await response.json();
     },
+    getBlog: async (id) => {
+        const response = await WebService.get(`/posts/${id}`);
+        return await response.json();
+    },
 };
 
 export default PostService;

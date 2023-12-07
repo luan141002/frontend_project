@@ -17,6 +17,33 @@ export const DASHBOARD_SIDEBAR_LINKS = [
         path: '/',
         icon: <HiOutlineViewGrid />,
     },
+    {
+        key: 'Management',
+        label: 'Management',
+        path: '/management',
+        roles: ['ADMIN'],
+        icon: <HiOutlineShoppingCart />,
+        subMenu: [
+            {
+                key: 'Members',
+                label: 'Members',
+                path: '/members',
+                icon: <HiOutlineCube />,
+            },
+            {
+                key: 'Trainers',
+                label: 'Trainers',
+                path: '/pts',
+                icon: <HiOutlineCube />,
+            },
+            {
+                key: 'Exercises',
+                label: 'Exercises',
+                path: '/exercises-management',
+                icon: <HiOutlineCube />,
+            },
+        ],
+    },
 
     {
         key: 'Management',
@@ -26,21 +53,15 @@ export const DASHBOARD_SIDEBAR_LINKS = [
         icon: <HiOutlineShoppingCart />,
         subMenu: [
             {
-                key: 'Trainers',
-                label: 'Trainers',
-                path: '/table',
-                icon: <HiOutlineCube />,
-            },
-            {
                 key: 'Trainees',
                 label: 'Trainees',
-                path: '/table',
+                path: '/management/personal-trainer/members',
                 icon: <HiOutlineCube />,
             },
             {
                 key: 'Exercises',
                 label: 'Exercises',
-                path: '/table',
+                path: '/exercises-management',
                 icon: <HiOutlineCube />,
             },
         ],
@@ -48,26 +69,14 @@ export const DASHBOARD_SIDEBAR_LINKS = [
     {
         key: 'Management',
         label: 'Management',
-        path: '/table',
+        path: '/members',
         roles: ['MEMBER'],
         icon: <HiOutlineShoppingCart />,
         subMenu: [
             {
-                key: 'Trainers',
-                label: 'Trainers',
-                path: '/table',
-                icon: <HiOutlineCube />,
-            },
-            {
-                key: 'Trainees',
-                label: 'Trainees',
-                path: '/table',
-                icon: <HiOutlineCube />,
-            },
-            {
-                key: 'Exercises',
-                label: 'Exercises',
-                path: '/table',
+                key: 'Personal_Statistics',
+                label: 'Personal Statistics',
+                path: '/members/personal-information',
                 icon: <HiOutlineCube />,
             },
         ],

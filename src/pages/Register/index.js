@@ -19,6 +19,8 @@ const Register = ({ setOpenRegisterModal, setOpenLoginModal }) => {
         console.log(data); // You can handle form submission logic here
         try {
             const response = await AuthService.register(
+                data.firstName,
+                data.lastName,
                 data.email,
                 data.password,
                 data.matchingPassword,
