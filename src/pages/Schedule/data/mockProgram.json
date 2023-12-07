@@ -1,0 +1,86 @@
+{
+    "boards": [
+        {
+            "name": "Loose weight program",
+            "isActive": true,
+            "columns": [
+                {
+                    "name": "Todo",
+                    "tasks": [
+                        {
+                            "title": "leg day",
+                            "description": "leg",
+                            "status": "Todo",
+                            "subtasks": [
+                                {
+                                    "title": "Cable Rope Pushdown",
+                                    "isCompleted": true
+                                },
+                                {
+                                    "title": "Bench Press",
+                                    "isCompleted": false
+                                }
+                            ]
+                        },
+
+                        {
+                            "title": "shoulder day",
+                            "description": "leg",
+                            "status": "Todo",
+                            "subtasks": [
+                                {
+                                    "title": "Shoulder Press",
+                                    "isCompleted": false
+                                },
+                                {
+                                    "title": "Dumbbell Fly",
+                                    "isCompleted": false
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Doing",
+                    "tasks": [
+                        {
+                            "title": "back day",
+                            "description": "leg",
+                            "status": "Doing",
+                            "subtasks": [
+                                {
+                                    "title": "Barbell Curl",
+                                    "isCompleted": false
+                                },
+                                {
+                                    "title": "Dumbbell Curl",
+                                    "isCompleted": false
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Done",
+                    "tasks": [
+                        {
+                            "title": "chest day",
+                            "description": "leg",
+                            "status": "Done",
+                            "subtasks": [
+                                {
+                                    "title": "Squat",
+                                    "isCompleted": false
+                                },
+                                {
+                                    "title": "Lat Pulldown",
+                                    "isCompleted": false
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
