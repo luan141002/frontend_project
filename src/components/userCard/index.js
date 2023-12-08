@@ -1,12 +1,15 @@
 import React from 'react';
 import { UseSelector, useSelector } from 'react-redux/es/hooks/useSelector';
 import MemberService from '../../services/MemberService';
+import { useNavigate } from 'react-router-dom';
 
 const UserCard = ({ PT }) => {
     const account = useSelector((state) => state.account);
+    const navigate = useNavigate();
     console.log(account);
     const onAssign = async () => {
         await MemberService.assignPT(+account.memberId, +PT.id);
+        navigate('/tools/bmi-calculator');
     };
 
     return (

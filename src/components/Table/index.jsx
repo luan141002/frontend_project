@@ -87,6 +87,7 @@ const TanStackTable = ({ type }) => {
                         email: '',
                         avatar: null,
                         activated: 'true',
+                        hasProgram: 'true',
                     },
                 ];
                 break;
@@ -196,6 +197,7 @@ const TanStackTable = ({ type }) => {
                         memberLevel: element.memberLevel,
                         Email: element.user.email,
                         Activated: element.user.activated.toString(),
+                        hasProgram: element.hasProgram.toString(),
                     }));
 
                     console.log(processedResults);

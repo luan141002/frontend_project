@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { CircleSlider } from 'react-circle-slider';
 import { useForm, Controller } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import ToolService from '../../services/ToolService';
 import MemberService from '../../services/MemberService';
 
@@ -14,6 +15,7 @@ const CaloriesCalculator = ({ type }) => {
         watch,
     } = useForm();
     const account = useSelector((state) => state.account);
+    const navigate = useNavigate();
     const [age, setAge] = useState(25);
     const [height, setHeight] = useState(165);
     const [weight, setWeight] = useState(50);
@@ -42,6 +44,9 @@ const CaloriesCalculator = ({ type }) => {
                     age,
                     data.calculator.gender,
                 );
+                if (account.hasProgram === false) {
+                    navigate('/trainer-pick');
+                }
                 break;
             case 'personal-information-config':
                 response = await MemberService.updatePersonalInfoConfig(

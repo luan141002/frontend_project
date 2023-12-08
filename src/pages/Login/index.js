@@ -38,8 +38,14 @@ const LoginPage = ({
                         email: user.email,
                         id: user.id,
                         roles: user.roles,
+                        hasProgram: member.hasProgram,
                     }),
                 );
+                if (member.hasProgram === false) {
+                    navigate('/tools/bmi-calculator');
+                } else {
+                    navigate('/');
+                }
             }
             if (user.roles[0].name === 'PERSONAL_TRAINER') {
                 const pts = await MemberService.getPTs();
@@ -56,9 +62,8 @@ const LoginPage = ({
                         roles: user.roles,
                     }),
                 );
+                navigate('/');
             }
-
-            navigate('/');
         } catch (err) {}
     };
 

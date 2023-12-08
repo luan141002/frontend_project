@@ -10,6 +10,7 @@ import MemberService from '../../services/MemberService.js';
 import AdminLayout from '../../components/layouts/adminLayout';
 import boardsSlice from '../../redux/boardsSlice.js';
 import { useParams } from 'react-router-dom';
+import data from '../Schedule/data/realData.json';
 
 const Center = () => {
     const account = useRef(useSelector((state) => state.account));
@@ -26,38 +27,57 @@ const Center = () => {
     const memberIdForCreate = useRef();
     const [members, setMembers] = useState();
 
+    const [currentMember, setCurrentMember] = useState();
+
     const loadPage = async () => {
         if (isPT) {
             // get list member of this PT
             const listMember = await MemberService.getMembersByPTId(
                 account.current.memberId,
             );
+            console.log(listMember);
             // set list member into members
             setMembers(listMember);
-
+            let member;
             // if PT there is no memberIdTerm is set
             // => initialize with the first member of this PT
             if (memberIdTerm === null) {
                 console.log(members[0].id);
                 setBoardMemberId(members[0]?.id);
                 memberIdForCreate.current = members[0].id;
+                member = members[0];
             } else {
+                // console.log(memberIdTerm);
+                const memberWithId = listMember.find(
+                    (member) => member.id === +memberIdTerm,
+                );
+
+                console.log(memberWithId);
+                member = memberWithId;
+                setBoardMemberId(member?.id);
                 memberIdForCreate.current = memberIdTerm;
             }
-            if (boardMemberId != null) {
+            console.log(member);
+            if (boardMemberId != null && member.hasProgram === true) {
+                console.log(member);
                 const response = await ProgramService.getProgrammeByMemberId(
                     boardMemberId,
                 );
 
                 setBoards(response.boards);
+            } else {
+                setBoards([{ board: { columns: [], isActive: true } }]);
             }
         } else {
             setBoardMemberId(account.current.memberId);
-            if (boardMemberId != null) {
+            console.log(account.hasProgram);
+            if (account.hasProgram === true && boardMemberId != null) {
                 const response = await ProgramService.getProgrammeByMemberId(
                     boardMemberId,
                 );
                 setBoards(response.boards);
+            } else if (account.hasProgram === false && boardMemberId != null) {
+                setBoards(data.boards);
             }
         }
     };
