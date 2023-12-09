@@ -16,14 +16,16 @@ const ExerciseGuide = ({ exercise }) => {
             {/* Guide Video */}
             <div className="w-full flex ">
                 {exercise?.videoUrls?.map((video, index) => {
-                    return (
-                        <iframe
-                            className="w-[50%] h-[280px]"
-                            key={index}
-                            src={`${video}`}
-                            allow="autoplay"
-                        ></iframe>
-                    );
+                    if (index < 2) {
+                        return (
+                            <iframe
+                                className="w-[50%] h-[280px]"
+                                key={index}
+                                src={`${video}`}
+                                allow="autoplay"
+                            ></iframe>
+                        );
+                    }
                 })}
             </div>
             {/* Steps */}

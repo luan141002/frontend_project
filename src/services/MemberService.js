@@ -27,9 +27,14 @@ const MemberService = {
         return response.json();
     },
     assignPT: async (memberId, ptId) => {
-        await WebService.post(
+        const response = await WebService.post(
             `/members/assignPersonalTrainer?memberId=${memberId}&personalTrainerId=${ptId}`,
         );
+        return response;
+    },
+    deletePT: async (id) => {
+        const response = await WebService.delete(`/personal-trainers/${id}`);
+        return await response.json();
     },
     getMembers: async () => {
         const response = await WebService.get(`/members`);
@@ -39,7 +44,19 @@ const MemberService = {
         const response = await WebService.get(`/members/${memberId}`);
         return response.json();
     },
-
+    addPT: async (firstName, lastName, ptLevel, email, password) => {
+        const body = {
+            firstName: firstName,
+            lastName: lastName,
+            ptLevel: ptLevel,
+            user: {
+                password: password,
+                email: email,
+            },
+        };
+        console.log(body);
+        await WebService.postJson('/personal-trainers', body);
+    },
     updatePersonalInfoConfig: async (
         memberId,
         height,
@@ -50,18 +67,17 @@ const MemberService = {
         fat,
     ) => {
         const date = new Date();
+        height = height / 100;
         const body = {
-            id: memberId,
+            member: { id: memberId },
             height,
             weight,
             age,
             gender,
-            date,
-            bmi,
-            fat,
         };
+        console.log(body);
         const response = await WebService.postJson(
-            `/tools/calculate-bmi`,
+            `/personal-information`,
             body,
         );
         return response.json();

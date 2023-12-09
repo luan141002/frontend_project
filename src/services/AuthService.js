@@ -24,6 +24,7 @@ const AuthService = {
         console.log(body);
         localStorage.removeItem('token');
         const response = await WebService.postJson('/login', body);
+        console.log(response.data);
         if (response.ok) {
             const token = await response.json();
             console.log(token);
@@ -79,6 +80,13 @@ const AuthService = {
         const nextUrl = AuthService.findRedirectUrl(token.kind);
         token.nextUrl = nextUrl;
         return token;
+    },
+
+    activateAccount: async (email, code) => {
+        const response = await WebService.post(
+            `/users/activate?email=${email}&verificationCode=${code}`,
+        );
+        return response;
     },
 
     getHeader: () => {

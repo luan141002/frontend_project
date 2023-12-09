@@ -4,6 +4,7 @@ import { TweenOneGroup } from 'rc-tween-one';
 import { Input, Tag, theme } from 'antd';
 import PostService from '../../services/PostService.js';
 import AddPost from '../../components/addPost/index.js';
+import { useSelector } from 'react-redux';
 
 import TopRank from '../../components/top_rank';
 import Post from '../../components/post';
@@ -12,9 +13,14 @@ const Blog = () => {
     const [listBlog, setListBlog] = useState();
     const [TopArticles, setTopArticles] = useState();
     const [tags, setTags] = useState([]);
+    const [page, setPage] = useState(0);
+
+    const account = useRef(useSelector((state) => state.account));
+    const isPT =
+        account.current.roles[0]?.name === 'PERSONAL_TRAINER' ? true : false;
 
     const loadPage = async () => {
-        const posts = await PostService.getPosts({ page: 0, limit: 10 });
+        const posts = await PostService.getPosts({ page: page, limit: 5 });
         const topArticleList = await PostService.getTopPosts();
         const listTags = await PostService.getTags();
 
@@ -25,7 +31,7 @@ const Blog = () => {
 
     useEffect(() => {
         loadPage();
-    }, []);
+    }, [page]);
 
     const { token } = theme.useToken();
 
@@ -75,22 +81,78 @@ const Blog = () => {
                             Collection of articles sharing experiences in
                             bodybuilding
                         </p>
-                        <div className="flex w-full justify-end">
-                            <button
-                                type="reset"
-                                className="bg-red-700 text-xl text-white h-[60px] w-[150px] hover:border-3 float-right font-semibold  px-2 hover:opacity-80"
-                                onClick={() =>
-                                    setOpenAddBlogModal((state) => !state)
-                                }
-                            >
-                                Add Post
-                            </button>
-                        </div>
+                        {isPT && (
+                            <div className="flex w-full justify-end">
+                                <button
+                                    type="reset"
+                                    className="bg-red-700 text-xl text-white h-[60px] w-[150px] hover:border-3 float-right font-semibold  px-2 hover:opacity-80"
+                                    onClick={() =>
+                                        setOpenAddBlogModal((state) => !state)
+                                    }
+                                >
+                                    Add Post
+                                </button>
+                            </div>
+                        )}
                     </div>
 
                     {listBlog?.map((postItem, index) => (
                         <Post postItem={postItem} key={index} />
                     ))}
+                    <div class="flex items-center gap-8 justify-center mt-[5%]">
+                        <button
+                            class="relative h-8 max-h-[32px] w-8 max-w-[32px] select-none rounded-lg border border-gray-900 text-center align-middle font-sans text-xs font-medium uppercase text-white transition-all hover:opacity-75 focus:ring focus:ring-gray-300 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                            type="button"
+                            disabled={page === 0}
+                            onClick={() => setPage((state) => state - 1)}
+                        >
+                            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="2"
+                                    stroke="currentColor"
+                                    aria-hidden="true"
+                                    class="w-4 h-4"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+                                    ></path>
+                                </svg>
+                            </span>
+                        </button>
+                        <p class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-200">
+                            Page <strong class="text-white">{page + 1}</strong>{' '}
+                            of <strong class="text-white">4</strong>
+                        </p>
+                        <button
+                            class="relative h-8 max-h-[32px] w-8 max-w-[32px] select-none rounded-lg border border-gray-900 text-center align-middle font-sans text-xs font-medium uppercase text-white transition-all hover:opacity-75 focus:ring focus:ring-gray-300 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                            type="button"
+                            onClick={() => setPage((state) => state + 1)}
+                            disabled={page === 3}
+                        >
+                            <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="2"
+                                    stroke="currentColor"
+                                    aria-hidden="true"
+                                    class="w-4 h-4"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                                    ></path>
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
                 </div>
                 <div className="w-[350px] bg-white h-screen flex self-start mt-[11%]  rounded-lg">
                     <div>

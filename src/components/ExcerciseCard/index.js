@@ -6,6 +6,7 @@ const ExerciseCard = ({ exercise }) => {
         exercise.videoUrls[2],
         'medium',
     );
+    console.log(exercise);
     return (
         <Link to={`/exercises/${1}`}>
             <div class="max-w-sm rounded overflow-hidden shadow-lg bg-white min-h-fit ">

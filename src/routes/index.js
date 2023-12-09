@@ -19,6 +19,8 @@ import ResetPassword from '../pages/ResetPassword';
 import OTPVerification from '../pages/OTPVerification';
 import BlogPage from '../pages/BlogPage';
 import About from '../pages/About';
+import TargetPage from '../pages/TargetPage';
+import WaitingPage from '../pages/WaitingPage';
 
 // Layouts
 import DefaultLayout from '../components/layouts/defaultLayout';
@@ -114,7 +116,7 @@ const publicRoutes = [
         layout: null,
     },
     {
-        path: '/otp',
+        path: '/otp/:email',
         component: OTPVerification,
         layout: null,
     },
@@ -162,6 +164,16 @@ const publicRoutes = [
         path: '/about',
         component: About,
         layout: DefaultLayout,
+    },
+    {
+        path: '/target',
+        component: TargetPage,
+        layout: null,
+    },
+    {
+        path: '/waiting-for-plan',
+        component: WaitingPage,
+        layout: null,
     },
 ];
 const privateRoutes = [

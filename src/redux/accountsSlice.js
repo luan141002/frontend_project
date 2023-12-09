@@ -6,6 +6,8 @@ const EMPTY_ACCOUNT = {
     email: null,
     id: null,
     roles: [],
+    hasProgram: false,
+    avatar: '',
 };
 
 const accountsSlices = createSlice({
@@ -13,8 +15,16 @@ const accountsSlices = createSlice({
     initialState: EMPTY_ACCOUNT,
     reducers: {
         setAccount: (state, action) => {
-            const { email, id, roles, memberId, firstName, lastName } =
-                action?.payload;
+            const {
+                email,
+                id,
+                roles,
+                memberId,
+                firstName,
+                lastName,
+                hasProgram,
+                avatar,
+            } = action?.payload;
             console.log(email);
             state.memberId = memberId;
             state.firstName = firstName;
@@ -22,6 +32,8 @@ const accountsSlices = createSlice({
             state.email = email;
             state.id = id;
             state.roles = roles;
+            state.hasProgram = hasProgram;
+            state.avatar = avatar;
         },
         deleteAccount: (state, action) => {
             state = EMPTY_ACCOUNT;

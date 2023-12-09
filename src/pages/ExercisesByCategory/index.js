@@ -17,6 +17,7 @@ const ExercisesByCategoryName = () => {
         );
 
         setExercises(exercises);
+        console.log(exercises);
     };
 
     useEffect(() => {

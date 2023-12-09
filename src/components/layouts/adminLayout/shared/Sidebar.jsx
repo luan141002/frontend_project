@@ -65,91 +65,97 @@ export default function Sidebar({
                         )}
                     </div>
                 ))}
-                <div className="flex flex-1 flex-col gap-0.5">
-                    <Link
-                        to={'/dashboard'}
-                        className={classNames(
-                            'bg-neutral-700 text-white',
+                {account.roles[0].name !== 'ADMIN' && (
+                    <div className="flex flex-1 flex-col gap-0.5">
+                        <Link
+                            to={'/dashboard'}
+                            className={classNames(
+                                'bg-neutral-700 text-white',
 
-                            linkClass,
-                        )}
-                    >
-                        <span className="text-2xl">
-                            <HiOutlineLogout />
-                        </span>
-                        User Schedules
-                    </Link>
-                    {isPT
-                        ? members?.map((member, index) => (
-                              <Link to={`/members/${member?.id}/schedule`}>
+                                linkClass,
+                            )}
+                        >
+                            <span className="text-2xl">
+                                <HiOutlineLogout />
+                            </span>
+                            User Schedules
+                        </Link>
+                        {isPT && account.roles[0].name !== 'ADMIN'
+                            ? members?.map((member, index) => (
+                                  <Link to={`/members/${member?.id}/schedule`}>
+                                      <div
+                                          className={classNames(
+                                              'bg-neutral-700 text-white ',
+
+                                              linkClass,
+                                              'pl-8',
+                                          )}
+                                          key={index}
+                                          onClick={() => {
+                                              navigate(
+                                                  `/members/${member?.id}/schedule`,
+                                              );
+                                              setBoardMemberId(member?.id);
+                                              //   setReloadPage((state) => state + 1);
+                                              //   setCurrentMemberId(member.id);
+                                          }}
+                                      >
+                                          <span className="text-2xl">
+                                              <HiOutlineCube />
+                                          </span>
+                                          {member.firstName +
+                                              ' ' +
+                                              member.lastName}
+                                      </div>
+                                  </Link>
+                              ))
+                            : boards?.map((board, index) => (
                                   <div
                                       className={classNames(
-                                          'bg-neutral-700 text-white ',
-
+                                          board.isActive
+                                              ? 'bg-neutral-700 text-white '
+                                              : 'text-neutral-400',
                                           linkClass,
                                           'pl-8',
                                       )}
                                       key={index}
                                       onClick={() => {
-                                          navigate(
-                                              `/members/${member?.id}/schedule`,
+                                          dispatch(
+                                              boardsSlice.actions.setBoardActive(
+                                                  {
+                                                      index: index,
+                                                  },
+                                              ),
                                           );
-                                          setBoardMemberId(member?.id);
-                                          //   setReloadPage((state) => state + 1);
-                                          //   setCurrentMemberId(member.id);
                                       }}
                                   >
                                       <span className="text-2xl">
                                           <HiOutlineCube />
                                       </span>
-                                      {member.firstName + ' ' + member.lastName}
+                                      {board.name}
                                   </div>
-                              </Link>
-                          ))
-                        : boards?.map((board, index) => (
-                              <div
-                                  className={classNames(
-                                      board.isActive
-                                          ? 'bg-neutral-700 text-white '
-                                          : 'text-neutral-400',
-                                      linkClass,
-                                      'pl-8',
-                                  )}
-                                  key={index}
-                                  onClick={() => {
-                                      dispatch(
-                                          boardsSlice.actions.setBoardActive({
-                                              index: index,
-                                          }),
-                                      );
-                                  }}
-                              >
-                                  <span className="text-2xl">
-                                      <HiOutlineCube />
-                                  </span>
-                                  {board.name}
-                              </div>
-                          ))}
-                    <div
-                        className={classNames(
-                            linkClass,
-                            'pl-8 text-white bg-red-900',
-                        )}
-                        onClick={() => {
-                            setBoardModalOpen(true);
-                        }}
-                    >
-                        + Create New Board
-                    </div>
+                              ))}
+                        {/* <div
+                            className={classNames(
+                                linkClass,
+                                'pl-8 text-white bg-red-900',
+                            )}
+                            onClick={() => {
+                                setBoardModalOpen(true);
+                            }}
+                        >
+                            + Create New Board
+                        </div>
 
-                    {boardModalOpen && (
-                        <AddEditBoardModal
-                            memberId={memberId}
-                            type="add"
-                            setBoardModalOpen={setBoardModalOpen}
-                        />
-                    )}
-                </div>
+                        {boardModalOpen && (
+                            <AddEditBoardModal
+                                memberId={memberId}
+                                type="add"
+                                setBoardModalOpen={setBoardModalOpen}
+                            />
+                        )} */}
+                    </div>
+                )}
             </div>
 
             <div className="flex flex-col gap-0.5 pt-2 border-t border-neutral-700">

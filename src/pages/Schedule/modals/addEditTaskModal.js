@@ -75,7 +75,8 @@ const AddEditTaskModal = ({
     };
 
     const onCreateSubtask = async (id) => {
-        await ProgramService.addSubtask(workoutSession.id, id);
+        console.log(id);
+        await ProgramService.addSubtask(workoutSession?.id, id);
         setReloadModal((state) => state + 1);
         setReloadPage((state) => state + 1);
     };
@@ -287,14 +288,14 @@ const AddEditTaskModal = ({
                                     </select>
                                     <img
                                         onClick={async () => {
-                                            await onCreateSubtask(subtask.id);
+                                            await onCreateSubtask(subtask?.id);
                                         }}
                                         src={CheckIcon}
                                         className="m-4 cursor-pointer"
                                     />
                                     <img
                                         onClick={async () => {
-                                            await onDelete(subtask.id);
+                                            await onDelete(subtask?.id);
                                         }}
                                         src={crossIcon}
                                         className="m-4 cursor-pointer"
@@ -309,7 +310,7 @@ const AddEditTaskModal = ({
                                 setSubtasks((state) => [
                                     ...state,
                                     {
-                                        id: null,
+                                        id: 1,
                                     },
                                 ]);
                             }}

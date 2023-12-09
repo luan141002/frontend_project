@@ -13,6 +13,7 @@ const AddEditBoardModal = ({
     setReloadPage,
 }) => {
     const dispatch = useDispatch();
+    console.log('hihi');
     const account = useSelector((state) => state.account);
     const {
         register,
@@ -32,13 +33,16 @@ const AddEditBoardModal = ({
         setIsFirstLoad(false);
     }
     const onSubmit = async (data) => {
+        console.log(data);
+        console.log(memberId);
         const response = await ProgramService.addProgram(
             memberId,
             data.name,
             data.description,
         );
-        // setReloadPage((state) => state + 1);
-        // setBoardModalOpen(false);
+        console.log(response);
+        setReloadPage((state) => state + 1);
+        setBoardModalOpen(false);
     };
     return (
         <div

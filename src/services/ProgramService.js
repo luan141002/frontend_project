@@ -2,9 +2,22 @@ import { async } from 'q';
 import WebService from './WebService';
 
 const ProgramService = {
+    addProgram: async (memberId, name, description) => {
+        const body = {
+            name: name,
+            description: description,
+            member: {
+                id: +memberId,
+            },
+        };
+        const response = await WebService.postJson('/programs', body);
+        return response.json;
+    },
     getProgrammeById: async (programmeId) => {
         const response = await WebService.get(`/programs/${programmeId}`);
         const jsonResponse = await response.json();
+        const { data } = jsonResponse;
+        console.log(data);
         const realResponse = {
             boards: [
                 {
@@ -42,6 +55,7 @@ const ProgramService = {
     getProgrammeByMemberId: async (memberId) => {
         const response = await WebService.get(`/members/${memberId}/programs`);
         const jsonResponse = await response.json();
+
         const realResponse = {
             boards: [
                 {
@@ -117,21 +131,9 @@ const ProgramService = {
         return response.json();
     },
 
-    addProgram: async (memberId, name, description) => {
-        const body = {
-            name,
-            description,
-            member: {
-                id: memberId,
-            },
-        };
-        console.log(body);
-        // const response = await WebService.postJson('/programs', body);
-        // return response.json;
-    },
     addSubtask: async (workoutId, subtaskId) => {
         const body = { id: subtaskId };
-
+        console.log(body);
         await WebService.postJson(
             `/workout-sessions/${workoutId}/add-exercise`,
             body,

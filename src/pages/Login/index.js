@@ -25,11 +25,14 @@ const LoginPage = ({
         // You can handle form submission logic here
         console.log(data);
         setOpenLoginModal(false);
+        console.log('hihi');
         try {
+            console.log('hihi');
             const { user } = await AuthService.login(data.email, data.password);
             console.log(user.roles[0].name);
             if (user.roles[0].name === 'MEMBER') {
                 const member = await MemberService.getMemberByEmail(data.email);
+                console.log(member);
                 dispatch(
                     accountSlices.actions.setAccount({
                         memberId: member.id,
@@ -41,6 +44,7 @@ const LoginPage = ({
                         hasProgram: member.hasProgram,
                     }),
                 );
+
                 if (member.hasProgram === false) {
                     navigate('/tools/bmi-calculator');
                 } else {
@@ -64,7 +68,20 @@ const LoginPage = ({
                 );
                 navigate('/');
             }
-        } catch (err) {}
+            if (user.roles[0].name === 'ADMIN') {
+                dispatch(
+                    accountSlices.actions.setAccount({
+                        memberId: user.id,
+                        email: user.email,
+                        roles: user.roles,
+                        avatar: user.avatar,
+                    }),
+                );
+                navigate('/');
+            }
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     return (
@@ -177,12 +194,16 @@ const LoginPage = ({
                                     type="password"
                                     {...register('password', {
                                         required: 'Password is required',
-                                        minLength: 6,
+                                        minLength: {
+                                            value: 3,
+                                            message:
+                                                'Minimum length is 6 characters',
+                                        },
                                     })}
                                 />
                                 {errors.password && (
                                     <p className="text-red-500 text-xs mt-1">
-                                        {errors.password}
+                                        {errors.password.message}
                                     </p>
                                 )}
                             </div>

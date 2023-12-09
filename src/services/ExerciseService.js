@@ -10,11 +10,12 @@ const ExerciseService = {
         const response = await WebService.get('/posts/top-popular', queries);
         return await response.json();
     },
-    getExercise: async (exerciseId, queries) => {
-        const response = await WebService.get(
-            `/exercises/${exerciseId}`,
-            queries,
-        );
+    getCategories: async () => {
+        const response = await WebService.get('/exercises-categories');
+        return await response.json();
+    },
+    getExercise: async (exerciseId) => {
+        const response = await WebService.get(`/exercises/${exerciseId}`);
         return await response.json();
     },
     getExercisesByCategoryName: async (categoryName, queries) => {
@@ -27,6 +28,18 @@ const ExerciseService = {
     addExercise: async (newExercise) => {
         console.log(newExercise);
         const response = await WebService.postForm(`/exercises`, newExercise);
+        return await response.json();
+    },
+    editExercise: async (exerciseId, editedExercise) => {
+        console.log(editedExercise);
+        const response = await WebService.putJson(
+            `/exercises/${exerciseId}`,
+            editedExercise,
+        );
+        return await response.json();
+    },
+    deleteExercise: async (exerciseId) => {
+        const response = await WebService.delete(`/exercises/${exerciseId}`);
         return await response.json();
     },
 };

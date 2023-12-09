@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import JoditEditor from 'jodit-react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -11,30 +11,38 @@ import { FaTelegramPlane } from 'react-icons/fa';
 const AddPost = ({ setOpenAddBlogModal }) => {
     const editor = useRef(null);
     const [content, setContent] = useState('');
-    const [categories, setCategories] = useState([]);
+    const [categories, setCategories] = useState([0]);
     const [user, setUser] = useState(undefined);
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [post, setPost] = useState({
         title: '',
-        content: `<div></div>`,
-        tagIds: [],
+        content: ``,
+        image: '',
     });
+    const [tags, setTags] = useState();
+    const loadPage = async () => {
+        const response = await PostService.getTags();
+        setTags(response);
+        console.log(tags);
+    };
+
+    useEffect(() => {
+        loadPage();
+    }, []);
+
     const notify = (data) => toast(`${data}`);
     // field change function
     const fieldChanged = (e) => {
-        if (e.target.name === 'tagIds') {
-            setPost({
-                ...post,
-                tagIds: [...post.tagIds, parseInt(e.target.value)],
-            });
-        } else {
-            setPost({ ...post, [e.target.name]: e.target.value });
-        }
+        setPost({ ...post, [e.target.name]: e.target.value });
+    };
+    const handleTagChanged = (e, index) => {
+        categories[index] = +e.target.value;
+        setCategories(categories);
     };
 
-    const contentFieldChanged = (data) => {
-        setPost({ ...post, content: data });
-    };
+    // const contentFieldChanged = (data) => {
+    //     setPost({ ...post, content: data });
+    // };
     const fullscreenStyle = {
         border: '1px solid red',
         position: 'fixed',
@@ -55,8 +63,14 @@ const AddPost = ({ setOpenAddBlogModal }) => {
             return;
         }
         // notify(JSON.stringify(post));
-
-        const response = await PostService.addPost(post);
+        const data = {
+            title: post.title,
+            content: post.content,
+            image: post.image,
+            tagIds: [...categories],
+        };
+        // console.log(data);
+        const response = await PostService.addPost(data);
 
         console.log(response);
         setOpenAddBlogModal(false);
@@ -116,7 +130,24 @@ const AddPost = ({ setOpenAddBlogModal }) => {
                                 type="text"
                                 id="title"
                                 name="title"
-                                className="p-2"
+                                className="p-4"
+                                placeholder="Enter here"
+                                onChange={fieldChanged}
+                            />
+                        </div>
+                        <div className="my-3 flex flex-col w-full space-y-3">
+                            <label
+                                htmlFor="picture"
+                                className="block text-sm font-medium text-gray-600"
+                            >
+                                Post Thumbnail Link
+                            </label>
+
+                            <input
+                                type="text"
+                                id="image"
+                                name="image"
+                                className="p-4"
                                 placeholder="Enter here"
                                 onChange={fieldChanged}
                             />
@@ -127,54 +158,59 @@ const AddPost = ({ setOpenAddBlogModal }) => {
                                 className="w-full h-min-[450px] h-max-fit flex "
                                 style={isFullScreen ? fullscreenStyle : {}}
                             >
-                                <ReactQuill
+                                {/* <ReactQuill
                                     theme="snow"
                                     value={post.content}
                                     onChange={contentFieldChanged}
                                     className=" w-full bg-white h-min-[300px] h-max-fit flex flex-col"
                                     modules={modules}
                                     placeholder="Write something amazing..."
+                                /> */}
+                                <textarea
+                                    name="content"
+                                    value={post.content}
+                                    onChange={fieldChanged}
+                                    className=" w-full bg-white h-min-[500px] p-4 flex flex-col"
+                                    placeholder="Write something amazing..."
                                 />
                             </div>
                         </div>
                         <div className="my-3 flex flex-col w-full space-y-3">
                             <label for="category">Post Category</label>
-                            <select
-                                name="tagIds"
-                                id="category"
-                                placeholder="Enter here"
-                                className="rounded-8 p-3 "
-                                onChange={fieldChanged}
-                                defaultValue={0}
+                            {categories?.map((tagId, index) => (
+                                <select
+                                    name="tagIds"
+                                    id="category"
+                                    placeholder="Enter here"
+                                    className="rounded-8 p-3 "
+                                    onChange={(e) => {
+                                        handleTagChanged(e, index);
+                                    }}
+                                    defaultValue={0}
+                                >
+                                    <option disabled value={0}>
+                                        --Select category--
+                                    </option>
+                                    {tags?.map((tag, index) => {
+                                        return (
+                                            <option value={+tag?.id}>
+                                                {tag?.name}
+                                            </option>
+                                        );
+                                    })}
+                                </select>
+                            ))}
+                            <button
+                                className="w-full items-center hover:opacity-75 text-white bg-[#635fc7] mt-2 py-2 rounded-full"
+                                type="button"
+                                onClick={() => {
+                                    setCategories((state) => [...state, null]);
+                                }}
                             >
-                                <option disabled value={0}>
-                                    --Select category--
-                                </option>
-                                <option value={1}>Programming</option>
-                                <option value={2}>Gym</option>
-                                <option value={3}>Skincare</option>
-                                <option value={4}>Healthy</option>
-                            </select>
+                                + Add New Subtask
+                            </button>
                         </div>
-                        <div className="my-3 flex flex-col w-full space-y-3">
-                            <label for="category">Post Category</label>
-                            <select
-                                name="tagIds"
-                                id="category"
-                                placeholder="Enter here"
-                                className="rounded-8 p-3 "
-                                onChange={fieldChanged}
-                                defaultValue={0}
-                            >
-                                <option disabled value={0}>
-                                    --Select category--
-                                </option>
-                                <option value={[1]}>Programming</option>
-                                <option value={[2]}>Gym</option>
-                                <option value={[3]}>Skincare</option>
-                                <option value={[4]}>Healthy</option>
-                            </select>
-                        </div>
+
                         <div className="w-full flex justify-center space-x-3">
                             <div>
                                 <button
@@ -191,8 +227,8 @@ const AddPost = ({ setOpenAddBlogModal }) => {
                                     setPost({
                                         title: '',
                                         content: '',
-                                        tagIds: [],
                                     });
+                                    setCategories([]);
                                 }}
                                 type="reset"
                                 className="bg-[#C30C0C] w-[160px] h-[55px] text-[15px] text-center  text-white  text-medium  hover:border hover:border-white"
@@ -202,7 +238,6 @@ const AddPost = ({ setOpenAddBlogModal }) => {
                         </div>
                     </form>
                 </div>
-                {JSON.stringify(post)}
             </div>
         </div>
     );

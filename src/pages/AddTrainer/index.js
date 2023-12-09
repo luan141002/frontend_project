@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthService from '../../services/AuthService';
+import MemberService from '../../services/MemberService';
 
-const Register = ({ setOpenRegisterModal, setOpenLoginModal }) => {
+const AddTrainer = ({
+    setOpenAddTrainerModal,
+    setOpenEditTrainerModal,
+    setLoadTablePage,
+    type,
+    currentTrainer,
+}) => {
     const {
         register,
         handleSubmit,
@@ -18,18 +25,29 @@ const Register = ({ setOpenRegisterModal, setOpenLoginModal }) => {
     const onSubmit = async (data) => {
         console.log(data); // You can handle form submission logic here
         try {
-            const response = await AuthService.register(
-                data.firstName,
-                data.lastName,
-                data.email,
-                data.password,
-                data.matchingPassword,
-            );
-            setOpenLoginModal(true);
-            setOpenRegisterModal(false);
-            navigate(`/otp/${data.email}`);
+            if (type === 'add') {
+                const response = await MemberService.addPT(
+                    data.firstName,
+                    data.lastName,
+                    data.ptLevel,
+                    data.email,
+                    data.password,
+                );
+            }
+            setOpenAddTrainerModal(false);
+            setLoadTablePage((state) => state + 1);
         } catch (err) {}
     };
+    const loadPage = async () => {
+        if (type === 'edit') {
+            const response = await MemberService.getPTById(currentTrainer);
+            console.log(response);
+        }
+    };
+
+    useEffect(() => {
+        loadPage();
+    }, []);
     return (
         <div
             class="fixed right-0 left-0 top-0 bottom-0 px-2 scrollbar-hide py-4 overflow-scroll z-50
@@ -38,7 +56,11 @@ const Register = ({ setOpenRegisterModal, setOpenLoginModal }) => {
                 if (e.target !== e.currentTarget) {
                     return;
                 }
-                setOpenRegisterModal(false);
+                if (type === 'add') {
+                    setOpenAddTrainerModal(false);
+                } else {
+                    setOpenEditTrainerModal(false);
+                }
             }}
         >
             <div
@@ -57,7 +79,7 @@ const Register = ({ setOpenRegisterModal, setOpenLoginModal }) => {
 
                         <div class="w-full lg:w-7/12 bg-white dark:bg-gray-700 p-5 rounded-lg lg:rounded-l-none">
                             <h3 class="py-4 text-2xl text-center text-gray-800 dark:text-white">
-                                Create an Account!
+                                Add Personal Trainer
                             </h3>
                             <form
                                 onSubmit={handleSubmit(onSubmit)}
@@ -135,6 +157,62 @@ const Register = ({ setOpenRegisterModal, setOpenLoginModal }) => {
                                         </p>
                                     )}
                                 </div>
+                                <div className="mb-4">
+                                    <label
+                                        htmlFor="experienceLevel"
+                                        className="block text-sm font-medium text-gray-600"
+                                    >
+                                        Level
+                                    </label>
+                                    <select
+                                        id="experienceLevel"
+                                        name="ptLevel"
+                                        // defaultValue={
+                                        //     defaultExercise?.experienceLevel
+                                        // }
+                                        className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                                        {...register('ptLevel', {
+                                            required: 'This field is required',
+                                        })}
+                                    >
+                                        <option value="">
+                                            Select Experience Level
+                                        </option>
+                                        <option
+                                            value="Beginner"
+                                            // selected={
+                                            //     defaultExercise?.experienceLevel ===
+                                            //     'Beginner'
+                                            // }
+                                        >
+                                            Beginner
+                                        </option>
+                                        <option
+                                            value="Intermediate"
+                                            // selected={
+                                            //     defaultExercise?.experienceLevel ===
+                                            //     'Intermediate'
+                                            // }
+                                        >
+                                            Intermediate
+                                        </option>
+                                        <option
+                                            value="Advanced"
+                                            // selected={
+                                            //     defaultExercise?.experienceLevel ===
+                                            //     'Advanced'
+                                            // }
+                                        >
+                                            Advanced
+                                        </option>
+                                    </select>
+                                    {errors.experienceLevel && (
+                                        <p className="text-red-500 text-xs mt-1">
+                                            {errors.experienceLevel.message}
+                                        </p>
+                                    )}
+                                </div>
+
                                 <div class="mb-4 md:flex md:justify-between w-full">
                                     <div className="mb-4 w-[45%]">
                                         <label
@@ -198,25 +276,8 @@ const Register = ({ setOpenRegisterModal, setOpenLoginModal }) => {
                                         class="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 dark:bg-blue-700 dark:text-white dark:hover:bg-blue-900 focus:outline-none focus:shadow-outline"
                                         type="submit"
                                     >
-                                        Register Account
+                                        Add Trainer
                                     </button>
-                                </div>
-                                <hr class="mb-6 border-t" />
-                                <div class="text-center">
-                                    <a
-                                        class="inline-block text-sm text-blue-500 dark:text-blue-500 align-baseline hover:text-blue-800"
-                                        href="#"
-                                    >
-                                        Forgot Password?
-                                    </a>
-                                </div>
-                                <div class="text-center">
-                                    <a
-                                        class="inline-block text-sm text-blue-500 dark:text-blue-500 align-baseline hover:text-blue-800"
-                                        href="./index.html"
-                                    >
-                                        Already have an account? Login!
-                                    </a>
                                 </div>
                             </form>
                         </div>
@@ -227,7 +288,7 @@ const Register = ({ setOpenRegisterModal, setOpenLoginModal }) => {
     );
 };
 
-export default Register;
+export default AddTrainer;
 
 // <div class="md:ml-2">
 //                                         <label

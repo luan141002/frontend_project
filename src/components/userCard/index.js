@@ -8,8 +8,13 @@ const UserCard = ({ PT }) => {
     const navigate = useNavigate();
     console.log(account);
     const onAssign = async () => {
-        await MemberService.assignPT(+account.memberId, +PT.id);
-        navigate('/tools/bmi-calculator');
+        const response = await MemberService.assignPT(
+            +account.memberId,
+            +PT.id,
+        );
+        if (response.status === 200) navigate('/target');
+        else {
+        }
     };
 
     return (

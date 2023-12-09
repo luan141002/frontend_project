@@ -64,7 +64,7 @@ function Sidebar({ isSideBarOpen, setIsSideBarOpen }) {
                                         </div>
                                     ))}
 
-                                    <div
+                                    {/* <div
                                         className=" flex  items-baseline space-x-2  mr-8 rounded-r-full duration-500 ease-in-out cursor-pointer text-[#635fc7] px-5 py-4 hover:bg-[#635fc71a] hover:text-[#635fc7] dark:hover:bg-white  "
                                         onClick={() => {
                                             setBoardModalOpen(true);
@@ -77,7 +77,7 @@ function Sidebar({ isSideBarOpen, setIsSideBarOpen }) {
                                         <p className=" text-lg font-bold  ">
                                             Create New Board{' '}
                                         </p>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
@@ -107,12 +107,12 @@ function Sidebar({ isSideBarOpen, setIsSideBarOpen }) {
                 </div>
             </div>
 
-            {boardModalOpen && (
+            {/* {boardModalOpen && (
                 <AddEditBoardModal
                     type="add"
                     setBoardModalOpen={setBoardModalOpen}
                 />
-            )}
+            )} */}
         </div>
     );
 }

@@ -196,6 +196,12 @@ const Header = () => {
                             type="submit"
                             className="bg-transparent box-border text-white h-[40px] w-[120px] hover:border-3  hover:hover:opacity-80"
                             onClick={() => {
+                                navigate('/');
+                                window.scrollTo({
+                                    top: 0,
+                                    left: 0,
+                                    behavior: 'smooth',
+                                });
                                 setOpenRegisterModal((state) => !state);
                             }}
                         >
@@ -205,6 +211,12 @@ const Header = () => {
                             type="reset"
                             className="bg-red-700 text-white h-[40px] w-[120px] hover:border-3  hover:opacity-80"
                             onClick={() => {
+                                navigate('/');
+                                window.scrollTo({
+                                    top: 0,
+                                    left: 0,
+                                    behavior: 'smooth',
+                                });
                                 setOpenLoginModal((state) => !state);
                             }}
                         >

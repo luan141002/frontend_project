@@ -2,21 +2,12 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import data from '../pages/Schedule/data/realData.json';
 import ProgramService from '../services/ProgramService';
 // Thunk để fetch dữ liệu từ API
-export const fetchData = createAsyncThunk('data/fetchData', async () => {
-    const response = await fetch('URL_API');
-    const data = await response.json();
-    return data;
-});
 
 const boardsSlice = createSlice({
     name: 'boards',
-    initialState: {
-        data: [],
-        status: 'idle',
-        error: null,
-    },
+    initialState: data.boards,
     reducers: {
-        setBoard: (state, action) => {
+        addBoard: (state, action) => {
             const isActive = state.length > 0 ? false : true;
             const payload = action.payload;
             const board = {
@@ -26,6 +17,34 @@ const boardsSlice = createSlice({
             };
             board.columns = payload?.newColumns;
             state.push(board);
+        },
+        editBoard: (state, action) => {
+            const payload = action?.payload;
+            const board = state.find((board) => board.isActive);
+            board.name = payload?.name;
+            board.columns = payload?.newColumns;
+        },
+        deleteBoard: (state) => {
+            const board = state.find((board) => board.isActive);
+            state.splice(state.indexOf(board), 1);
+        },
+        setBoardActive: (state, action) => {
+            state.map((board, index) => {
+                index === action.payload.index
+                    ? (board.isActive = true)
+                    : (board.isActive = false);
+                return board;
+            });
+        },
+        addTask: (state, action) => {
+            const { title, status, description, subtasks, newColIndex } =
+                action.payload;
+            const task = { title, description, subtasks, status };
+            const board = state.find((board) => board.isActive);
+            const column = board.columns.find(
+                (col, index) => index === newColIndex,
+            );
+            column.tasks?.push(task);
         },
         editTask: (state, action) => {
             const {
@@ -93,59 +112,6 @@ const boardsSlice = createSlice({
             col.tasks = col.tasks.filter((task, i) => i !== payload.taskIndex);
         },
     },
-    extraReducers: (builder) => {
-        builder
-            .addCase(fetchData.pending, (state) => {
-                state.status = 'loading';
-            })
-            .addCase(fetchData.fulfilled, (state, action) => {
-                state.status = 'succeeded';
-                state.data = action.payload;
-            })
-            .addCase(fetchData.rejected, (state, action) => {
-                state.status = 'failed';
-                state.error = action.error.message;
-            });
-    },
 });
 
 export default boardsSlice;
-// addBoard: (state, action) => {
-//     const isActive = state.length > 0 ? false : true;
-//     const payload = action.payload;
-//     const board = {
-//         name: payload?.name,
-//         isActive,
-//         columns: [],
-//     };
-//     board.columns = payload?.newColumns;
-//     state.push(board);
-// },
-// editBoard: (state, action) => {
-//     const payload = action?.payload;
-//     const board = state.find((board) => board.isActive);
-//     board.name = payload?.name;
-//     board.columns = payload?.newColumns;
-// },
-// deleteBoard: (state) => {
-//     const board = state.find((board) => board.isActive);
-//     state.splice(state.indexOf(board), 1);
-// },
-// setBoardActive: (state, action) => {
-//     state.map((board, index) => {
-//         index === action.payload.index
-//             ? (board.isActive = true)
-//             : (board.isActive = false);
-//         return board;
-//     });
-// },
-// addTask: (state, action) => {
-//     const { title, status, description, subtasks, newColIndex } =
-//         action.payload;
-//     const task = { title, description, subtasks, status };
-//     const board = state.find((board) => board.isActive);
-//     const column = board.columns.find(
-//         (col, index) => index === newColIndex,
-//     );
-//     column.tasks?.push(task);
-// },

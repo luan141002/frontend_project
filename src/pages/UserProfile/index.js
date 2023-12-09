@@ -18,11 +18,14 @@ const UserProfile = (isPT, memberId) => {
     const account = useSelector((state) => state.account);
     const [userProfile, setUserProfile] = useState();
     const isPTs = account.roles[0]?.name === 'PERSONAL_TRAINER';
+    const isAdmin = account.roles[0]?.name === 'ADMIN';
 
     const loadPage = async () => {
         let userProfile;
         if (account.roles[0]?.name === 'PERSONAL_TRAINER') {
             userProfile = await MemberService.getPTById(account.memberId);
+        } else if (account.roles[0]?.name === 'ADMIN') {
+            userProfile = account;
         } else {
             userProfile = await MemberService.getMemberByEmail(account.email);
         }
@@ -45,19 +48,25 @@ const UserProfile = (isPT, memberId) => {
                     <div className="flex space-x-3">
                         <img
                             className="w-[60px] h-[60px] rounded-full bg-cover bg-center border border-whiteS"
-                            src={userProfile.user.avatar}
+                            src={
+                                isAdmin
+                                    ? userProfile?.avatar
+                                    : userProfile?.user?.avatar
+                            }
                             alt="blog avatar"
                         />
 
                         <div className="">
-                            <label
-                                htmlFor=""
-                                className="text-xl capitalize text-gray-800 font-medium"
-                            >
-                                {userProfile?.firstName +
-                                    ' ' +
-                                    userProfile?.lastName}
-                            </label>
+                            {!isAdmin && (
+                                <label
+                                    htmlFor=""
+                                    className="text-xl capitalize text-gray-800 font-medium"
+                                >
+                                    {userProfile?.firstName +
+                                        ' ' +
+                                        userProfile?.lastName}
+                                </label>
+                            )}
                             <p>{account?.email}</p>
                             <p className="text-xs">{account?.roles[0]?.name}</p>
                         </div>
@@ -73,37 +82,41 @@ const UserProfile = (isPT, memberId) => {
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div class="grid gap-6 mt-4 sm:grid-cols-2">
-                        <div>
-                            <label
-                                class="text-gray-800 dark:text-gray-200"
-                                for="firstName"
-                            >
-                                First Name
-                            </label>
-                            <input
-                                id="firstName"
-                                type="text"
-                                defaultValue={userProfile?.firstName}
-                                class="block w-full px-4 py-2 mt-2 te/xt-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-                                {...register('firstName')}
-                            />
-                        </div>
+                        {!isAdmin && (
+                            <div>
+                                <div>
+                                    <label
+                                        class="text-gray-800 dark:text-gray-200"
+                                        for="firstName"
+                                    >
+                                        First Name
+                                    </label>
+                                    <input
+                                        id="firstName"
+                                        type="text"
+                                        defaultValue={userProfile?.firstName}
+                                        class="block w-full px-4 py-2 mt-2 te/xt-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                                        {...register('firstName')}
+                                    />
+                                </div>
 
-                        <div>
-                            <label
-                                class="text-gray-800 dark:text-gray-200"
-                                for="lastName"
-                            >
-                                Last Name
-                            </label>
-                            <input
-                                id="lastName"
-                                type="text"
-                                defaultValue={userProfile?.lastName}
-                                class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-                                {...register('lastName')}
-                            />
-                        </div>
+                                <div>
+                                    <label
+                                        class="text-gray-800 dark:text-gray-200"
+                                        for="lastName"
+                                    >
+                                        Last Name
+                                    </label>
+                                    <input
+                                        id="lastName"
+                                        type="text"
+                                        defaultValue={userProfile?.lastName}
+                                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
+                                        {...register('lastName')}
+                                    />
+                                </div>
+                            </div>
+                        )}
 
                         <div>
                             <label
@@ -146,7 +159,7 @@ const UserProfile = (isPT, memberId) => {
                             />
                         </div>
 
-                        {!isPTs && (
+                        {!isPTs && !isAdmin && (
                             <div>
                                 <label
                                     class="text-gray-800 dark:text-gray-200"
@@ -178,7 +191,7 @@ const UserProfile = (isPT, memberId) => {
                                 class="block w-full px-4 py-2 mt-2 text-g/ray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                             />
                         </div> */}
-                        {!isPTs && (
+                        {!isPTs && !isAdmin && (
                             <div>
                                 <label
                                     class="text-gray-800 dark:text-gray-200"

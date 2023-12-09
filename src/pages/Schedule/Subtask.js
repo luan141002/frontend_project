@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import boardsSlice from '../../redux/boardsSlice.js';
 import ProgramService from '../../services/ProgramService.js';
 import { useEffect, useState } from 'react';
+import { set } from 'lodash';
 
 function Subtask({
     index,
@@ -12,6 +13,7 @@ function Subtask({
     boards,
     setReloadPage,
     setIsTaskModalOpen,
+    setReloadTaskModal,
 }) {
     const [reloadSubtaskPage, setReloadSubtaskPage] = useState(0);
 
@@ -20,6 +22,7 @@ function Subtask({
 
     const [subtask, setSubtask] = useState();
     const [task, setTask] = useState();
+    const [checked, setChecked] = useState(subtask?.isCompleted);
 
     useEffect(() => {
         const board = boards?.find((board) => board.isActive === true);
@@ -28,13 +31,16 @@ function Subtask({
         setTask(task);
         const subtask = task?.subtasks.find((subtask, i) => i === index);
         setSubtask(subtask);
-    }, [reloadSubtaskPage]);
+        setChecked(subtask?.isCompleted);
+    }, [checked, reloadSubtaskPage]);
     const onChange = async (e) => {
         await ProgramService.setCompleteSubtask(task.id, subtask.id);
         setReloadPage((state) => state + 1);
         setReloadSubtaskPage((state) => state + 1);
+        setReloadTaskModal((state) => state + 1);
+        setChecked((state) => !state);
     };
-    const checked = subtask?.isCompleted;
+    //  const checked = subtask?.isCompleted;
     return (
         <div className=" w-full flex hover:bg-[#635fc740] dark:hover:bg-[#635fc740] rounded-md relative items-center justify-start dark:bg-[#20212c]  p-3 gap-4  bg-[#f4f7fd]">
             <input

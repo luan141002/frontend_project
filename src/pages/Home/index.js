@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useForm, Controller } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 import {
     faCircle,
     faAngleLeft,
@@ -118,9 +119,10 @@ const Home = () => {
                     OUR SERVICES
                 </label>
                 <p className="text-center text-xs font-sm">
-                    Luyện tập tại CITIGYM sẽ giúp bạn đạt được mục tiêu sức khỏe
+                    Practicing at UNIVERSE will help you achieve your health
+                    goals
                     <br />
-                    và hình thể.
+                    and body shape.
                 </p>
             </div>
 
@@ -136,14 +138,16 @@ const Home = () => {
                             Personal Program
                         </label>
                         <p className="text-white text-[15px] font-thin italic">
-                            XÂY DỰNG CƠ THỂ HOÀN HẢO CỦA BẠN THEO ĐỘ TUỔI VÀ CHỈ
-                            SỐ BMI CỦA BẠN
+                            BUILD YOUR PERFECT BODY ACCORDING TO AGE AND
+                            STRENGTH YOUR BMI
                         </p>
                     </div>
                     <div className="flex self-end">
-                        <button className="bg-[#C30C0C] w-[160px] h-[55px] text-[15px] text-center  text-white  text-medium  hover:border hover:border-white">
-                            See more
-                        </button>
+                        <Link to={'/about'}>
+                            <button className="bg-[#C30C0C] w-[160px] h-[55px] text-[15px] text-center  text-white  text-medium  hover:border hover:border-white">
+                                See more
+                            </button>
+                        </Link>
                     </div>
                 </div>
                 <div
@@ -157,14 +161,17 @@ const Home = () => {
                             Personal Program
                         </label>
                         <p className="text-white text-[15px] font-thin italic">
-                            XÂY DỰNG CƠ THỂ HOÀN HẢO CỦA BẠN THEO ĐỘ TUỔI VÀ CHỈ
-                            SỐ BMI CỦA BẠN
+                            BUILD YOUR PERFECT BODY ACCORDING TO AGE AND
+                            STRENGTH YOUR BMI
                         </p>
                     </div>
+
                     <div className="flex self-end">
-                        <button className="bg-[#C30C0C] w-[160px] h-[55px] text-[15px] text-center  text-white  text-medium  hover:border hover:border-white">
-                            See more
-                        </button>
+                        <Link to={'/about'}>
+                            <button className="bg-[#C30C0C] w-[160px] h-[55px] text-[15px] text-center  text-white  text-medium  hover:border hover:border-white">
+                                See more
+                            </button>
+                        </Link>
                     </div>
                 </div>
                 <div
@@ -178,14 +185,16 @@ const Home = () => {
                             Personal Program
                         </label>
                         <p className="text-white text-[15px] font-thin italic">
-                            XÂY DỰNG CƠ THỂ HOÀN HẢO CỦA BẠN THEO ĐỘ TUỔI VÀ CHỈ
-                            SỐ BMI CỦA BẠN
+                            BUILD YOUR PERFECT BODY ACCORDING TO AGE AND
+                            STRENGTH YOUR BMI
                         </p>
                     </div>
                     <div className="flex self-end">
-                        <button className="bg-[#C30C0C] w-[160px] h-[55px] text-[15px] text-center  text-white  text-medium  hover:border hover:border-white">
-                            See more
-                        </button>
+                        <Link to={'/about'}>
+                            <button className="bg-[#C30C0C] w-[160px] h-[55px] text-[15px] text-center  text-white  text-medium  hover:border hover:border-white">
+                                See more
+                            </button>
+                        </Link>
                     </div>
                 </div>
                 <div
@@ -199,14 +208,16 @@ const Home = () => {
                             Personal Program
                         </label>
                         <p className="text-white text-[15px] font-thin italic">
-                            XÂY DỰNG CƠ THỂ HOÀN HẢO CỦA BẠN THEO ĐỘ TUỔI VÀ CHỈ
-                            SỐ BMI CỦA BẠN
+                            BUILD YOUR PERFECT BODY ACCORDING TO AGE AND
+                            STRENGTH YOUR BMI
                         </p>
                     </div>
                     <div className="flex self-end">
-                        <button className="bg-[#C30C0C] w-[160px] h-[55px] text-[15px] text-center  text-white  text-medium  hover:border hover:border-white">
-                            See more
-                        </button>
+                        <Link to={'/about'}>
+                            <button className="bg-[#C30C0C] w-[160px] h-[55px] text-[15px] text-center  text-white  text-medium  hover:border hover:border-white">
+                                See more
+                            </button>
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -217,32 +228,33 @@ const Home = () => {
                     OUR STORY
                 </label>
                 <p className="text-center text-xs font-sm">
-                    Luyện tập tại CITIGYM sẽ giúp bạn đạt được mục tiêu sức khỏe
+                    Practicing at UNIVERSE will help you achieve your health
+                    goals
                     <br />
-                    và hình thể.
+                    and body shape.
                 </p>
             </div>
             <div className="flex px-[20px] gap-4 mb-[80px]">
                 <div className="basis-[50%]">
                     <p className="text-stone-300 text-lg text-justify font-thin">
-                        Thực tế việc ăn đủ 3 bữa 1 ngày giúp bạn lúc nào cũng
-                        tràn đầy năng lượng, nó gần như trở thành thói quen của
-                        đa số mọi người hay có thể nói nó chính là một phần văn
-                        hóa. Về mặt khoa học, việc ăn đủ 3 bữa 1 ngày không hề
-                        ảnh hưởng đến chế độ ăn tập gym giảm cân của bạn, miễn
-                        sao bạn có thể tự cân bằng bữa ăn của chính mình cho phù
-                        hợp. Ngoài ra nó còn giữ lượng đường trong máu ổn định,
-                        làm giảm cảm giác thèm ăn từ đó giúp hạn chế lượng đồ ăn
-                        vặt của bạn.Nhưng việc ăn 3 bữa 1 ngày như thế cũng sẽ
-                        rất nhàm chán, thi thoảng bạn cũng có thể ăn thức ăn
-                        nhanh ở ngoài, hay không cần ăn sáng khi không thực sự
-                        cảm thấy đói. Nhưng đó chỉ là thi thoảng thôi nhé Ngoài
-                        ra nó còn giữ lượng đường trong máu ổn định, làm giảm
-                        cảm giác thèm ăn từ đó giúp hạn chế lượng đồ ăn vặt của
-                        bạn.Nhưng việc ăn 3 bữa 1 ngày như thế cũng sẽ rất nhàm
-                        chán, thi thoảng bạn cũng có thể ăn thức ăn nhanh ở
-                        ngoài, hay không cần ăn sáng khi không thực sự cảm thấy
-                        đói. Nhưng đó chỉ là thi thoảng thôi nhé
+                        In reality, having three meals a day helps you stay
+                        consistently energized, and it has almost become a
+                        cultural habit for the majority of people, representing
+                        a part of our lifestyle. From a scientific perspective,
+                        having three meals a day does not adversely affect your
+                        weight loss gym diet, as long as you can balance your
+                        own meals accordingly. It also helps maintain stable
+                        blood sugar levels, reducing the feeling of hunger and
+                        thereby limiting your snack intake. However, having
+                        three meals a day can be monotonous, and occasionally,
+                        you may opt for fast food or skip breakfast when you
+                        don't truly feel hungry. But that should only be
+                        occasional. In addition, it helps keep your blood sugar
+                        levels stable, reducing the urge to snack. But having
+                        three meals a day can become monotonous, and
+                        occasionally, you might grab fast food or skip breakfast
+                        when you're not truly hungry. However, that should be
+                        only occasional.
                     </p>
                 </div>
                 <img src={pic_story} className="w-[55%]" alt="our story" />

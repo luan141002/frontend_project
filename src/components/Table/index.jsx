@@ -7,24 +7,33 @@ import {
     useReactTable,
 } from '@tanstack/react-table';
 import { USERS } from './data.js';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import DebouncedInput from './DebouncedInput';
 import UploadExercise from '../../pages/UploadExcercise';
+import AddEditTrainer from '../../pages/AddTrainer/index.js';
 import { useDispatch, useSelector } from 'react-redux';
 import MemberService from '../../services/MemberService.js';
 import ExerciseService from '../../services/ExerciseService.js';
+import AddTrainer from '../../pages/AddTrainer/index.js';
+import { useFormState } from 'react-hook-form';
+import DeleteModal from '../../pages/Schedule/modals/DeleteModal.js';
 
 const TanStackTable = ({ type }) => {
     const columnHelper = createColumnHelper();
     const account = useSelector((state) => state.account);
     const isPT = account.roles[0]?.name === 'PERSONAL_TRAINER' ? true : false;
+    const isAdmin = account.roles[0]?.name === 'ADMIN' ? true : false;
+
+    const [currentExercise, setCurrentExercise] = useState();
+    const [currentTrainer, setCurrentTrainer] = useState();
+
+    const [loadTablePage, setLoadTablePage] = useState(0);
 
     const [data, setData] = useState(() => {
         switch (type) {
             case 'personal-config':
                 return [
                     {
-                        id: 1,
                         height: 0,
                         weight: 0,
                         age: 0,
@@ -37,10 +46,8 @@ const TanStackTable = ({ type }) => {
             case 'members':
                 return [
                     {
-                        id: 0,
                         personalLevel: '',
                         firstName: '',
-                        lastName: '',
                         memberLevel: '',
                         email: '',
                         avatar: null,
@@ -51,9 +58,7 @@ const TanStackTable = ({ type }) => {
             case 'pts':
                 return [
                     {
-                        id: 0,
                         firstName: 'string',
-                        lastName: 'string',
                         ptLevel: 'string',
                         email: 'string',
                         activated: true,
@@ -63,31 +68,29 @@ const TanStackTable = ({ type }) => {
             case 'exercises':
                 return [
                     {
-                        id: 0,
                         name: '',
-                        experienceLevel: '',
+                        experience: '',
                         equipment: '',
-                        forceType: '',
                         secondaryMuscles: '',
                         type: '',
                         steps: 0,
                         category: '',
                         tips: '',
+                        edit: '',
                     },
                 ];
                 break;
             case 'membersOfPT':
                 return [
                     {
-                        id: 0,
                         personalLevel: '',
-                        firstName: '',
-                        lastName: '',
+                        fullName: '',
                         memberLevel: '',
                         email: '',
                         avatar: null,
                         activated: 'true',
                         hasProgram: 'true',
+                        goal: '',
                     },
                 ];
                 break;
@@ -105,7 +108,6 @@ const TanStackTable = ({ type }) => {
 
                 if (result.length !== 0) {
                     const processedResults = result.map((element) => ({
-                        id: element.id,
                         height: element.height,
                         weight: element.weight,
                         age: element.age,
@@ -117,7 +119,6 @@ const TanStackTable = ({ type }) => {
                 } else {
                     setData([
                         {
-                            id: 0,
                             height: 0,
                             weight: 0,
                             age: 0,
@@ -134,13 +135,12 @@ const TanStackTable = ({ type }) => {
 
                 if (result.length !== 0) {
                     const processedResults = result.map((element) => ({
-                        id: element.id,
                         personalLevel: element.personalLevel,
                         firstName: element.firstName,
-                        lastName: element.lastName,
                         memberLevel: element.memberLevel,
                         Email: element.user.email,
                         Activated: element.user.activated.toString(),
+                        edit: element.id,
                     }));
 
                     console.log(processedResults);
@@ -149,16 +149,25 @@ const TanStackTable = ({ type }) => {
                 break;
             case 'pts':
                 result = await MemberService.getPTs();
-
+                let processedResults;
                 if (result.length !== 0) {
-                    const processedResults = result.map((element) => ({
-                        id: element.id,
-                        firstName: element.firstName,
-                        lastName: element.lastName,
-                        ptLevel: element.ptLevel,
-                        email: element.user.email,
-                        activated: element.user.activated.toString(),
-                    }));
+                    if (isPT) {
+                        processedResults = result.map((element) => ({
+                            firstName: element.firstName,
+                            ptLevel: element.ptLevel,
+                            email: element.user.email,
+                            activated: element.user.activated.toString(),
+                            edit: element.id,
+                        }));
+                    } else {
+                        processedResults = result.map((element) => ({
+                            firstName: element.firstName,
+                            ptLevel: element.ptLevel,
+                            email: element.user.email,
+                            activated: element.user.activated.toString(),
+                            edit: element.id,
+                        }));
+                    }
 
                     console.log(processedResults);
                     setData([...processedResults]);
@@ -169,16 +178,15 @@ const TanStackTable = ({ type }) => {
 
                 if (result.length !== 0) {
                     const processedResults = result.map((element) => ({
-                        id: element.id,
                         name: element.name,
-                        experienceLevel: element.experienceLevel,
+                        experience: element.experienceLevel,
                         equipment: element.equipment,
-                        forceType: element.forceType,
                         secondaryMuscles: element.secondaryMuscles,
                         type: element.type,
                         steps: element.steps.length,
                         category: element.category,
                         tips: element.tips,
+                        edit: element.id,
                     }));
 
                     console.log(processedResults);
@@ -190,14 +198,13 @@ const TanStackTable = ({ type }) => {
 
                 if (result.length !== 0) {
                     const processedResults = result.map((element) => ({
-                        id: element.id,
                         personalLevel: element.personalLevel,
-                        firstName: element.firstName,
-                        lastName: element.lastName,
+                        fullName: element.firstName + ' ' + element.lastName,
                         memberLevel: element.memberLevel,
                         Email: element.user.email,
                         Activated: element.user.activated.toString(),
                         hasProgram: element.hasProgram.toString(),
+                        goal: '143',
                     }));
 
                     console.log(processedResults);
@@ -211,9 +218,9 @@ const TanStackTable = ({ type }) => {
         console.log(result);
     };
 
-    useEffect(() => {
+    useMemo(() => {
         loadPage();
-    }, [type]);
+    }, [type, loadTablePage]);
 
     // const columns = [
     //     columnHelper.accessor('', {
@@ -253,20 +260,101 @@ const TanStackTable = ({ type }) => {
     //     }),
     // ];
     const columns = [
-        // columnHelper.accessor('', {
-        //     id: 'S.No',
-        //     cell: (info) => <span>{info.row.index + 1}</span>,
-        //     header: 'S.No',
-        // }),
-        ...Object.keys(data[0])?.map((field) => {
-            return columnHelper.accessor(field, {
-                cell: (info) => <span>{info.getValue()}</span>,
-                header: camelToCapitalize(field),
-            });
+        columnHelper.accessor('', {
+            id: 'No',
+            cell: (info) => <span>{info.row.index + 1}</span>,
+            header: 'No',
+        }),
+        ...Object.keys(data[0])
+            ?.map((field) => {
+                return columnHelper.accessor(field, {
+                    cell: (info) => <span>{info.getValue()}</span>,
+                    header: camelToCapitalize(field),
+                });
+            })
+            .filter((field) => field.header !== 'Edit'),
+        columnHelper.accessor('edit', {
+            id: 'Edit',
+            cell: (info) => (
+                <div>
+                    {isPT && type === 'exercises' && (
+                        <div className="flex justify-center space-x-3 ">
+                            <button
+                                type="button"
+                                className="bg-green-700  text-white h-[30px] w-[90px] hover:border-3  hover:hover:opacity-80"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    if (type === 'exercises') {
+                                        setCurrentExercise(info.getValue());
+                                        setOpenEditExerciseModel(
+                                            (state) => !state,
+                                        );
+                                    }
+                                }}
+                            >
+                                Edit
+                            </button>
+                            <button
+                                type="button"
+                                className="bg-gray-700 text-white h-[30px] w-[90px] hover:border-3  hover:opacity-80"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    if (type === 'exercises') {
+                                        setCurrentExercise(info.getValue());
+                                        setOpenDeleteExerciseModal(
+                                            (state) => !state,
+                                        );
+                                    }
+                                }}
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    )}
+                    {isAdmin && type === 'pts' && (
+                        <div className="flex justify-center space-x-3 ">
+                            {/* <button
+                                type="button"
+                                className="bg-green-700  text-white h-[30px] w-[90px] hover:border-3  hover:hover:opacity-80"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    if (type === 'pts') {
+                                        setCurrentTrainer(info.getValue());
+                                        setOpenEditTrainerModal(
+                                            (state) => !state,
+                                        );
+                                    }
+                                }}
+                            >
+                                Edit
+                            </button> */}
+                            <button
+                                type="button"
+                                className="bg-gray-700 text-white h-[30px] w-[90px] hover:border-3  hover:opacity-80"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    if (type === 'pts') {
+                                        setCurrentTrainer(info.getValue());
+                                        setOpenDeleteTrainerModal(
+                                            (state) => !state,
+                                        );
+                                    }
+                                }}
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    )}
+                </div>
+            ),
+            header:
+                (isPT && type === 'exercises') || (isAdmin && type === 'pts')
+                    ? 'Edit'
+                    : '',
         }),
     ];
 
-    // console.log(rawColumns);
+    console.log(columns);
     // const [data] = useState(() => [...USERS]);
     const [globalFilter, setGlobalFilter] = useState('');
 
@@ -281,6 +369,13 @@ const TanStackTable = ({ type }) => {
         getPaginationRowModel: getPaginationRowModel(),
     });
     const [openAddExerciseModel, setOpenAddExerciseModel] = useState(false);
+    const [openEditExerciseModel, setOpenEditExerciseModel] = useState(false);
+    const [openAddTrainerModal, setOpenAddTrainerModal] = useState(false);
+    const [openEditTrainerModal, setOpenEditTrainerModal] = useState(false);
+
+    const [openDeleteExerciseModal, setOpenDeleteExerciseModal] =
+        useState(false);
+    const [openDeleteTrainerModal, setOpenDeleteTrainerModal] = useState(false);
     return (
         <div className="p-2 max-w-8xl mx-auto text-white fill-gray-400">
             <div className="flex justify-between mb-2">
@@ -294,7 +389,7 @@ const TanStackTable = ({ type }) => {
                     />
                 </div>
 
-                {isPT && (
+                {isPT && type === 'exercises' && (
                     <div>
                         <button
                             type="reset"
@@ -303,13 +398,26 @@ const TanStackTable = ({ type }) => {
                                 setOpenAddExerciseModel((state) => !state)
                             }
                         >
-                            + add Exercise
+                            Add Exercise
+                        </button>
+                    </div>
+                )}
+                {isAdmin && type === 'pts' && (
+                    <div>
+                        <button
+                            type="reset"
+                            className="bg-red-700 text-white h-[60px] w-[150px] hover:border-3  px-2 hover:opacity-80"
+                            onClick={() =>
+                                setOpenAddTrainerModal((state) => !state)
+                            }
+                        >
+                            Add Personal Trainer
                         </button>
                     </div>
                 )}
             </div>
             <table className="border border-gray-700 w-full text-left">
-                <thead className="bg-red-800">
+                <thead className="bg-red-800 text-center">
                     {table.getHeaderGroups().map((headerGroup) => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map((header) => (
@@ -332,11 +440,14 @@ const TanStackTable = ({ type }) => {
                             <tr
                                 key={row.id}
                                 className={`
-                ${i % 2 === 0 ? 'bg-gray-900' : 'bg-gray-800'}
+                ${i % 2 === 0 ? 'bg-gray-900 ' : 'bg-gray-800'}
                 `}
                             >
                                 {row.getVisibleCells().map((cell) => (
-                                    <td key={cell.id} className="px-3.5 py-2">
+                                    <td
+                                        key={cell.id}
+                                        className="px-3.5 py-2 text-center"
+                                    >
                                         {flexRender(
                                             cell.column.columnDef.cell,
                                             cell.getContext(),
@@ -347,7 +458,7 @@ const TanStackTable = ({ type }) => {
                         ))
                     ) : (
                         <tr className="text-center h-32">
-                            <td colSpan={12}>No Recoard Found!</td>
+                            <td colSpan={12}>No Record Found!</td>
                         </tr>
                     )}
                 </tbody>
@@ -410,7 +521,46 @@ const TanStackTable = ({ type }) => {
             </div>
             {openAddExerciseModel && (
                 <UploadExercise
+                    type="add"
                     setOpenAddExerciseModel={setOpenAddExerciseModel}
+                />
+            )}
+            {openEditExerciseModel && (
+                <UploadExercise
+                    type="edit"
+                    currentExercise={currentExercise}
+                    setOpenEditExerciseModel={setOpenEditExerciseModel}
+                />
+            )}
+            {openAddTrainerModal && (
+                <AddEditTrainer
+                    setLoadTablePage={setLoadTablePage}
+                    type="add"
+                    setOpenAddTrainerModal={setOpenAddTrainerModal}
+                />
+            )}
+            {openEditTrainerModal && (
+                <AddEditTrainer
+                    currentTrainer={currentTrainer}
+                    setLoadTablePage={setLoadTablePage}
+                    type="edit"
+                    setOpenEditTrainerModal={setOpenEditTrainerModal}
+                />
+            )}
+            {openDeleteExerciseModal && (
+                <DeleteModal
+                    type="exercise"
+                    currentExercise={currentExercise}
+                    setLoadTablePage={setLoadTablePage}
+                    setOpenDeleteExerciseModal={setOpenDeleteExerciseModal}
+                />
+            )}
+            {openDeleteTrainerModal && (
+                <DeleteModal
+                    type="pt"
+                    currentTrainer={currentTrainer}
+                    setLoadTablePage={setLoadTablePage}
+                    setOpenDeleteTrainerModal={setOpenDeleteTrainerModal}
                 />
             )}
         </div>

@@ -31,7 +31,7 @@ const SideBar = () => {
             icon: <FaNewspaper />,
         },
         {
-            title: 'Dashboard',
+            title: 'Service',
             link: '/dashboard',
             clicked: false,
             spacing: true,

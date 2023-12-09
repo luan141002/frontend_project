@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { shuffle } from 'lodash';
 import boardsSlice from '../../redux/boardsSlice.js';
@@ -22,6 +22,9 @@ const Column = ({ colIndex, boards, setBoards, setReloadPage, memberId }) => {
     const dispatch = useDispatch();
     const [color, setColor] = useState(null);
     const [openAddEditTask, setOpenAddEditTask] = useState(false);
+    const account = useRef(useSelector((state) => state.account));
+    const isPT =
+        account.current.roles[0]?.name === 'PERSONAL_TRAINER' ? true : false;
 
     const board = boards.find((board) => board.isActive);
     const col = board.columns.find((col, i) => i === colIndex);
@@ -75,14 +78,16 @@ const Column = ({ colIndex, boards, setBoards, setReloadPage, memberId }) => {
                     setReloadPage={setReloadPage}
                 />
             ))}
-            <button
-                className=" button hidden md:block py-2 px-6 bg-gray-500 w-full mt-4"
-                onClick={() => {
-                    setOpenAddEditTask((state) => !state);
-                }}
-            >
-                + Add New Task
-            </button>
+            {isPT && (
+                <button
+                    className=" button hidden md:block py-2 px-6 bg-gray-500 w-full mt-4"
+                    onClick={() => {
+                        setOpenAddEditTask((state) => !state);
+                    }}
+                >
+                    + Add New Task
+                </button>
+            )}
             {openAddEditTask && (
                 <AddEditTaskModal
                     setOpenAddEditTask={setOpenAddEditTask}
