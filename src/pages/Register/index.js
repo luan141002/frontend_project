@@ -2,6 +2,8 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthService from '../../services/AuthService';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Register = ({ setOpenRegisterModal, setOpenLoginModal }) => {
     const {
@@ -28,7 +30,11 @@ const Register = ({ setOpenRegisterModal, setOpenLoginModal }) => {
             setOpenLoginModal(true);
             setOpenRegisterModal(false);
             navigate(`/otp/${data.email}`);
-        } catch (err) {}
+        } catch (err) {
+            toast.error('Register failed', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+        }
     };
     return (
         <div
@@ -223,6 +229,7 @@ const Register = ({ setOpenRegisterModal, setOpenLoginModal }) => {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 };

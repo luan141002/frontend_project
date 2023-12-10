@@ -3,6 +3,8 @@ import ExerciseService from '../../services/ExerciseService.js';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import data from '../../components/Footer/data.js';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import ExerciseCard from '../../components/ExcerciseCard';
 
@@ -12,12 +14,18 @@ const ExercisesByCategoryName = () => {
     const [exercises, setExercises] = useState();
 
     const loadPage = async () => {
-        const exercises = await ExerciseService.getExercisesByCategoryName(
-            categoryName,
-        );
+        try {
+            const exercises = await ExerciseService.getExercisesByCategoryName(
+                categoryName,
+            );
 
-        setExercises(exercises);
-        console.log(exercises);
+            setExercises(exercises);
+            console.log(exercises);
+        } catch (err) {
+            toast.error('Load exercises failed', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+        }
     };
 
     useEffect(() => {
@@ -36,6 +44,7 @@ const ExercisesByCategoryName = () => {
                     <ExerciseCard exercise={exercise} key={index} />
                 ))}
             </div>
+            <ToastContainer />
         </div>
     );
 };

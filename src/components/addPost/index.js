@@ -54,26 +54,32 @@ const AddPost = ({ setOpenAddBlogModal }) => {
     // create post function
     const createPost = async (e) => {
         e.preventDefault();
-        if (post.title.trim() === '') {
-            alert('post title is required !!');
-            return;
-        }
-        if (post.content.trim() === '') {
-            alert('post content is required !!');
-            return;
-        }
-        // notify(JSON.stringify(post));
-        const data = {
-            title: post.title,
-            content: post.content,
-            image: post.image,
-            tagIds: [...categories],
-        };
-        // console.log(data);
-        const response = await PostService.addPost(data);
+        try {
+            if (post.title.trim() === '') {
+                alert('post title is required !!');
+                return;
+            }
+            if (post.content.trim() === '') {
+                alert('post content is required !!');
+                return;
+            }
+            // notify(JSON.stringify(post));
+            const data = {
+                title: post.title,
+                content: post.content,
+                image: post.image,
+                tagIds: [...categories],
+            };
+            // console.log(data);
+            const response = await PostService.addPost(data);
 
-        console.log(response);
-        setOpenAddBlogModal(false);
+            console.log(response);
+            setOpenAddBlogModal(false);
+        } catch (err) {
+            toast.error('Add Post failed', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+        }
     };
     const modules = {
         toolbar: [
@@ -201,13 +207,13 @@ const AddPost = ({ setOpenAddBlogModal }) => {
                                 </select>
                             ))}
                             <button
-                                className="w-full items-center hover:opacity-75 text-white bg-[#635fc7] mt-2 py-2 rounded-full"
+                                className="w-full items-center hover:opacity-75 text-white bg-red-700 mt-2 py-2 rounded-md"
                                 type="button"
                                 onClick={() => {
                                     setCategories((state) => [...state, null]);
                                 }}
                             >
-                                + Add New Subtask
+                                + Add New Post Tag
                             </button>
                         </div>
 
@@ -219,7 +225,6 @@ const AddPost = ({ setOpenAddBlogModal }) => {
                                 >
                                     Create Post
                                 </button>
-                                <ToastContainer />
                             </div>
 
                             <button
@@ -233,11 +238,14 @@ const AddPost = ({ setOpenAddBlogModal }) => {
                                 type="reset"
                                 className="bg-[#C30C0C] w-[160px] h-[55px] text-[15px] text-center  text-white  text-medium  hover:border hover:border-white"
                             >
-                                Reset Content
+                                Cancel
                             </button>
                         </div>
                     </form>
                 </div>
+            </div>
+            <div className="toast-container">
+                <ToastContainer limit={2} />
             </div>
         </div>
     );

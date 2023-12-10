@@ -22,18 +22,21 @@ const SideBar = () => {
             title: 'Exercises',
             link: '/exercises',
             clicked: false,
+            secure: true,
             icon: <FaWeightHanging />,
         },
         {
             title: 'Blogs',
             link: '/blogs',
             clicked: false,
+            secure: false,
             icon: <FaNewspaper />,
         },
         {
             title: 'Service',
             link: '/dashboard',
             clicked: false,
+            secure: true,
             spacing: true,
             icon: <FaChalkboardUser />,
         },
@@ -42,23 +45,27 @@ const SideBar = () => {
             link: '/',
             icon: <FaWeightScale />,
             clicked: true,
+            secure: true,
             subMenu: [
                 {
                     title: 'Calories Calculator',
                     link: `/tools/calories-calculator`,
                     clicked: false,
+                    secure: true,
                     icon: <FaClipboard />,
                 },
                 {
                     title: 'BMI Calculator',
                     link: `/tools/bmi-calculator`,
                     clicked: false,
+                    secure: true,
                     icon: <FaClipboard />,
                 },
             ],
         },
         {
             title: 'Profile',
+            secure: true,
             link: `/user/user-profile`,
             clicked: false,
             icon: <FaRegUserCircle />,
@@ -118,30 +125,56 @@ const SideBar = () => {
             <ul className="pt-2 mt-6">
                 {Menu.map((menu, index) => (
                     <>
-                        <li
-                            key={index}
-                            className={`text-gray-300 text-sm flex items-center justify-center duration-200 gap-x-4 mx-auto cursor-pointer p-4 hover:bg-gray-500 rounded-md mt-2`}
-                            onClick={() => {
-                                if (menu?.clicked === true) {
-                                    setIsClicked((state) => !state);
-                                } else {
-                                    navigate(menu?.link);
-                                }
-                            }}
-                        >
-                            <span className="text-2xl block float-left  ">
-                                {menu.icon}
-                            </span>
-
-                            <span
-                                className={`text-medium font-medium flex-1 duration-200 ${
-                                    !open && 'hidden'
-                                }`}
+                        {menu.secure === false && (
+                            <li
+                                key={index}
+                                className={`text-gray-300 text-sm flex items-center justify-center duration-200 gap-x-4 mx-auto cursor-pointer p-4 hover:bg-gray-500 rounded-md mt-2`}
+                                onClick={() => {
+                                    if (menu?.clicked === true) {
+                                        setIsClicked((state) => !state);
+                                    } else {
+                                        navigate(menu?.link);
+                                    }
+                                }}
                             >
-                                {menu.title}
-                            </span>
-                        </li>
+                                <span className="text-2xl block float-left  ">
+                                    {menu.icon}
+                                </span>
 
+                                <span
+                                    className={`text-medium font-medium flex-1 duration-200 ${
+                                        !open && 'hidden'
+                                    }`}
+                                >
+                                    {menu.title}
+                                </span>
+                            </li>
+                        )}
+                        {menu.secure === true && account.email !== null && (
+                            <li
+                                key={index}
+                                className={`text-gray-300 text-sm flex items-center justify-center duration-200 gap-x-4 mx-auto cursor-pointer p-4 hover:bg-gray-500 rounded-md mt-2`}
+                                onClick={() => {
+                                    if (menu?.clicked === true) {
+                                        setIsClicked((state) => !state);
+                                    } else {
+                                        navigate(menu?.link);
+                                    }
+                                }}
+                            >
+                                <span className="text-2xl block float-left  ">
+                                    {menu.icon}
+                                </span>
+
+                                <span
+                                    className={`text-medium font-medium flex-1 duration-200 ${
+                                        !open && 'hidden'
+                                    }`}
+                                >
+                                    {menu.title}
+                                </span>
+                            </li>
+                        )}
                         {isClicked && (
                             <ul className="pl-8">
                                 {menu.subMenu?.map((subMenu, index) => (

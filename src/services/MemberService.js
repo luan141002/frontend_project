@@ -26,9 +26,9 @@ const MemberService = {
         );
         return response.json();
     },
-    assignPT: async (memberId, ptId) => {
+    assignPT: async (memberId, ptId, goal) => {
         const response = await WebService.post(
-            `/members/assignPersonalTrainer?memberId=${memberId}&personalTrainerId=${ptId}`,
+            `/members/assignPersonalTrainer?memberId=${memberId}&personalTrainerId=${ptId}&goal=${goal}`,
         );
         return response;
     },

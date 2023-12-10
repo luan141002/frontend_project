@@ -11,10 +11,14 @@ import AdminLayout from '../../components/layouts/adminLayout';
 import boardsSlice from '../../redux/boardsSlice.js';
 import { useParams } from 'react-router-dom';
 import data from '../Schedule/data/realData.json';
+import { useNavigate } from 'react-router-dom';
+import { Slide, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Center = () => {
     // essential data to load
     const account = useRef(useSelector((state) => state.account));
+    const navigate = useNavigate();
     const { memberIdTerm } = useParams();
     const isPT =
         account.current.roles[0]?.name === 'PERSONAL_TRAINER' ? true : false;
@@ -31,6 +35,10 @@ const Center = () => {
     const [members, setMembers] = useState();
 
     const loadPage = async () => {
+        if (account.current.email === '') {
+            navigate('/');
+        }
+
         try {
             setIsLoading(true);
             // PERSONAL TRAINER SECTION
@@ -104,7 +112,9 @@ const Center = () => {
             }
         } catch (error) {
             setIsLoading(false);
-            setIsError(true);
+            toast.error('Register failed', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
         }
     };
 
@@ -124,7 +134,7 @@ const Center = () => {
                 boards={boards}
                 setBoardMemberId={setBoardMemberId}
             >
-                {account.current.roles[0].name !== 'ADMIN' &&
+                {account.current.roles[0]?.name !== 'ADMIN' &&
                     boards?.length > 0 && (
                         <div className="flex w-full">
                             {/* Columns Section */}
@@ -209,6 +219,7 @@ const Center = () => {
                         </div>
                     )}
             </AdminLayout>
+            <ToastContainer />
         </div>
     );
 };

@@ -4,13 +4,21 @@ import { HiOutlineLogout } from 'react-icons/hi';
 import { Link } from 'react-router-dom';
 import MemberService from '../../services/MemberService';
 import { useEffect } from 'react';
+import { Slide, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const PickTrainer = () => {
     const list = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     const [PTs, setPTs] = useState();
     const loadPage = async () => {
-        const pts = await MemberService.getPTs();
-        setPTs(pts);
+        try {
+            const pts = await MemberService.getPTs();
+            setPTs(pts.slice(0, 3));
+        } catch (err) {
+            toast.error('Load Trainers failed', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+        }
     };
 
     useEffect(() => {
@@ -31,6 +39,7 @@ const PickTrainer = () => {
                     <UserCard index={index} PT={pt} />
                 ))}
             </div>
+            <ToastContainer />
         </div>
     );
 };

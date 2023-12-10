@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import ToolService from '../../services/ToolService';
 import MemberService from '../../services/MemberService';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CaloriesCalculator = ({ type }) => {
     const {
@@ -23,46 +25,53 @@ const CaloriesCalculator = ({ type }) => {
 
     const onSubmit = async (data) => {
         // Xử lý logic khi form được submit
-        console.log(type);
-        console.log(data);
-        let response;
-        switch (type) {
-            case 'calories-calculator':
-                response = await ToolService.getCaloriesResult(
-                    data.activityLevel,
-                    data.goal,
-                    height,
-                    weight,
-                    age,
-                    data.calculator.gender,
-                );
-                break;
-            case 'bmi-calculator':
-                response = await ToolService.getBMIResult(
-                    height,
-                    weight,
-                    age,
-                    data.calculator.gender,
-                );
-                if (account.hasProgram === false) {
-                    navigate('/trainer-pick');
-                }
-                break;
-            case 'personal-information-config':
-                response = await MemberService.updatePersonalInfoConfig(
-                    account.memberId,
-                    height,
-                    weight,
-                    age,
-                    data.calculator.gender,
-                    data.bmi,
-                    data.fat,
-                );
-                break;
-        }
+        try {
+            let response;
+            switch (type) {
+                case 'calories-calculator':
+                    response = await ToolService.getCaloriesResult(
+                        data.activityLevel,
+                        data.goal,
+                        height,
+                        weight,
+                        age,
+                        data.calculator.gender,
+                    );
+                    break;
+                case 'bmi-calculator':
+                    response = await ToolService.getBMIResult(
+                        height,
+                        weight,
+                        age,
+                        data.calculator.gender,
+                    );
+                    if (
+                        account.hasProgram === false ||
+                        account.hasProgram === null
+                    ) {
+                        navigate('/trainer-pick');
+                    }
+                    break;
+                case 'personal-information-config':
+                    response = await MemberService.updatePersonalInfoConfig(
+                        account.memberId,
+                        height,
+                        weight,
+                        age,
+                        data.calculator.gender,
+                        data.bmi,
+                        data.fat,
+                    );
+                    break;
+            }
 
-        setResult(response);
-        console.log(response);
+            setResult(response);
+            console.log(response);
+        } catch (err) {
+            toast.error('Calculate failed', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+        }
     };
     return (
         <div className="bg-[#151212] w-full min-h-min p-6 mb-[10%]">
@@ -458,6 +467,7 @@ const CaloriesCalculator = ({ type }) => {
                     )}
                 </div>
             </form>
+            <ToastContainer />
         </div>
     );
 };

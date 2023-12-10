@@ -11,16 +11,36 @@ import classNames from 'classnames';
 import LoginModal from '../../pages/Login';
 import RegisterPage from '../../pages/Register';
 import AuthService from '../../services/AuthService';
+import { privateRoutes } from '../../routes';
+import { useLocation } from 'react-router-dom';
 
 import accountsSlices from '../../redux/accountsSlice.js';
+import { useMemo } from 'react';
+import { useEffect } from 'react';
 const Header = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const location = useLocation();
+
+    const [currentPathName, setCurrentPathName] = useState(location.pathname);
 
     const account = useSelector((state) => state.account);
     const [authenticated, setAuthenticated] = useState(false);
     const [openLoginModal, setOpenLoginModal] = useState(false);
     const [openRegisterModal, setOpenRegisterModal] = useState(false);
+    const [openMustLoginModal, setOpenMustLoginModal] = useState(false);
+
+    const pathArray = privateRoutes.map((route) => route.path);
+
+    useMemo(() => {
+        if (pathArray.includes(location.pathname.toString())) {
+            console.log('hihi');
+            setOpenLoginModal(true);
+        } else {
+            setOpenLoginModal(false);
+        }
+    }, [location.pathname]);
+
     return (
         <div className="bg-[#151212] w-[95%] h-[80px] fixed flex justify-between items-center border-b border-b-[#3D3030] p-4 z-40">
             <div className="flex justify-between items-center">
@@ -180,6 +200,7 @@ const Header = () => {
                                                             },
                                                         ),
                                                     );
+                                                    navigate('/');
                                                 }}
                                             >
                                                 Sign out
@@ -233,6 +254,14 @@ const Header = () => {
                     setOpenRegisterModal={setOpenRegisterModal}
                 />
             )}
+            {/* {openMustLoginModal && (
+                <LoginModal
+                    type="must"
+                    setOpenLoginModal={setOpenLoginModal}
+                    setAuthenticated={setAuthenticated}
+                    setOpenRegisterModal={setOpenRegisterModal}
+                />
+            )} */}
             {openRegisterModal && (
                 <RegisterPage
                     setOpenRegisterModal={setOpenRegisterModal}

@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import PostService from '../../services/PostService';
 import parse from 'html-react-parser';
 import { Input, Tag, theme, Space } from 'antd';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const BlogPage = () => {
     const { blogId } = useParams();
@@ -12,12 +14,18 @@ const BlogPage = () => {
     const [content, setContent] = useState([]);
     // Load Page
     const loadPage = async () => {
-        const blog = await PostService.getBlog(blogId);
-        setBlog(blog);
-        console.log(blog);
-        var paragraphs = blog.content.split(/\d+\. /);
-        setContent(paragraphs);
-        console.log(paragraphs);
+        try {
+            const blog = await PostService.getBlog(blogId);
+            setBlog(blog);
+            console.log(blog);
+            var paragraphs = blog.content.split(/\d+\. /);
+            setContent(paragraphs);
+            console.log(paragraphs);
+        } catch (err) {
+            toast.error('Load Posts failed', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+        }
     };
 
     useEffect(() => {
@@ -104,6 +112,7 @@ const BlogPage = () => {
                     Back to Homepage
                 </div>
             </Link>
+            <ToastContainer />
         </div>
     );
 };

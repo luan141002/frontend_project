@@ -12,6 +12,7 @@ import boardsSlice from '../../../../redux/boardsSlice.js';
 import AddEditBoardModal from '../../../../pages/Schedule/modals/addEditBoardModal.js';
 import MemberService from '../../../../services/MemberService.js';
 import LogoImage from '../../../../public/logo-image.png';
+import { FaCalendarWeek, FaUserPen } from 'react-icons/fa6';
 
 const linkClass =
     'flex items-center gap-2 font-normal px-3 py-2 hover:bg-neutral-700 hover:no-underline active:bg-neutral-600 rounded-sm text-base';
@@ -65,7 +66,7 @@ export default function Sidebar({
                         )}
                     </div>
                 ))}
-                {account.roles[0].name !== 'ADMIN' && (
+                {account.roles[0]?.name !== 'ADMIN' && (
                     <div className="flex flex-1 flex-col gap-0.5">
                         <Link
                             to={'/dashboard'}
@@ -76,11 +77,11 @@ export default function Sidebar({
                             )}
                         >
                             <span className="text-2xl">
-                                <HiOutlineLogout />
+                                <FaCalendarWeek />
                             </span>
-                            User Schedules
+                            Member Schedules
                         </Link>
-                        {isPT && account.roles[0].name !== 'ADMIN'
+                        {isPT && account.roles[0]?.name !== 'ADMIN'
                             ? members?.map((member, index) => (
                                   <Link to={`/members/${member?.id}/schedule`}>
                                       <div
@@ -101,7 +102,7 @@ export default function Sidebar({
                                           }}
                                       >
                                           <span className="text-2xl">
-                                              <HiOutlineCube />
+                                              <FaUserPen />
                                           </span>
                                           {member.firstName +
                                               ' ' +
@@ -132,7 +133,7 @@ export default function Sidebar({
                                       <span className="text-2xl">
                                           <HiOutlineCube />
                                       </span>
-                                      {board.name}
+                                      {board?.name}
                                   </div>
                               ))}
                         {/* <div

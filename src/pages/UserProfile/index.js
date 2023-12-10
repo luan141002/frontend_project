@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import MemberService from '../../services/MemberService';
+import { Slide, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UserProfile = (isPT, memberId) => {
     const {
@@ -21,16 +23,24 @@ const UserProfile = (isPT, memberId) => {
     const isAdmin = account.roles[0]?.name === 'ADMIN';
 
     const loadPage = async () => {
-        let userProfile;
-        if (account.roles[0]?.name === 'PERSONAL_TRAINER') {
-            userProfile = await MemberService.getPTById(account.memberId);
-        } else if (account.roles[0]?.name === 'ADMIN') {
-            userProfile = account;
-        } else {
-            userProfile = await MemberService.getMemberByEmail(account.email);
+        try {
+            let userProfile;
+            if (account.roles[0]?.name === 'PERSONAL_TRAINER') {
+                userProfile = await MemberService.getPTById(account.memberId);
+            } else if (account.roles[0]?.name === 'ADMIN') {
+                userProfile = account;
+            } else {
+                userProfile = await MemberService.getMemberByEmail(
+                    account.email,
+                );
+            }
+            setUserProfile(userProfile);
+            console.log(userProfile);
+        } catch (err) {
+            toast.error(`Load Profile failed`, {
+                position: toast.POSITION.TOP_RIGHT,
+            });
         }
-        setUserProfile(userProfile);
-        console.log(userProfile);
     };
 
     useEffect(() => {
@@ -49,9 +59,10 @@ const UserProfile = (isPT, memberId) => {
                         <img
                             className="w-[60px] h-[60px] rounded-full bg-cover bg-center border border-whiteS"
                             src={
-                                isAdmin
-                                    ? userProfile?.avatar
-                                    : userProfile?.user?.avatar
+                                // isAdmin
+                                //     ? userProfile?.avatar
+                                //     : userProfile?.user?.avatar
+                                'https://cdn-icons-png.flaticon.com/512/6596/6596121.png'
                             }
                             alt="blog avatar"
                         />
@@ -72,13 +83,13 @@ const UserProfile = (isPT, memberId) => {
                         </div>
                     </div>
 
-                    <button
+                    {/* <button
                         type="reset"
                         className="bg-red-700 text-white text-lg text-semibold h-[50px] w-[140px] hover:border-3  hover:opacity-80"
                         onClick={() => setIsAccountEdit((state) => !state)}
                     >
                         Edit Account
-                    </button>
+                    </button> */}
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div class="grid gap-6 mt-4 sm:grid-cols-2">
@@ -213,7 +224,7 @@ const UserProfile = (isPT, memberId) => {
                                 ></input>
                             </div>
                         )}
-                        {isAccountEdit && (
+                        {/* {isAccountEdit && (
                             <div>
                                 <label class="block text-sm font-medium text-gray-800">
                                     Image
@@ -259,10 +270,10 @@ const UserProfile = (isPT, memberId) => {
                                     </div>
                                 </div>
                             </div>
-                        )}
+                        )} */}
                     </div>
 
-                    <div class="flex justify-end mt-6">
+                    {/* <div class="flex justify-end mt-6">
                         <button
                             type="submit"
                             disabled={isSubmitting}
@@ -270,7 +281,7 @@ const UserProfile = (isPT, memberId) => {
                         >
                             Save
                         </button>
-                    </div>
+                    </div> */}
                 </form>
             </section>
             {/* {isAccountEdit && (
@@ -291,7 +302,7 @@ const UserProfile = (isPT, memberId) => {
                                 <input
                                     id="username"
                                     type="text"
-                                    value={userProfile.user.email}
+                                    defaultValue={userProfile.email}
                                     disabled
                                     class="block w-full px-4 py-2 mt-2 te/xt-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                                 />
@@ -326,7 +337,7 @@ const UserProfile = (isPT, memberId) => {
                                     class="block w-full px-4 py-2 mt-/2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                                 />
                             </div>
-
+                            
                             <div>
                                 <label
                                     class="text-gray-700 dark:text-gray-200"
@@ -350,6 +361,7 @@ const UserProfile = (isPT, memberId) => {
                     </form>
                 </section>
             )} */}
+            <ToastContainer />
         </div>
     );
 };

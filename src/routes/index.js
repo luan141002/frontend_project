@@ -53,11 +53,6 @@ const publicRoutes = [
         layout: DefaultLayout,
     },
     {
-        path: '/kanban',
-        component: Schedule,
-        layout: null,
-    },
-    {
         path: '/exercises/exercise-category/name/:categoryName',
         component: ExercisesByCategoryName,
         layout: DefaultLayout,
@@ -166,7 +161,7 @@ const publicRoutes = [
         layout: DefaultLayout,
     },
     {
-        path: '/target',
+        path: '/target/:ptId',
         component: TargetPage,
         layout: null,
     },
@@ -180,6 +175,11 @@ const privateRoutes = [
     {
         path: '/admin',
         component: '',
+    },
+    {
+        path: '/exercises',
+        component: Exercises,
+        layout: DefaultLayout,
     },
     {
         path: '/personal-trainer',

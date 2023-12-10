@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShare, faLightbulb } from '@fortawesome/free-solid-svg-icons';
 
 const ExerciseGuide = ({ exercise }) => {
-    console.log(exercise);
     return (
         <div className="w-[1000px] p-5 rounded-md">
             {/* guide header */}

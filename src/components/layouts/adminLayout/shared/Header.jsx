@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Menu, Popover, Transition } from '@headlessui/react';
 import {
     HiOutlineBell,
@@ -7,14 +7,24 @@ import {
 } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
+import AuthService from '../../../../services/AuthService';
+import { useDispatch, useSelector } from 'react-redux';
+import accountsSlices from '../../../../redux/accountsSlice';
 
 export default function Header() {
     const navigate = useNavigate();
+    const account = useSelector((state) => (state) => account);
+    const dispatch = useDispatch();
 
+    useEffect(() => {
+        if (account.email === '') {
+            navigate('/');
+        }
+    }, []);
     return (
         <div className="bg-white h-16 px-4 flex items-center border-b border-gray-200 justify-between p-4 fixed left-[240px] z-50 right-0">
             <div className="relative">
-                <HiOutlineSearch
+                {/* <HiOutlineSearch
                     fontSize={20}
                     className="text-gray-400 absolute top-1/2 left-3 -translate-y-1/2"
                 />
@@ -22,7 +32,7 @@ export default function Header() {
                     type="text"
                     placeholder="Search..."
                     className="text-sm focus:outline-none active:outline-none border border-gray-300 w-[24rem] h-10 pl-11 pr-4 rounded-sm"
-                />
+                /> */}
             </div>
             <div className="flex items-center gap-2 mr-2">
                 <Popover className="relative">
@@ -121,7 +131,9 @@ export default function Header() {
                             <Menu.Item>
                                 {({ active }) => (
                                     <div
-                                        onClick={() => navigate('/profile')}
+                                        onClick={() =>
+                                            navigate('/user/user-profile')
+                                        }
                                         className={classNames(
                                             active && 'bg-gray-100',
                                             'active:bg-gray-200 rounded-sm px-4 py-2 text-gray-700 cursor-pointer focus:bg-gray-200',
@@ -151,6 +163,19 @@ export default function Header() {
                                             active && 'bg-gray-100',
                                             'active:bg-gray-200 rounded-sm px-4 py-2 text-gray-700 cursor-pointer focus:bg-gray-200',
                                         )}
+                                        onClick={async () => {
+                                            await AuthService.logout();
+
+                                            dispatch(
+                                                accountsSlices.actions.setAccount(
+                                                    {
+                                                        email: null,
+                                                        id: '',
+                                                        roles: '',
+                                                    },
+                                                ),
+                                            );
+                                        }}
                                     >
                                         Sign out
                                     </div>

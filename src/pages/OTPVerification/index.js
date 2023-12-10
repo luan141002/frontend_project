@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import AuthService from '../../services/AuthService';
+import { Slide, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const OTPVerification = () => {
     const [code, setCode] = useState('');
@@ -19,11 +21,17 @@ const OTPVerification = () => {
             setMessage('Verification code must be 8 characters');
             return;
         }
-        const response = await AuthService.activateAccount(email, code);
-        if (response.status === 200) {
-            navigate('/');
-        } else {
-            setMessage('Verification process is failed');
+        try {
+            const response = await AuthService.activateAccount(email, code);
+            if (response.status === 200) {
+                navigate('/');
+            } else {
+                setMessage('Verification process is failed');
+            }
+        } catch (err) {
+            toast.error('Verification process is failed', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
         }
     };
     return (
@@ -110,6 +118,7 @@ const OTPVerification = () => {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 };

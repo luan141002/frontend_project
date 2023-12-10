@@ -1,12 +1,15 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import AuthService from '../../services/AuthService';
 import MemberService from '../../services/MemberService.js';
 import { useDispatch } from 'react-redux';
 import accountSlices from '../../redux/accountsSlice.js';
 
 const LoginPage = ({
+    type,
     setOpenLoginModal,
     setAuthenticated,
     setOpenRegisterModal,
@@ -21,8 +24,10 @@ const LoginPage = ({
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const password = watch('password', '');
+    const notify = (data) => toast(`${data}`);
     const onSubmit = async (data) => {
         // You can handle form submission logic here
+        toast.info('Modal closed.');
         console.log(data);
         setOpenLoginModal(false);
         console.log('hihi');
@@ -45,10 +50,11 @@ const LoginPage = ({
                     }),
                 );
 
-                if (member.hasProgram === false) {
+                if (member.hasProgram === false || member.hasProgram === null) {
                     navigate('/tools/bmi-calculator');
                 } else {
                     navigate('/');
+                    notify('Login Successfully');
                 }
             }
             if (user.roles[0].name === 'PERSONAL_TRAINER') {
@@ -66,6 +72,7 @@ const LoginPage = ({
                         roles: user.roles,
                     }),
                 );
+                notify('Login Successfully');
                 navigate('/');
             }
             if (user.roles[0].name === 'ADMIN') {
@@ -77,10 +84,13 @@ const LoginPage = ({
                         avatar: user.avatar,
                     }),
                 );
+                notify('Login Successfully');
                 navigate('/');
             }
         } catch (err) {
-            console.log(err);
+            toast.error('Login failed', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
         }
     };
 
@@ -92,7 +102,9 @@ const LoginPage = ({
                 if (e.target !== e.currentTarget) {
                     return;
                 }
-                setOpenLoginModal(false);
+                if (type !== 'must') {
+                    setOpenLoginModal(false);
+                }
             }}
         >
             <div
@@ -185,7 +197,7 @@ const LoginPage = ({
                                         to={'/forget-password'}
                                         class="text-xs text-gray-500"
                                     >
-                                        Forget Password?
+                                        Forget Password ?
                                     </Link>
                                 </div>
                                 <input
@@ -213,6 +225,7 @@ const LoginPage = ({
                                     disabled={isSubmitting}
                                     class="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600"
                                     // onClick={() => {
+
                                     //     setOpenLoginModal(false);
                                     //     // setAuthenticated(true);
                                     // }}
@@ -237,6 +250,7 @@ const LoginPage = ({
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 };

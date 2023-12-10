@@ -17,6 +17,8 @@ import ExerciseService from '../../services/ExerciseService.js';
 import AddTrainer from '../../pages/AddTrainer/index.js';
 import { useFormState } from 'react-hook-form';
 import DeleteModal from '../../pages/Schedule/modals/DeleteModal.js';
+import { Slide, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const TanStackTable = ({ type }) => {
     const columnHelper = createColumnHelper();
@@ -98,124 +100,130 @@ const TanStackTable = ({ type }) => {
     });
 
     const loadPage = async () => {
-        let result;
+        try {
+            let result;
+            switch (type) {
+                case 'personal-config':
+                    result = await MemberService.getMembersPhysicalInformation(
+                        account?.memberId,
+                    );
 
-        switch (type) {
-            case 'personal-config':
-                result = await MemberService.getMembersPhysicalInformation(
-                    account?.memberId,
-                );
-
-                if (result.length !== 0) {
-                    const processedResults = result.map((element) => ({
-                        height: element.height,
-                        weight: element.weight,
-                        age: element.age,
-                        fat: element.fat,
-                        bmi: element.bmi,
-                        date: element.date.toString(),
-                    }));
-                    setData([...processedResults]);
-                } else {
-                    setData([
-                        {
-                            height: 0,
-                            weight: 0,
-                            age: 0,
-                            fat: 0,
-                            bmi: 0,
-                            date: '2023-11-30',
-                        },
-                    ]);
-                }
-
-                break;
-            case 'members':
-                result = await MemberService.getMembers();
-
-                if (result.length !== 0) {
-                    const processedResults = result.map((element) => ({
-                        personalLevel: element.personalLevel,
-                        firstName: element.firstName,
-                        memberLevel: element.memberLevel,
-                        Email: element.user.email,
-                        Activated: element.user.activated.toString(),
-                        edit: element.id,
-                    }));
-
-                    console.log(processedResults);
-                    setData([...processedResults]);
-                }
-                break;
-            case 'pts':
-                result = await MemberService.getPTs();
-                let processedResults;
-                if (result.length !== 0) {
-                    if (isPT) {
-                        processedResults = result.map((element) => ({
-                            firstName: element.firstName,
-                            ptLevel: element.ptLevel,
-                            email: element.user.email,
-                            activated: element.user.activated.toString(),
-                            edit: element.id,
+                    if (result.length !== 0) {
+                        const processedResults = result.map((element) => ({
+                            height: element.height,
+                            weight: element.weight,
+                            age: element.age,
+                            fat: element.fat,
+                            bmi: element.bmi,
+                            date: element.date.toString(),
                         }));
+                        setData([...processedResults]);
                     } else {
-                        processedResults = result.map((element) => ({
-                            firstName: element.firstName,
-                            ptLevel: element.ptLevel,
-                            email: element.user.email,
-                            activated: element.user.activated.toString(),
-                            edit: element.id,
-                        }));
+                        setData([
+                            {
+                                height: 0,
+                                weight: 0,
+                                age: 0,
+                                fat: 0,
+                                bmi: 0,
+                                date: '2023-11-30',
+                            },
+                        ]);
                     }
 
-                    console.log(processedResults);
-                    setData([...processedResults]);
-                }
-                break;
-            case 'exercises':
-                result = await ExerciseService.getExercises();
+                    break;
+                case 'members':
+                    result = await MemberService.getMembers();
 
-                if (result.length !== 0) {
-                    const processedResults = result.map((element) => ({
-                        name: element.name,
-                        experience: element.experienceLevel,
-                        equipment: element.equipment,
-                        secondaryMuscles: element.secondaryMuscles,
-                        type: element.type,
-                        steps: element.steps.length,
-                        category: element.category,
-                        tips: element.tips,
-                        edit: element.id,
-                    }));
+                    if (result.length !== 0) {
+                        const processedResults = result.map((element) => ({
+                            personalLevel: element.personalLevel,
+                            firstName: element.firstName,
+                            memberLevel: element.memberLevel,
+                            Email: element.user.email,
+                            Activated: element.user.activated.toString(),
+                            edit: element.id,
+                        }));
 
-                    console.log(processedResults);
-                    setData([...processedResults]);
-                }
-                break;
-            case 'membersOfPT':
-                result = await MemberService.getMembersByPTId(account.memberId);
+                        console.log(processedResults);
+                        setData([...processedResults]);
+                    }
+                    break;
+                case 'pts':
+                    result = await MemberService.getPTs();
+                    let processedResults;
+                    if (result.length !== 0) {
+                        if (isPT) {
+                            processedResults = result.map((element) => ({
+                                firstName: element.firstName,
+                                ptLevel: element.ptLevel,
+                                email: element.user.email,
+                                activated: element.user.activated.toString(),
+                                edit: element.id,
+                            }));
+                        } else {
+                            processedResults = result.map((element) => ({
+                                firstName: element.firstName,
+                                ptLevel: element.ptLevel,
+                                email: element.user.email,
+                                activated: element.user.activated.toString(),
+                                edit: element.id,
+                            }));
+                        }
 
-                if (result.length !== 0) {
-                    const processedResults = result.map((element) => ({
-                        personalLevel: element.personalLevel,
-                        fullName: element.firstName + ' ' + element.lastName,
-                        memberLevel: element.memberLevel,
-                        Email: element.user.email,
-                        Activated: element.user.activated.toString(),
-                        hasProgram: element.hasProgram.toString(),
-                        goal: '143',
-                    }));
+                        console.log(processedResults);
+                        setData([...processedResults]);
+                    }
+                    break;
+                case 'exercises':
+                    result = await ExerciseService.getExercises();
 
-                    console.log(processedResults);
-                    setData([...processedResults]);
-                }
-                break;
-            default:
-                break;
+                    if (result.length !== 0) {
+                        const processedResults = result.map((element) => ({
+                            name: element.name,
+                            experience: element.experienceLevel,
+                            equipment: element.equipment,
+                            secondaryMuscles: element.secondaryMuscles,
+                            type: element.type,
+                            steps: element.steps.length,
+                            category: element.category,
+                            tips: element.tips,
+                            edit: element.id,
+                        }));
+
+                        console.log(processedResults);
+                        setData([...processedResults]);
+                    }
+                    break;
+                case 'membersOfPT':
+                    result = await MemberService.getMembersByPTId(
+                        account.memberId,
+                    );
+
+                    if (result.length !== 0) {
+                        const processedResults = result.map((element) => ({
+                            personalLevel: element.personalLevel,
+                            fullName:
+                                element.firstName + ' ' + element.lastName,
+                            memberLevel: element.memberLevel,
+                            Email: element.user.email,
+                            Activated: element.user.activated.toString(),
+                            hasProgram: element.hasProgram.toString(),
+                            goal: element.goal,
+                        }));
+
+                        console.log(processedResults);
+                        setData([...processedResults]);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        } catch (err) {
+            toast.error('Failed', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
         }
-
-        console.log(result);
     };
 
     useMemo(() => {
@@ -563,6 +571,9 @@ const TanStackTable = ({ type }) => {
                     setOpenDeleteTrainerModal={setOpenDeleteTrainerModal}
                 />
             )}
+            <div className="toast-container">
+                <ToastContainer limit={2} />
+            </div>
         </div>
     );
 };

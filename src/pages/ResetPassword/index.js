@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import AuthService from '../../services/AuthService';
 import { useDispatch, useSelector } from 'react-redux';
+import { Slide, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ResetPassword = () => {
     const {
@@ -25,7 +27,11 @@ const ResetPassword = () => {
                 data.verifyCode,
             );
             navigate('/');
-        } catch (err) {}
+        } catch (err) {
+            toast.error('Reset Password failed', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+        }
     };
     return (
         <div>
@@ -175,6 +181,7 @@ const ResetPassword = () => {
                     </div>
                 </div>
             </section>
+            <ToastContainer />
         </div>
     );
 };

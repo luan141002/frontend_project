@@ -40,7 +40,7 @@ const ExerciseService = {
     },
     deleteExercise: async (exerciseId) => {
         const response = await WebService.delete(`/exercises/${exerciseId}`);
-        return await response.json();
+        return response;
     },
 };
 

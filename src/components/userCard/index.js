@@ -8,13 +8,14 @@ const UserCard = ({ PT }) => {
     const navigate = useNavigate();
     console.log(account);
     const onAssign = async () => {
-        const response = await MemberService.assignPT(
-            +account.memberId,
-            +PT.id,
-        );
-        if (response.status === 200) navigate('/target');
-        else {
-        }
+        navigate(`/target/${PT.id}`);
+        // const response = await MemberService.assignPT(
+        //     +account.memberId,
+        //     +PT.id,
+        // );
+        // if (response.status === 200) navigate('/target');
+        // else {
+        // }
     };
 
     return (

@@ -2,6 +2,8 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import AuthService from '../../services/AuthService';
+import { Slide, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ForgetPassword = () => {
     const navigate = useNavigate();
@@ -18,7 +20,11 @@ const ForgetPassword = () => {
         try {
             await AuthService.forgotPassword(data.email);
             navigate('/reset-password');
-        } catch (err) {}
+        } catch (err) {
+            toast.error('Send Verification Code failed', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+        }
     };
     return (
         <div className="w-full h-screen flex items-center justify-center ">
@@ -104,6 +110,7 @@ const ForgetPassword = () => {
                     </div>
                 </form>
             </div>
+            <ToastContainer />
         </div>
     );
 };

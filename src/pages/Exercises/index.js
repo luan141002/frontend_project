@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import Dumbbell from '../../public/dumbbells.jpg';
 import BodyWeight from '../../public/bodyweight.jpg';
 import ExerciseBall from '../../public/exerciseball.jpg';
@@ -8,20 +8,27 @@ import Machine from '../../public/machine.jpg';
 import Barbell from '../../public/barbell.jpg';
 import MaleSide from '../../components/maleSide';
 import FemaleSide from '../../components/femaleSide';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import TopRank from '../../components/top_rank';
 import PostService from '../../services/PostService';
 import ExerciseService from '../../services/ExerciseService';
 import './exercises.css';
 
 const Exercises = () => {
-    const [TopArticles, setTopArticles] = useState();
+    const [topExercises, setTopExercises] = useState();
     const loadPage = async () => {
-        const topArticleList = await PostService.getTopPosts();
-        setTopArticles(topArticleList.slice(0, 5));
+        try {
+            const topExerciseList = await ExerciseService.getExercises();
+            setTopExercises(topExerciseList.slice(0, 5));
+        } catch (err) {
+            toast.error('Load Top Exercises failed', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+        }
     };
 
-    useEffect(() => {
+    useMemo(() => {
         loadPage();
     }, []);
 
@@ -128,11 +135,12 @@ const Exercises = () => {
                             EXERCISES
                         </h1>
                         <div className="w-full space-y-1 mt-[20px] pl-3">
-                            {TopArticles?.map((article, index) => {
+                            {topExercises?.map((exercise, index) => {
                                 return (
                                     <TopRank
+                                        type="exercise"
                                         key={index}
-                                        post={article}
+                                        exercise={exercise}
                                         index={index}
                                     />
                                 );
@@ -214,6 +222,9 @@ const Exercises = () => {
                         </div>
                     );
                 })}
+            </div>
+            <div className="toast-container">
+                <ToastContainer limit={2} />
             </div>
         </div>
     );

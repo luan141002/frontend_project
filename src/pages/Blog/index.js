@@ -8,19 +8,28 @@ import { useSelector } from 'react-redux';
 
 import TopRank from '../../components/top_rank';
 import Post from '../../components/post';
+import {
+    HiOutlineBell,
+    HiOutlineSearch,
+    HiOutlineChatAlt,
+} from 'react-icons/hi';
 
 const Blog = () => {
     const [listBlog, setListBlog] = useState();
     const [TopArticles, setTopArticles] = useState();
     const [tags, setTags] = useState([]);
     const [page, setPage] = useState(0);
-
+    const [searchKey, setSearchKey] = useState('');
     const account = useRef(useSelector((state) => state.account));
     const isPT =
         account.current.roles[0]?.name === 'PERSONAL_TRAINER' ? true : false;
 
     const loadPage = async () => {
-        const posts = await PostService.getPosts({ page: page, limit: 5 });
+        const posts = await PostService.getPosts({
+            page: page,
+            limit: 5,
+            searchKey: searchKey,
+        });
         const topArticleList = await PostService.getTopPosts();
         const listTags = await PostService.getTags();
 
@@ -31,7 +40,7 @@ const Blog = () => {
 
     useEffect(() => {
         loadPage();
-    }, [page]);
+    }, [page, searchKey]);
 
     const { token } = theme.useToken();
 
@@ -179,30 +188,44 @@ const Blog = () => {
                                         </span>
                                     );
                                 })}
+                                {inputVisible ? (
+                                    <Input
+                                        ref={inputRef}
+                                        type="text"
+                                        size="small"
+                                        className="w-[78px]"
+                                        value={inputValue}
+                                        onChange={(e) => {
+                                            setInputValue(e.target.value);
+                                        }}
+                                        onBlur={handleInputConfirm}
+                                        onPressEnter={handleInputConfirm}
+                                    />
+                                ) : (
+                                    <Tag
+                                        onClick={showInput}
+                                        style={tagPlusStyle}
+                                        className="w-[78px]"
+                                    >
+                                        <PlusOutlined /> New Tag
+                                    </Tag>
+                                )}
+                                <div className="relative">
+                                    <HiOutlineSearch
+                                        fontSize={20}
+                                        className="text-gray-400 absolute top-1/2 left-3 -translate-y-1/2"
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="Search..."
+                                        onChange={(e) =>
+                                            setSearchKey(e.target.value)
+                                        }
+                                        className="text-sm focus:outline-none active:outline-none border border-gray-300 w-[18rem] h-10 pl-11 pr-4 rounded-sm"
+                                    />
+                                </div>
                             </div>
                             {/* handle input event */}
-                            {inputVisible ? (
-                                <Input
-                                    ref={inputRef}
-                                    type="text"
-                                    size="small"
-                                    className="w-[78px]"
-                                    value={inputValue}
-                                    onChange={(e) => {
-                                        setInputValue(e.target.value);
-                                    }}
-                                    onBlur={handleInputConfirm}
-                                    onPressEnter={handleInputConfirm}
-                                />
-                            ) : (
-                                <Tag
-                                    onClick={showInput}
-                                    style={tagPlusStyle}
-                                    className="w-[78px]"
-                                >
-                                    <PlusOutlined /> New Tag
-                                </Tag>
-                            )}
                         </div>
                         <h1 className="font-bold text-3xl leading-4 ml-[20px]">
                             Top Articles

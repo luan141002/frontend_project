@@ -1,6 +1,8 @@
 import React from 'react';
 import ExerciseService from '../../../services/ExerciseService';
 import MemberService from '../../../services/MemberService';
+import { Slide, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const DeleteModal = ({
     type,
@@ -11,15 +13,30 @@ const DeleteModal = ({
     setLoadTablePage,
 }) => {
     const onDeleteBtnClick = async () => {
-        if (type === 'exercise') {
-            await ExerciseService.deleteExercise(currentExercise);
-            setLoadTablePage((state) => state + 1);
-            setOpenDeleteExerciseModal(false);
-        } else if (type === 'pt') {
-            console.log(currentTrainer);
-            await MemberService.deletePT(currentTrainer);
-            setLoadTablePage((state) => state + 1);
-            setOpenDeleteTrainerModal(false);
+        try {
+            if (type === 'exercise') {
+                const response = await ExerciseService.deleteExercise(
+                    currentExercise,
+                );
+
+                toast.success('Delete successfully', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+                setLoadTablePage((state) => state + 1);
+                setOpenDeleteExerciseModal(false);
+            } else if (type === 'pt') {
+                console.log(currentTrainer);
+                await MemberService.deletePT(currentTrainer);
+                toast.success('Delete successfully', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+                setLoadTablePage((state) => state + 1);
+                setOpenDeleteTrainerModal(false);
+            }
+        } catch (err) {
+            toast.error('Delete failed', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
         }
     };
     return (
@@ -39,7 +56,9 @@ const DeleteModal = ({
                     Are you sure you want to delete this {type}? This action
                     will remove this {type} and cannot be reversed.
                 </p>
-
+                <div className="toast-container">
+                    <ToastContainer limit={2} />
+                </div>
                 <div className=" flex w-full mt-4 items-center justify-center space-x-4 ">
                     <button
                         onClick={onDeleteBtnClick}

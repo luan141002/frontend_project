@@ -3,6 +3,8 @@ import { useForm, Controller } from 'react-hook-form';
 import ExerciseService from '../../services/ExerciseService';
 import { v4 as uuidv4 } from 'uuid';
 import CrossIcon from '../Schedule/assets/icon-cross.svg';
+import { Slide, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UploadExercise = ({
     type,
@@ -25,15 +27,23 @@ const UploadExercise = ({
     const [steps, setSteps] = useState();
 
     const loadPage = async () => {
-        if (type === 'edit') {
-            const response = await ExerciseService.getExercise(currentExercise);
-            console.log(response);
-            setDefaultExercise(response);
+        try {
+            if (type === 'edit') {
+                const response = await ExerciseService.getExercise(
+                    currentExercise,
+                );
+                console.log(response);
+                setDefaultExercise(response);
 
-            setSteps(response?.steps);
+                setSteps(response?.steps);
+            }
+            const categories = await ExerciseService.getCategories();
+            setExerciseCategories(categories);
+        } catch (err) {
+            toast.error(`${type} Exercise failed`, {
+                position: toast.POSITION.TOP_RIGHT,
+            });
         }
-        const categories = await ExerciseService.getCategories();
-        setExerciseCategories(categories);
     };
 
     useEffect(() => {
@@ -110,7 +120,11 @@ const UploadExercise = ({
             //     setOpenAddExerciseModel(false);
             // }
             // navigate('/');
-        } catch (err) {}
+        } catch (err) {
+            toast.error(`${type} Exercise failed`, {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+        }
     };
     const [newColumns, setNewColumns] = useState([
         {
@@ -168,11 +182,11 @@ const UploadExercise = ({
                         className="w-full mx-auto  p-4 "
                     >
                         <div className="text-gray-700 flex flex-col self-start mb-[5%] mt-4">
-                            <label className="text-[30px] font-bold ">
-                                Upload Exercises
+                            <label className="text-[30px] font-bold capitalize">
+                                {type} Exercises
                             </label>
-                            <p className="text-gray-700 text-[15px] font-thin italic">
-                                upload Exercise
+                            <p className="text-gray-700 text-[15px] font-thin italic capitalize">
+                                {type} Exercise
                             </p>
                         </div>
                         <div className="flex justify-between">
@@ -719,7 +733,7 @@ const UploadExercise = ({
                                 type="reset"
                                 className="bg-red-700 text-white h-[40px] w-[120px] hover:border-3  hover:opacity-80"
                             >
-                                reset
+                                Cancel
                             </button>
                             {success && (
                                 <p className="text-green-800 text-xs mt-1">
@@ -730,6 +744,7 @@ const UploadExercise = ({
                     </form>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 };

@@ -10,6 +10,7 @@ const ProgramService = {
                 id: +memberId,
             },
         };
+        console.log(body);
         const response = await WebService.postJson('/programs', body);
         return response.json;
     },
