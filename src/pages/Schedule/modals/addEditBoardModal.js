@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm, Controller } from 'react-hook-form';
 import boardSlides from '../../../redux/boardsSlice.js';
 import ProgramService from '../../../services/ProgramService.js';
+import { Slide, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddEditBoardModal = ({
     setBoardModalOpen,
@@ -33,16 +35,25 @@ const AddEditBoardModal = ({
         setIsFirstLoad(false);
     }
     const onSubmit = async (data) => {
-        console.log(data);
-        console.log(memberId);
-        const response = await ProgramService.addProgram(
-            memberId,
-            data.name,
-            data.description,
-        );
-        console.log(response);
-        setReloadPage((state) => state + 1);
-        setBoardModalOpen(false);
+        try {
+            console.log(data);
+            console.log(memberId);
+            const response = await ProgramService.addProgram(
+                memberId,
+                data.name,
+                data.description,
+            );
+            console.log(response);
+            setReloadPage((state) => state + 1);
+            setBoardModalOpen(false);
+            toast.success('Add Program successfully', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+        } catch (err) {
+            toast.error('Create Program failed', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+        }
     };
     return (
         <div
@@ -119,6 +130,7 @@ const AddEditBoardModal = ({
                     </button>
                 </form>
             </div>
+            <ToastContainer />
         </div>
     );
 };

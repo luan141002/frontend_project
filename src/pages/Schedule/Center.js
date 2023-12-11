@@ -79,17 +79,11 @@ const Center = () => {
 
                     setBoards(response.boards);
                     setIsLoading(false);
-                    toast.success('Load Program successfully', {
-                        position: toast.POSITION.TOP_RIGHT,
-                    });
                 }
                 // else set null
                 else {
                     setBoards([{ board: { columns: [], isActive: true } }]);
                     setIsLoading(false);
-                    toast.success('Load Program successfully', {
-                        position: toast.POSITION.TOP_RIGHT,
-                    });
                 }
             }
             // MEMBER SECTION
@@ -108,18 +102,12 @@ const Center = () => {
                         );
                     setBoards(response.boards);
                     setIsLoading(false);
-                    toast.success('Load Program successfully', {
-                        position: toast.POSITION.TOP_RIGHT,
-                    });
                 } else if (
                     account.hasProgram === false &&
                     boardMemberId != null
                 ) {
                     setBoards(data.boards);
                     setIsLoading(false);
-                    toast.success('Load Program successfully', {
-                        position: toast.POSITION.TOP_RIGHT,
-                    });
                 }
             }
         } catch (error) {

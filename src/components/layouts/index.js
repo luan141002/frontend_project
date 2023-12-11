@@ -2,8 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { publicRoutes } from '../../routes';
 import { Fragment } from 'react';
 import DefaultLayout from './defaultLayout';
-import { Slide, ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 function Layout() {
     return (
@@ -36,9 +34,6 @@ function Layout() {
                         );
                     })}
                 </Routes>
-                <div className="toast-container">
-                    <ToastContainer limit={2} />
-                </div>
             </div>
         </Router>
     );

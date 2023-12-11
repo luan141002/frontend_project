@@ -5,6 +5,8 @@ import boardsSlice from '../../redux/boardsSlice.js';
 import Task from './Task.js';
 import AddEditTaskModal from './modals/addEditTaskModal.js';
 import ProgramService from '../../services/ProgramService.js';
+import { Slide, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Column = ({ colIndex, boards, setBoards, setReloadPage, memberId }) => {
     const colors = [
@@ -38,18 +40,24 @@ const Column = ({ colIndex, boards, setBoards, setReloadPage, memberId }) => {
         );
         console.log(prevColIndex, taskIndex, taskId, colIndex);
         if (colIndex !== prevColIndex) {
-            switch (colIndex) {
-                case 0:
-                    await ProgramService.changeSessionStatusToTodo(taskId);
-                    break;
-                case 1:
-                    await ProgramService.changeSessionStatusToDoing(taskId);
-                    break;
-                case 2:
-                    await ProgramService.changeSessionStatusToDone(taskId);
-                    break;
+            try {
+                switch (colIndex) {
+                    case 0:
+                        await ProgramService.changeSessionStatusToTodo(taskId);
+                        break;
+                    case 1:
+                        await ProgramService.changeSessionStatusToDoing(taskId);
+                        break;
+                    case 2:
+                        await ProgramService.changeSessionStatusToDone(taskId);
+                        break;
+                }
+                setReloadPage((state) => state + 1);
+            } catch (err) {
+                toast.error('Change Task type failed', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
             }
-            setReloadPage((state) => state + 1);
         }
     };
 
@@ -99,6 +107,7 @@ const Column = ({ colIndex, boards, setBoards, setReloadPage, memberId }) => {
                     memberId={memberId}
                 />
             )}
+            <ToastContainer />
         </div>
     );
 };

@@ -10,6 +10,8 @@ import boardSlice from '../../../redux/boardsSlice.js';
 import ProgramService from '../../../services/ProgramService.js';
 import MemberService from '../../../services/MemberService.js';
 import ExerciseService from '../../../services/ExerciseService.js';
+import { Slide, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddEditTaskModal = ({
     type,
@@ -49,36 +51,69 @@ const AddEditTaskModal = ({
 
     // FUNCTIONS
     const loadEditPage = async () => {
-        if (isPT) {
-            const board = boards?.find((board) => board.isActive);
-            const workoutSession = board?.columns[colIndex]?.tasks?.find(
-                (task) => task.id === taskId,
-            );
-            setWorkoutSession(workoutSession);
+        try {
+            if (isPT) {
+                const board = boards?.find((board) => board.isActive);
+                const workoutSession = board?.columns[colIndex]?.tasks?.find(
+                    (task) => task.id === taskId,
+                );
+                setWorkoutSession(workoutSession);
 
-            setSubtasks(workoutSession?.subtasks);
+                setSubtasks(workoutSession?.subtasks);
+            }
+            const exercises = await ExerciseService.getExercises();
+            setExercises(exercises);
+        } catch (err) {
+            toast.error('Load Task failed', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
         }
-        const exercises = await ExerciseService.getExercises();
-        setExercises(exercises);
     };
     const onWorkoutSessionDelete = async (id) => {
-        await ProgramService.deleteWorkoutSessions(workoutSession.id);
-        setOpenEditTask(false);
-        setReloadPage((state) => state + 1);
+        try {
+            await ProgramService.deleteWorkoutSessions(workoutSession.id);
+            setOpenEditTask(false);
+            setReloadPage((state) => state + 1);
+            toast.success('Delete Task successfully', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+        } catch (err) {
+            toast.error('Delete Task failed', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+        }
     };
 
     const onDelete = async (id) => {
-        setSubtasks((prevState) => prevState.filter((el) => el.id !== id));
-        await ProgramService.deleteSubtask(workoutSession.id, id);
-        setReloadModal((state) => state + 1);
-        setReloadPage((state) => state + 1);
+        try {
+            setSubtasks((prevState) => prevState.filter((el) => el.id !== id));
+            await ProgramService.deleteSubtask(workoutSession.id, id);
+            setReloadModal((state) => state + 1);
+            setReloadPage((state) => state + 1);
+            toast.success('Delete subTask successfully', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+        } catch (err) {
+            toast.error('Delete subTask failed', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+        }
     };
 
     const onCreateSubtask = async (id) => {
-        console.log(id);
-        await ProgramService.addSubtask(workoutSession?.id, id);
-        // setReloadModal((state) => state + 1);
-        setReloadPage((state) => state + 1);
+        try {
+            console.log(id);
+            await ProgramService.addSubtask(workoutSession?.id, id);
+            // setReloadModal((state) => state + 1);
+            setReloadPage((state) => state + 1);
+            toast.success('Create subtask successfully', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+        } catch (err) {
+            toast.error('Create subtask failed', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
+        }
     };
 
     // handle column input
@@ -99,25 +134,37 @@ const AddEditTaskModal = ({
     };
 
     const onSubmit = async (data) => {
-        if (type === 'add') {
-            data['subtasks'] = subtasks;
-            console.log(data);
-            await ProgramService.addWorkoutSessions(programId, data);
-            console.log(data);
-            setOpenAddEditTask(false);
-            setReloadPage((state) => state + 1);
-        } else {
-            data['subtasks'] = subtasks;
-            for (const [key, value] of Object.entries(data)) {
-                if (value === '') {
-                    data[`${key}`] = workoutSession[`${key}`];
+        try {
+            if (type === 'add') {
+                data['subtasks'] = subtasks;
+                console.log(data);
+                await ProgramService.addWorkoutSessions(programId, data);
+                console.log(data);
+                setOpenAddEditTask(false);
+                setReloadPage((state) => state + 1);
+                toast.success('Add task successfully', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+            } else {
+                data['subtasks'] = subtasks;
+                for (const [key, value] of Object.entries(data)) {
+                    if (value === '') {
+                        data[`${key}`] = workoutSession[`${key}`];
+                    }
                 }
-            }
-            console.log(data);
-            await ProgramService.editWorkoutSessions(taskId, data);
+                console.log(data);
+                await ProgramService.editWorkoutSessions(taskId, data);
 
-            setOpenEditTask(false);
-            setReloadPage((state) => state + 1);
+                setOpenEditTask(false);
+                setReloadPage((state) => state + 1);
+                toast.success('Edit task successfully', {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+            }
+        } catch (err) {
+            toast.error('Create Task failed', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
         }
     };
     return (
@@ -383,6 +430,7 @@ const AddEditTaskModal = ({
                     </div>
                 </form>
             </div>
+            <ToastContainer />
         </div>
     );
 };
