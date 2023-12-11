@@ -1,6 +1,7 @@
 import React from 'react';
 import Sidebar from './shared/Sidebar.jsx';
 import Header from './shared/Header.jsx';
+import Footer from '../../Footer/index.js';
 
 export default function Layout({
     children,

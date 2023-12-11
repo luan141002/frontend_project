@@ -175,6 +175,7 @@ export default function Header() {
                                                     },
                                                 ),
                                             );
+                                            navigate('/');
                                         }}
                                     >
                                         Sign out

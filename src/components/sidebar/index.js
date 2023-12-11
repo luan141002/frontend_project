@@ -4,6 +4,8 @@ import LogoImage from '../../public/logo-image.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { IconName, AiFillHome } from 'react-icons/ai';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
     FaWeightHanging,
     FaNewspaper,
@@ -23,6 +25,7 @@ const SideBar = () => {
             link: '/exercises',
             clicked: false,
             secure: true,
+            hasProgram: false,
             icon: <FaWeightHanging />,
         },
         {
@@ -30,6 +33,7 @@ const SideBar = () => {
             link: '/blogs',
             clicked: false,
             secure: false,
+            hasProgram: false,
             icon: <FaNewspaper />,
         },
         {
@@ -38,6 +42,7 @@ const SideBar = () => {
             clicked: false,
             secure: true,
             spacing: true,
+            hasProgram: true,
             icon: <FaChalkboardUser />,
         },
         {
@@ -45,6 +50,7 @@ const SideBar = () => {
             link: '/',
             icon: <FaWeightScale />,
             clicked: true,
+            hasProgram: false,
             secure: true,
             subMenu: [
                 {
@@ -68,6 +74,7 @@ const SideBar = () => {
             secure: true,
             link: `/user/user-profile`,
             clicked: false,
+            hasProgram: false,
             icon: <FaRegUserCircle />,
         },
     ];
@@ -90,22 +97,24 @@ const SideBar = () => {
                 onClick={() => setOpen(!open)}
             /> */}
             <div class="bg-[#3D3030] h-[0.5px]  w-full  "></div>
-            <div className="inline-flex justify-between items-center">
-                <img
-                    src={LogoImage}
-                    alt="Logo"
-                    className={`w-[62px] h-[49px] cursor-pointer block m-auto duration-500  ${
-                        !open ? 'rotate-[-36.20deg] ' : 'rotate-[323.8deg]'
-                    } `}
-                />
-                <label
-                    className={`text-[#980B0B] ${
-                        !open && 'scale-0'
-                    } duration-200 lg:text-[40px] sm:text-[30px] min-[320px]:text-[30px] font-semibold`}
-                >
-                    LOGO
-                </label>
-            </div>
+            <Link to={'/'}>
+                <div className="inline-flex justify-between items-center">
+                    <img
+                        src={LogoImage}
+                        alt="Logo"
+                        className={`w-[62px] h-[49px] cursor-pointer block m-auto duration-500  ${
+                            !open ? 'rotate-[-36.20deg] ' : 'rotate-[323.8deg]'
+                        } `}
+                    />
+                    <label
+                        className={`text-[#980B0B] ${
+                            !open && 'scale-0'
+                        } duration-200 lg:text-[40px] sm:text-[30px] min-[320px]:text-[30px] font-semibold`}
+                    >
+                        LOGO
+                    </label>
+                </div>
+            </Link>
             {/* <div
                 className={`flex items-center rounded-md bg-blend-lighten  mt-6 ${
                     !open ? 'px-2.5' : 'px-4'
@@ -158,7 +167,24 @@ const SideBar = () => {
                                     if (menu?.clicked === true) {
                                         setIsClicked((state) => !state);
                                     } else {
-                                        navigate(menu?.link);
+                                        if (
+                                            account.roles[0].name !== 'MEMBER'
+                                        ) {
+                                            navigate(menu?.link);
+                                        } else {
+                                            if (account.hasProgram === true) {
+                                                navigate(menu?.link);
+                                            } else {
+                                                toast.error(
+                                                    'You havent join any program yet',
+                                                    {
+                                                        position:
+                                                            toast.POSITION
+                                                                .TOP_RIGHT,
+                                                    },
+                                                );
+                                            }
+                                        }
                                     }
                                 }}
                             >
@@ -175,6 +201,7 @@ const SideBar = () => {
                                 </span>
                             </li>
                         )}
+
                         {isClicked && (
                             <ul className="pl-8">
                                 {menu.subMenu?.map((subMenu, index) => (
@@ -200,6 +227,9 @@ const SideBar = () => {
                     </>
                 ))}
             </ul>
+            <div className="toast-container">
+                <ToastContainer limit={2} />
+            </div>
         </div>
     );
 };

@@ -9,9 +9,9 @@ const defaultLayout = ({ children }) => {
             <SideBar />
             <div className="flex flex-col pl-20 flex-wrap w-full h-screen bg-[#151212]">
                 <Header />
-                <div className=" w-full bg-[#151212] justify-self-center mt-[90px] h-[100px]  ">
+                <div className=" w-full bg-[#151212] justify-self-center mt-[90px] h-[100vh] relative">
                     {children}
-                    {/* <Footer /> */}
+                    <Footer />
                 </div>
 
                 {/* <Footer /> */}

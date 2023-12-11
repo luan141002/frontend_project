@@ -74,7 +74,7 @@ const CaloriesCalculator = ({ type }) => {
         }
     };
     return (
-        <div className="bg-[#151212] w-full min-h-min p-6 mb-[10%]">
+        <div className="bg-[#151212] w-full min-h-min p-6 ">
             {type === 'calories-calculator' && (
                 <div className="text-white flex flex-col self-start mb-[10%]">
                     <label className="text-[40px] font-bold ">
@@ -203,7 +203,7 @@ const CaloriesCalculator = ({ type }) => {
                             <CircleSlider
                                 value={age}
                                 size={300}
-                                stepSize={5}
+                                stepSize={1}
                                 max={100}
                                 knobRadius={20}
                                 progressWidth={20}
@@ -231,7 +231,7 @@ const CaloriesCalculator = ({ type }) => {
                             <CircleSlider
                                 value={weight}
                                 size={300}
-                                stepSize={5}
+                                stepSize={1}
                                 max={100}
                                 knobRadius={20}
                                 progressWidth={20}
@@ -253,13 +253,13 @@ const CaloriesCalculator = ({ type }) => {
                                 </div>
                                 <div className="my-3">{height}</div>
                                 <div className="text-[18px] leading-[15px] ">
-                                    Metres
+                                    Centimeters
                                 </div>
                             </div>
                             <CircleSlider
                                 value={height}
                                 size={300}
-                                stepSize={5}
+                                stepSize={1}
                                 max={200}
                                 knobRadius={20}
                                 progressWidth={20}

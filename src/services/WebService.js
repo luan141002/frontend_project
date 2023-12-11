@@ -1,6 +1,8 @@
 import AuthService from './AuthService';
 
-const API_URL = 'http://localhost:8010/api/v1';
+const API_URL = 'https://gym-rat-production.up.railway.app/api/v1';
+// http://localhost:8010/api/v1
+// https://gym-rat-production.up.railway.app/api/v1
 
 class WebError {
     constructor(status, code, message, details) {

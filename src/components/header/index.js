@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import LogoImage from '../../public/logo-image.png';
 import Vietnamese from '../../public/Vietnamese-logo.svg.png';
+import { Link } from 'react-router-dom';
 import { Menu, Popover, Transition } from '@headlessui/react';
 import { HiOutlineBell } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
@@ -32,27 +33,29 @@ const Header = () => {
 
     const pathArray = privateRoutes.map((route) => route.path);
 
-    useMemo(() => {
-        if (pathArray.includes(location.pathname.toString())) {
-            console.log('hihi');
-            setOpenLoginModal(true);
-        } else {
-            setOpenLoginModal(false);
-        }
-    }, [location.pathname]);
+    // useMemo(() => {
+    //     if (pathArray.includes(location.pathname.toString())) {
+    //         console.log('hihi');
+    //         setOpenLoginModal(true);
+    //     } else {
+    //         setOpenLoginModal(false);
+    //     }
+    // }, [location.pathname]);
 
     return (
         <div className="bg-[#151212] w-[95%] h-[80px] fixed flex justify-between items-center border-b border-b-[#3D3030] p-4 z-40">
-            <div className="flex justify-between items-center">
-                {/* <img
-                        src={LogoImage}
-                        alt='Logo'
-                        className='w-[62px] h-[49px]  rotate-[-36.20deg]'
-                    /> */}
-                <label className="text-[#980B0B]  lg:text-[40px] sm:text-[30px] min-[320px]:text-[30px] font-semibold">
-                    LOGO
-                </label>
-            </div>
+            <Link to={'/'}>
+                <div className="flex justify-between items-center">
+                    {/* <img
+                            src={LogoImage}
+                            alt='Logo'
+                            className='w-[62px] h-[49px]  rotate-[-36.20deg]'
+                        /> */}
+                    <label className="text-[#980B0B]  lg:text-[40px] sm:text-[30px] min-[320px]:text-[30px] font-semibold">
+                        LOGO
+                    </label>
+                </div>
+            </Link>
             {/* search section */}
             <div class="relative hidden md:block w-[40%] h-[60%] ">
                 <div class="absolute h-[40px] w-[10%]  right-0 flex items-center justify-center  hover:bg-black hover:text-white  ">
@@ -82,9 +85,9 @@ const Header = () => {
             <div className="flex justify-between items-center space-x-3 bg-transparent">
                 {/* Language Option logo  */}
                 <img
-                    src={Vietnamese}
+                    src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Flag_of_the_United_States_%28DoS_ECA_Color_Standard%29.svg"
                     alt="vietnamese logo"
-                    className="w-[25px] h-4 border border-stone-50"
+                    className="w-[25px] h-4 border border-stone-50 bg-center bg-cover"
                 />
                 {account.email != null ? (
                     <div className="flex space-x-2 items-center px-3">

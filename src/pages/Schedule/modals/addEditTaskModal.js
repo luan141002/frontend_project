@@ -77,7 +77,7 @@ const AddEditTaskModal = ({
     const onCreateSubtask = async (id) => {
         console.log(id);
         await ProgramService.addSubtask(workoutSession?.id, id);
-        setReloadModal((state) => state + 1);
+        // setReloadModal((state) => state + 1);
         setReloadPage((state) => state + 1);
     };
 
@@ -246,78 +246,85 @@ const AddEditTaskModal = ({
 
                     {/* Subtasks Section */}
 
-                    <div className="mt-8 flex flex-col space-y-1">
-                        <label className="text-sm text-gray-500">
-                            Subtasks
-                        </label>
-                        {subtasks?.map((subtask, index) => {
-                            return (
-                                <div
-                                    key={index}
-                                    className="flex items-center w-full"
-                                >
-                                    <select
-                                        className="flex flex-grow px-4 py-2 rounded-md text-sm bg-transparent
+                    {type === 'edit' && (
+                        <div className="mt-8 flex flex-col space-y-1">
+                            <label className="text-sm text-gray-500">
+                                Subtasks
+                            </label>
+                            {subtasks?.map((subtask, index) => {
+                                return (
+                                    <div
+                                        key={index}
+                                        className="flex items-center w-full"
+                                    >
+                                        <select
+                                            className="flex flex-grow px-4 py-2 rounded-md text-sm bg-transparent
                             focus:border-0 border border-gray-300
                             focus:outline-[#635fc7] outline-0"
-                                        style={{
-                                            backgroundImage: `url(
+                                            style={{
+                                                backgroundImage: `url(
                                     ${chevronDown}`,
 
-                                            appearance: 'none',
-                                            backgroundRepeat: 'no-repeat',
-                                            backgroundPosition:
-                                                'right 16px top-50%',
-                                        }}
-                                        onChange={(e) => {
-                                            onChange(index, e.target.value);
-                                        }}
-                                    >
-                                        {exercises?.map((exercise, index) => (
-                                            <option
-                                                value={exercise.id}
-                                                key={index}
-                                                selected={
-                                                    exercise?.id ===
-                                                    subtask?.exercise?.id
-                                                }
-                                            >
-                                                {exercise?.name}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <img
-                                        onClick={async () => {
-                                            await onCreateSubtask(subtask?.id);
-                                        }}
-                                        src={CheckIcon}
-                                        className="m-4 cursor-pointer"
-                                    />
-                                    <img
-                                        onClick={async () => {
-                                            await onDelete(subtask?.id);
-                                        }}
-                                        src={crossIcon}
-                                        className="m-4 cursor-pointer"
-                                    />
-                                </div>
-                            );
-                        })}
-                        <button
-                            className="w-full items-center hover:opacity-75 text-white bg-[#635fc7] mt-2 py-2 rounded-full"
-                            type="button"
-                            onClick={() => {
-                                setSubtasks((state) => [
-                                    ...state,
-                                    {
-                                        id: 1,
-                                    },
-                                ]);
-                            }}
-                        >
-                            + Add New Subtask
-                        </button>
-                    </div>
+                                                appearance: 'none',
+                                                backgroundRepeat: 'no-repeat',
+                                                backgroundPosition:
+                                                    'right 16px top-50%',
+                                            }}
+                                            onChange={(e) => {
+                                                onChange(index, e.target.value);
+                                            }}
+                                        >
+                                            {exercises?.map(
+                                                (exercise, index) => (
+                                                    <option
+                                                        value={exercise.id}
+                                                        key={index}
+                                                        selected={
+                                                            exercise?.id ===
+                                                            subtask?.exercise
+                                                                ?.id
+                                                        }
+                                                    >
+                                                        {exercise?.name}
+                                                    </option>
+                                                ),
+                                            )}
+                                        </select>
+                                        <img
+                                            onClick={async () => {
+                                                await onCreateSubtask(
+                                                    subtask?.id,
+                                                );
+                                            }}
+                                            src={CheckIcon}
+                                            className="m-4 cursor-pointer"
+                                        />
+                                        <img
+                                            onClick={async () => {
+                                                await onDelete(subtask?.id);
+                                            }}
+                                            src={crossIcon}
+                                            className="m-4 cursor-pointer"
+                                        />
+                                    </div>
+                                );
+                            })}
+                            <button
+                                className="w-full items-center hover:opacity-75 text-white bg-[#635fc7] mt-2 py-2 rounded-full"
+                                type="button"
+                                onClick={() => {
+                                    setSubtasks((state) => [
+                                        ...state,
+                                        {
+                                            id: 1,
+                                        },
+                                    ]);
+                                }}
+                            >
+                                + Add New Subtask
+                            </button>
+                        </div>
+                    )}
 
                     {/* Current Status Section */}
 

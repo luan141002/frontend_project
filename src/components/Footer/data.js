@@ -34,10 +34,10 @@ export const FooterTexts = {
         caption: 'Quick Contacts',
         names: [
             {
-                name: '11567 Santa Monica Blvd, Los Angeles, CA 90025, United States',
+                name: 'No.1, Vo Van Ngan, Thu duc, HCMC',
             },
             {
-                name: 'gym_nex@example.com',
+                name: 'universe@example.com',
             },
             {
                 name: '+1 424-248-8496',
