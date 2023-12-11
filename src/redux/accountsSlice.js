@@ -1,4 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
+
+const INITIAL_ACCOUNT = localStorage.getItem('user')
+    ? JSON.parse(localStorage.getItem('user'))
+    : {
+          memberId: null,
+          firstName: null,
+          lastName: null,
+          email: null,
+          id: null,
+          roles: [],
+          hasProgram: false,
+          avatar: '',
+      };
 const EMPTY_ACCOUNT = {
     memberId: null,
     firstName: null,
@@ -12,7 +25,7 @@ const EMPTY_ACCOUNT = {
 
 const accountsSlices = createSlice({
     name: 'accounts',
-    initialState: EMPTY_ACCOUNT,
+    initialState: INITIAL_ACCOUNT,
     reducers: {
         setAccount: (state, action) => {
             const {
@@ -34,9 +47,11 @@ const accountsSlices = createSlice({
             state.roles = roles;
             state.hasProgram = hasProgram;
             state.avatar = avatar;
+            localStorage.setItem('user', JSON.stringify(state));
         },
         deleteAccount: (state, action) => {
             state = EMPTY_ACCOUNT;
+            localStorage.removeItem('user');
         },
         // checkAccountRole: (state, action) => {
         //     if (role.includes('.')) {
