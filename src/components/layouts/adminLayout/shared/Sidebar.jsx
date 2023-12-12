@@ -79,7 +79,7 @@ export default function Sidebar({
                             <span className="text-2xl">
                                 <FaCalendarWeek />
                             </span>
-                            Member Schedules
+                            Member Programs
                         </Link>
                         {isPT && account.roles[0]?.name !== 'ADMIN'
                             ? members?.map((member, index) => (

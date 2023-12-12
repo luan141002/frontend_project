@@ -176,7 +176,9 @@ const TanStackTable = ({ type }) => {
                     }
                     break;
                 case 'exercises':
-                    result = await ExerciseService.getExercises();
+                    result = await ExerciseService.getExercises({
+                        limit: 40,
+                    });
 
                     if (result.length !== 0) {
                         const processedResults = result.map((element) => ({

@@ -76,19 +76,20 @@ export const DASHBOARD_SIDEBAR_LINKS = [
         ],
     },
     {
-        key: 'Management',
-        label: 'Management',
-        path: '/members',
+        // key: 'Management',
+        // label: 'Management',
+        // path: '/members',
+        // roles: ['MEMBER'],
+        // icon: <FaCompass />,
+        // subMenu: [
+        //     {
+        key: 'Personal_Statistics',
+        label: 'Personal Statistics',
+        path: '/members/personal-information',
         roles: ['MEMBER'],
-        icon: <FaCompass />,
-        subMenu: [
-            {
-                key: 'Personal_Statistics',
-                label: 'Personal Statistics',
-                path: '/members/personal-information',
-                icon: <FaRegIdCard />,
-            },
-        ],
+        icon: <FaRegIdCard />,
+        //     },
+        // ],
     },
     {
         key: 'Personal',

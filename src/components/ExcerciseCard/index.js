@@ -8,12 +8,12 @@ const ExerciseCard = ({ exercise }) => {
     );
     console.log(exercise);
     return (
-        <Link to={`/exercises/${1}`}>
+        <Link to={`/exercises/${exercise.id}`}>
             <div class="max-w-sm rounded overflow-hidden shadow-lg bg-white min-h-fit ">
                 <img
                     class="w-full"
                     src={video_thumbnail}
-                    alt="Sunset in the mountains"
+                    alt={exercise?.name}
                 />
                 <div class="px-6 py-4">
                     <div class="font-bold text-xl mb-2">{exercise?.name}</div>
