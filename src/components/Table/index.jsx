@@ -177,11 +177,13 @@ const TanStackTable = ({ type }) => {
                     break;
                 case 'exercises':
                     result = await ExerciseService.getExercises({
-                        limit: 40,
+                        limit: 60,
                     });
-
-                    if (result.length !== 0) {
-                        const processedResults = result.map((element) => ({
+                    const realResult = result.filter(
+                        (exercise) => exercise.status !== 'REMOVED',
+                    );
+                    if (realResult.length !== 0) {
+                        const processedResults = realResult.map((element) => ({
                             name: element.name,
                             experience: element.experienceLevel,
                             equipment: element.equipment,

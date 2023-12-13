@@ -72,7 +72,9 @@ const AddPost = ({ setOpenAddBlogModal }) => {
             };
             // console.log(data);
             const response = await PostService.addPost(data);
-
+            toast.success('Add Post successfully', {
+                position: toast.POSITION.TOP_RIGHT,
+            });
             console.log(response);
             setOpenAddBlogModal(false);
         } catch (err) {

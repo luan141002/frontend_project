@@ -41,9 +41,9 @@ const Header = () => {
     //         setOpenLoginModal(false);
     //     }
     // }, [location.pathname]);
-
+    console.log(account);
     return (
-        <div className="bg-[#151212] w-[95%] h-[80px] fixed flex justify-between items-center border-b border-b-[#3D3030] p-4 z-40">
+        <div className="bg-[#151212] w-[95%] h-[80px] fixed flex justify-between items-center border-b border-b-[#3D3030] p-3 z-40">
             <Link to={'/'}>
                 <div className="flex justify-between items-center">
                     {/* <img
@@ -51,8 +51,8 @@ const Header = () => {
                             alt='Logo'
                             className='w-[62px] h-[49px]  rotate-[-36.20deg]'
                         /> */}
-                    <label className="text-[#980B0B]  lg:text-[40px] sm:text-[30px] min-[320px]:text-[30px] font-semibold">
-                        LOGO
+                    <label className="text-[#980B0B]  lg:text-[20px] sm:text-[30px] min-[320px]:text-[30px] font-semibold">
+                        Universe Fitness
                     </label>
                 </div>
             </Link>
@@ -134,8 +134,7 @@ const Header = () => {
                                     <div
                                         className="h-10 w-10 rounded-full bg-sky-500 bg-cover bg-no-repeat bg-center"
                                         style={{
-                                            backgroundImage:
-                                                'url("https://source.unsplash.com/80x80?face")',
+                                            backgroundImage: `url("${account?.avatar}")`,
                                         }}
                                     >
                                         <span className="sr-only">
@@ -158,7 +157,9 @@ const Header = () => {
                                         {({ active }) => (
                                             <div
                                                 onClick={() =>
-                                                    navigate('/profile')
+                                                    navigate(
+                                                        '/user/user-profile',
+                                                    )
                                                 }
                                                 className={classNames(
                                                     active && 'bg-gray-100',
@@ -169,7 +170,7 @@ const Header = () => {
                                             </div>
                                         )}
                                     </Menu.Item>
-                                    <Menu.Item>
+                                    {/* <Menu.Item>
                                         {({ active }) => (
                                             <div
                                                 onClick={() =>
@@ -183,7 +184,7 @@ const Header = () => {
                                                 Settings
                                             </div>
                                         )}
-                                    </Menu.Item>
+                                    </Menu.Item> */}
                                     <Menu.Item>
                                         {({ active }) => (
                                             <div
@@ -229,7 +230,7 @@ const Header = () => {
                                 setOpenRegisterModal((state) => !state);
                             }}
                         >
-                            Sign In
+                            Sign Up
                         </button>
                         <button
                             type="reset"
@@ -244,7 +245,7 @@ const Header = () => {
                                 setOpenLoginModal((state) => !state);
                             }}
                         >
-                            Sign up
+                            Sign In
                         </button>
                     </div>
                 )}

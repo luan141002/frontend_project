@@ -38,14 +38,20 @@ const TargetPage = () => {
     };
 
     return (
-        <div className="w-full h-screen flex justify-center items-center">
+        <div className="w-full h-screen flex justify-center items-center flex-col">
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="max-w-lg mx-auto my-4 bg-gray-200 p-8"
             >
                 <Label className="text-[30px] font-bold">
-                    Enter your goal for the program{' '}
+                    <strong className="text-red-700">Step 3: </strong> Enter
+                    your goal for the program{' '}
                 </Label>
+                <p className="text-grey-800 text-[15px] font-thin italic">
+                    Clearly define your fitness goals. Examples include weight
+                    loss, muscle gain, improved endurance, or overall
+                    well-being.
+                </p>
                 <div className="flex items-center  border-b-2 border-red-700 py-2">
                     <input
                         {...register('target', { required: true })}

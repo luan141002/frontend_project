@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ProgramCard = ({ program }) => {
+const ProgramCard = ({ program, setOpenLoginModal }) => {
     const [showDescription, setShowDescription] = useState(false);
 
     return (
@@ -29,7 +29,10 @@ const ProgramCard = ({ program }) => {
                     ))}
                 </ul>
             </div>
-            <div className="flex self-end justify-self-end ">
+            <div
+                className="flex self-end justify-self-end "
+                onClick={() => setOpenLoginModal(true)}
+            >
                 <button className="bg-[#C30C0C] w-[160px] h-[55px] text-[15px] text-center uppercase text-white  text-medium  hover:border hover:border-white">
                     join now
                 </button>

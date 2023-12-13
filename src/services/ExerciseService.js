@@ -27,7 +27,7 @@ const ExerciseService = {
     },
     addExercise: async (newExercise) => {
         console.log(newExercise);
-        const response = await WebService.postForm(`/exercises`, newExercise);
+        const response = await WebService.postJson(`/exercises`, newExercise);
         return await response.json();
     },
     editExercise: async (exerciseId, editedExercise) => {

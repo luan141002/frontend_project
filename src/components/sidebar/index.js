@@ -109,9 +109,9 @@ const SideBar = () => {
                     <label
                         className={`text-[#980B0B] ${
                             !open && 'scale-0'
-                        } duration-200 lg:text-[40px] sm:text-[30px] min-[320px]:text-[30px] font-semibold`}
+                        } duration-200 lg:text-[20px] sm:text-[30px] min-[320px]:text-[30px] font-semibold`}
                     >
-                        LOGO
+                        Universe Fitness
                     </label>
                 </div>
             </Link>
@@ -176,7 +176,7 @@ const SideBar = () => {
                                                 navigate(menu?.link);
                                             } else {
                                                 toast.error(
-                                                    'You havent join any program yet',
+                                                    'Please wait for a little bit, our trainer will set up a workout program for you right away.Thank you so much',
                                                     {
                                                         position:
                                                             toast.POSITION

@@ -17,6 +17,7 @@ const CaloriesCalculator = ({ type }) => {
         watch,
     } = useForm();
     const account = useSelector((state) => state.account);
+    console.log(account.hasProgram);
     const navigate = useNavigate();
     const [age, setAge] = useState(25);
     const [height, setHeight] = useState(165);
@@ -45,12 +46,12 @@ const CaloriesCalculator = ({ type }) => {
                         age,
                         data.calculator.gender,
                     );
-                    if (
-                        account.hasProgram === false ||
-                        account.hasProgram === null
-                    ) {
-                        navigate('/trainer-pick');
-                    }
+                    // if (
+                    //     account.hasProgram === false ||
+                    //     account.hasProgram === null
+                    // ) {
+                    //     navigate('/trainer-pick');
+                    // }
                     break;
                 case 'personal-information-config':
                     response = await MemberService.updatePersonalInfoConfig(
@@ -93,16 +94,42 @@ const CaloriesCalculator = ({ type }) => {
 
             {type === 'bmi-calculator' && (
                 <div className="text-white flex flex-col self-start mb-[10%]">
-                    <label className="text-[40px] font-bold ">
-                        BMI Calculator
-                    </label>
-                    <p className="text-white text-[15px] font-thin italic w-[500px]">
-                        Macronutrients (macros) are typically defined as the
-                        three substrates that are used by the body for the
-                        production of energy. Those energy substrates are
-                        carbohydrates, fats, and proteins. Together, the
-                        macronutrients create the caloric total for a food
-                    </p>
+                    {account.hasProgram === null ? (
+                        <div className="flex flex-col w-fit gap-2 font-normal  py-2 justify-start items-start cursor-pointer text-red-800">
+                            <label className="text-[25px] font-bold ">
+                                Step 1: Calculate Your BMI (Body Mass Index)
+                            </label>
+                            <p className="text-white text-[15px] font-thin italic">
+                                Before registering for our online personal
+                                training, it's
+                                <br />
+                                essential to assess your BMI to understand your
+                                body
+                                <br />
+                                composition.
+                            </p>
+                        </div>
+                    ) : (
+                        <div></div>
+                    )}
+                    {account.roles[0].name === 'MEMBER' &&
+                    account.hasProgram === null ? (
+                        <div></div>
+                    ) : (
+                        <div>
+                            <label className="text-[40px] font-bold ">
+                                BMI Calculator
+                            </label>
+                            <p className="text-white text-[15px] font-thin italic w-[500px]">
+                                Macronutrients (macros) are typically defined as
+                                the three substrates that are used by the body
+                                for the production of energy. Those energy
+                                substrates are carbohydrates, fats, and
+                                proteins. Together, the macronutrients create
+                                the caloric total for a food
+                            </p>
+                        </div>
+                    )}
                 </div>
             )}
             {type === 'personal-information-config' && (
@@ -115,6 +142,7 @@ const CaloriesCalculator = ({ type }) => {
                     </p>
                 </div>
             )}
+
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex">
                     <div class="container mx-auto mt-8 p-4 bg-white w-[40%] h-[100px]">
@@ -432,20 +460,41 @@ const CaloriesCalculator = ({ type }) => {
                             class=" text-red-800 py-2 px-4 w-full border-2 border-red-800 bg-white rounded hover:bg-red-900 hover:border-white hover:text-white focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
                         >
                             You would have to consume:{' '}
-                            {result === null ? '0' : result}
+                            {result === null ? '0' : result} calories per day
                         </button>
                     )}
 
                     {type === 'bmi-calculator' && (
-                        <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            class=" text-red-800 py-2 px-4 w-full border-2 border-red-800 bg-white rounded hover:bg-red-900 hover:border-white hover:text-white focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
-                        >
-                            {result !== null
-                                ? `Fat: ${result?.fat}g, BMI: ${result?.bmi}g, Rating: ${result?.rating}`
-                                : `Calculate BMI`}
-                        </button>
+                        <div>
+                            <button
+                                type="submit"
+                                disabled={isSubmitting}
+                                class=" text-red-800 py-2 px-4 w-full border-2 border-red-800 bg-white rounded hover:bg-red-900 hover:border-white hover:text-white focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
+                            >
+                                {result !== null
+                                    ? `Fat: ${result?.fat}g, BMI: ${result?.bmi}g, Rating: ${result?.rating}`
+                                    : `Calculate BMI`}
+                            </button>
+                            {result !== null && account.hasProgram === null ? (
+                                <button
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    onClick={() => {
+                                        if (
+                                            account.hasProgram === false ||
+                                            account.hasProgram === null
+                                        ) {
+                                            navigate('/trainer-pick');
+                                        }
+                                    }}
+                                    class=" text-red-800 py-2 mt-3 px-4 w-full border-2 border-red-800 bg-white rounded hover:bg-red-900 hover:border-white hover:text-white focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
+                                >
+                                    Get to the Next Step
+                                </button>
+                            ) : (
+                                `Calculate BMI`
+                            )}
+                        </div>
                     )}
                     {type === 'personal-information-config' && (
                         <div>

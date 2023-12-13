@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ProgramCard from '../../components/programCard';
 import { useForm, Controller } from 'react-hook-form';
+import LoginModal from '../Login';
+import RegisterPage from '../Register';
 
 const About = () => {
     const programs = [
@@ -49,6 +51,8 @@ const About = () => {
         control,
         formState: { errors },
     } = useForm();
+    const [openLoginModal, setOpenLoginModal] = useState(false);
+    const [openRegisterModal, setOpenRegisterModal] = useState(false);
 
     const onSubmit = (data) => {
         // You can handle form submission here
@@ -113,7 +117,11 @@ const About = () => {
             </div>
             <div className="w-full grid grid-cols-2 h-fit gap-2 mt-[5%]">
                 {programs.map((program, index) => (
-                    <ProgramCard key={index} program={program} />
+                    <ProgramCard
+                        key={index}
+                        program={program}
+                        setOpenLoginModal={setOpenLoginModal}
+                    />
                 ))}
             </div>
 
@@ -193,6 +201,18 @@ const About = () => {
                     </button>
                 </form>
             </div>
+            {openLoginModal && (
+                <LoginModal
+                    setOpenLoginModal={setOpenLoginModal}
+                    setOpenRegisterModal={setOpenRegisterModal}
+                />
+            )}
+            {openRegisterModal && (
+                <RegisterPage
+                    setOpenRegisterModal={setOpenRegisterModal}
+                    setOpenLoginModal={setOpenLoginModal}
+                />
+            )}
         </section>
     );
 };

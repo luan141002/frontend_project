@@ -59,7 +59,11 @@ const UploadExercise = ({
                 console.log(data);
                 const response = await ExerciseService.addExercise(data);
                 console.log(response);
-                setSuccess(true);
+                // setSuccess(true);
+                toast.success(`${type} Exercise Successfully`, {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
+                setOpenAddExerciseModel(false);
             } else {
                 // data['steps'] = steps
                 const formData = {
@@ -108,6 +112,7 @@ const UploadExercise = ({
                             ? [...data.videos]
                             : defaultExercise.videos,
                 };
+
                 const response = await ExerciseService.editExercise(
                     currentExercise,
                     formData,
@@ -141,7 +146,8 @@ const UploadExercise = ({
         if (type === 'add') {
             setNewColumns((prevState) => {
                 const newState = [...prevState];
-                const column = newState.find((col) => col.id === id);
+                const column = newState.find((col) => col.serial === id);
+                console.log(column);
                 column.content = newValue;
                 return newState;
             });
@@ -318,7 +324,7 @@ const UploadExercise = ({
                                                         value={column.content}
                                                         onChange={(e) => {
                                                             onNewColumnInputChange(
-                                                                column.id,
+                                                                column.serial,
                                                                 e.target.value,
                                                             );
                                                         }}
@@ -478,7 +484,7 @@ const UploadExercise = ({
                                             (category, index) => {
                                                 return (
                                                     <option
-                                                        value={category.id}
+                                                        value={+category.id}
                                                         selected={
                                                             defaultExercise?.category ===
                                                             category.name

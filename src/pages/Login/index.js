@@ -27,7 +27,7 @@ const LoginPage = ({
     const notify = (data) => toast(`${data}`);
     const onSubmit = async (data) => {
         // You can handle form submission logic here
-        toast.info('Modal closed.');
+
         console.log(data);
         setOpenLoginModal(false);
         console.log('hihi');
@@ -47,10 +47,11 @@ const LoginPage = ({
                         id: user.id,
                         roles: user.roles,
                         hasProgram: member.hasProgram,
+                        avatar: user.avatar,
                     }),
                 );
 
-                if (member.hasProgram === false || member.hasProgram === null) {
+                if (member.hasProgram === null) {
                     navigate('/tools/bmi-calculator');
                 } else {
                     navigate('/');
@@ -70,6 +71,7 @@ const LoginPage = ({
                         email: pt.user.email,
                         id: user.id,
                         roles: user.roles,
+                        avatar: user.avatar,
                     }),
                 );
                 notify('Login Successfully');

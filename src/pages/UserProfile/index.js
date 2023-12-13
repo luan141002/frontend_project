@@ -59,10 +59,10 @@ const UserProfile = (isPT, memberId) => {
                         <img
                             className="w-[60px] h-[60px] rounded-full bg-cover bg-center border border-whiteS"
                             src={
-                                // isAdmin
-                                //     ? userProfile?.avatar
-                                //     : userProfile?.user?.avatar
-                                'https://cdn-icons-png.flaticon.com/512/6596/6596121.png'
+                                isAdmin
+                                    ? userProfile?.avatar
+                                    : userProfile?.user?.avatar
+                                // 'https://cdn-icons-png.flaticon.com/512/6596/6596121.png'
                             }
                             alt="blog avatar"
                         />
