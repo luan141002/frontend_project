@@ -180,7 +180,8 @@ const LoginPage = ({
                                         required: 'Email is required',
                                         pattern: {
                                             value: /\S+@\S+\.\S+/,
-                                            message: 'Invalid email address',
+                                            message:
+                                                'Invalid email address, please enter again',
                                         },
                                     })}
                                 />
