@@ -17,6 +17,7 @@ import ExerciseService from '../../services/ExerciseService.js';
 import AddTrainer from '../../pages/AddTrainer/index.js';
 import { useFormState } from 'react-hook-form';
 import DeleteModal from '../../pages/Schedule/modals/DeleteModal.js';
+import SubTable from './SubTable.js';
 import { Slide, ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -30,6 +31,7 @@ const TanStackTable = ({ type }) => {
     const [currentTrainer, setCurrentTrainer] = useState();
 
     const [loadTablePage, setLoadTablePage] = useState(0);
+    const [openMemberOfPTModal, setOpenMemberOfPTModal] = useState(false);
 
     const [data, setData] = useState(() => {
         switch (type) {
@@ -325,21 +327,19 @@ const TanStackTable = ({ type }) => {
                     )}
                     {isAdmin && type === 'pts' && (
                         <div className="flex justify-center space-x-3 ">
-                            {/* <button
+                            <button
                                 type="button"
                                 className="bg-green-700  text-white h-[30px] w-[90px] hover:border-3  hover:hover:opacity-80"
                                 onClick={(e) => {
                                     e.preventDefault();
                                     if (type === 'pts') {
                                         setCurrentTrainer(info.getValue());
-                                        setOpenEditTrainerModal(
-                                            (state) => !state,
-                                        );
+                                        setOpenMemberOfPTModal(true);
                                     }
                                 }}
                             >
-                                Edit
-                            </button> */}
+                                View Members
+                            </button>
                             <button
                                 type="button"
                                 className="bg-gray-700 text-white h-[30px] w-[90px] hover:border-3  hover:opacity-80"
@@ -573,6 +573,12 @@ const TanStackTable = ({ type }) => {
                     currentTrainer={currentTrainer}
                     setLoadTablePage={setLoadTablePage}
                     setOpenDeleteTrainerModal={setOpenDeleteTrainerModal}
+                />
+            )}
+            {openMemberOfPTModal && (
+                <SubTable
+                    ptId={currentTrainer}
+                    setOpenMemberOfPTModal={setOpenMemberOfPTModal}
                 />
             )}
             <div className="toast-container">
