@@ -329,7 +329,7 @@ const TanStackTable = ({ type }) => {
                         <div className="flex justify-center space-x-3 ">
                             <button
                                 type="button"
-                                className="bg-green-700  text-white h-[30px] w-[90px] hover:border-3  hover:hover:opacity-80"
+                                className="bg-green-700  text-white h-[50px] w-[130px] hover:border-3  hover:hover:opacity-80"
                                 onClick={(e) => {
                                     e.preventDefault();
                                     if (type === 'pts') {
@@ -342,7 +342,7 @@ const TanStackTable = ({ type }) => {
                             </button>
                             <button
                                 type="button"
-                                className="bg-gray-700 text-white h-[30px] w-[90px] hover:border-3  hover:opacity-80"
+                                className="bg-gray-700 text-white h-[50px] w-[130px] hover:border-3  hover:opacity-80"
                                 onClick={(e) => {
                                     e.preventDefault();
                                     if (type === 'pts') {
