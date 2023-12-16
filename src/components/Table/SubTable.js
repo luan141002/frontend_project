@@ -10,43 +10,98 @@ import {
 import DebouncedInput from './DebouncedInput';
 import MemberService from '../../services/MemberService.js';
 
-const BaseTable = ({ ptId, setOpenMemberOfPTModal }) => {
+const BaseTable = ({
+    type,
+    ptId,
+    setOpenMemberOfPTModal,
+    memberId,
+    setOpenMemberInfoModal,
+}) => {
     const columnHelper = createColumnHelper();
     // initial columns if there is no data
     console.log(ptId);
     const [data, setData] = useState(() => {
-        return [
-            {
-                personalLevel: '',
-                fullName: '',
-                memberLevel: '',
-                email: '',
-                avatar: null,
-                activated: 'true',
-                hasProgram: 'true',
-                goal: '',
-            },
-        ];
+        switch (type) {
+            case 'personal-config':
+                return [
+                    {
+                        height: 0,
+                        weight: 0,
+                        age: 0,
+                        fat: 0,
+                        bmi: 0,
+                        date: '2023-11-30',
+                    },
+                ];
+                break;
+            case 'membersOfPT':
+                return [
+                    {
+                        personalLevel: '',
+                        fullName: '',
+                        memberLevel: '',
+                        email: '',
+                        avatar: null,
+                        activated: 'true',
+                        hasProgram: 'true',
+                        goal: '',
+                    },
+                ];
+                break;
+        }
     });
     const loadPage = async () => {
         try {
             let result;
+            switch (type) {
+                case 'personal-config':
+                    result = await MemberService.getMembersPhysicalInformation(
+                        memberId,
+                    );
 
-            result = await MemberService.getMembersByPTId(ptId);
+                    if (result.length !== 0) {
+                        const processedResults = result.map((element) => ({
+                            height: element.height,
+                            weight: element.weight,
+                            age: element.age,
+                            fat: element.fat,
+                            bmi: element.bmi,
+                            date: element.date.toString(),
+                        }));
+                        setData([...processedResults]);
+                    } else {
+                        setData([
+                            {
+                                height: 0,
+                                weight: 0,
+                                age: 0,
+                                fat: 0,
+                                bmi: 0,
+                                date: '2023-11-30',
+                            },
+                        ]);
+                    }
 
-            if (result.length !== 0) {
-                const processedResults = result.map((element) => ({
-                    personalLevel: element.personalLevel,
-                    fullName: element.firstName + ' ' + element.lastName,
-                    memberLevel: element.memberLevel,
-                    Email: element.user.email,
-                    Activated: element.user.activated.toString(),
-                    hasProgram: element.hasProgram.toString(),
-                    goal: element.goal,
-                }));
+                    break;
+                case 'membersOfPT':
+                    result = await MemberService.getMembersByPTId(ptId);
 
-                console.log(processedResults);
-                setData([...processedResults]);
+                    if (result.length !== 0) {
+                        const processedResults = result.map((element) => ({
+                            personalLevel: element.personalLevel,
+                            fullName:
+                                element.firstName + ' ' + element.lastName,
+                            memberLevel: element.memberLevel,
+                            Email: element.user.email,
+                            Activated: element.user.activated.toString(),
+                            hasProgram: element.hasProgram.toString(),
+                            goal: element.goal,
+                        }));
+
+                        console.log(processedResults);
+                        setData([...processedResults]);
+                    }
+                    break;
             }
         } catch (err) {
             console.log('load fail');
@@ -91,10 +146,14 @@ const BaseTable = ({ ptId, setOpenMemberOfPTModal }) => {
                 if (e.target !== e.currentTarget) {
                     return;
                 }
-                setOpenMemberOfPTModal(false);
+                if (type === 'membersOfPT') {
+                    setOpenMemberOfPTModal(false);
+                } else {
+                    setOpenMemberInfoModal(false);
+                }
             }}
         >
-            <div className="p-2 max-w-8xl mx-auto text-white fill-gray-400">
+            <div className="p-2 max-w-8xl mx-auto text-white fill-gray-400 bg-gray-600">
                 <div className="flex justify-between mb-2">
                     <div className="w-full flex items-center gap-1">
                         <SearchIcon />

@@ -33,6 +33,9 @@ const TanStackTable = ({ type }) => {
     const [loadTablePage, setLoadTablePage] = useState(0);
     const [openMemberOfPTModal, setOpenMemberOfPTModal] = useState(false);
 
+    const [openMemberInfoModal, setOpenMemberInfoModal] = useState(false);
+    const [currentMemberId, setCurrentMemberId] = useState();
+
     const [data, setData] = useState(() => {
         switch (type) {
             case 'personal-config':
@@ -213,9 +216,9 @@ const TanStackTable = ({ type }) => {
                                 element.firstName + ' ' + element.lastName,
                             memberLevel: element.memberLevel,
                             Email: element.user.email,
-                            Activated: element.user.activated.toString(),
                             hasProgram: element.hasProgram.toString(),
                             goal: element.goal,
+                            edit: element.id,
                         }));
 
                         console.log(processedResults);
@@ -322,6 +325,22 @@ const TanStackTable = ({ type }) => {
                                 }}
                             >
                                 Delete
+                            </button>
+                        </div>
+                    )}
+                    {isPT && type === 'membersOfPT' && (
+                        <div className="flex justify-center space-x-3 ">
+                            <button
+                                type="button"
+                                className="bg-green-700  text-white h-[50px] w-[130px] hover:border-3  hover:hover:opacity-80"
+                                onClick={(e) => {
+                                    e.preventDefault();
+
+                                    setCurrentMemberId(info.getValue());
+                                    setOpenMemberInfoModal(true);
+                                }}
+                            >
+                                View User info
                             </button>
                         </div>
                     )}
@@ -577,8 +596,16 @@ const TanStackTable = ({ type }) => {
             )}
             {openMemberOfPTModal && (
                 <SubTable
+                    type="membersOfPT"
                     ptId={currentTrainer}
                     setOpenMemberOfPTModal={setOpenMemberOfPTModal}
+                />
+            )}
+            {openMemberInfoModal && (
+                <SubTable
+                    type="personal-config"
+                    memberId={currentMemberId}
+                    setOpenMemberInfoModal={setOpenMemberInfoModal}
                 />
             )}
             <div className="toast-container">

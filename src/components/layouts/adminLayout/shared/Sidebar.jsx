@@ -41,9 +41,9 @@ export default function Sidebar({
                         className={`w-[62px] h-[49px] cursor-pointer block m-auto duration-500 rotate-[-36.20deg]  `}
                     />
                     <label
-                        className={`text-[#980B0B] duration-200 lg:text-[35px] sm:text-[30px] min-[320px]:text-[30px] font-semibold`}
+                        className={`text-[#980B0B] duration-200 lg:text-[20px] sm:text-[30px] min-[320px]:text-[30px] font-semibold`}
                     >
-                        LOGO
+                        Universe Fitness
                     </label>
                 </div>
             </div>
