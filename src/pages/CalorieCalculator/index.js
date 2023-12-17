@@ -472,7 +472,7 @@ const CaloriesCalculator = ({ type }) => {
                                 class=" text-red-800 py-2 px-4 w-full border-2 border-red-800 bg-white rounded hover:bg-red-900 hover:border-white hover:text-white focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
                             >
                                 {result !== null
-                                    ? `Fat: ${result?.fat}g, BMI: ${result?.bmi}g, Rating: ${result?.rating}`
+                                    ? `Fat: ${result?.fat}%, BMI: ${result?.bmi}, Rating: ${result?.rating}`
                                     : `Calculate BMI`}
                             </button>
                             {result !== null && account.hasProgram === null ? (

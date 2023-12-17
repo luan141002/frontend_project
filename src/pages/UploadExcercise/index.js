@@ -119,6 +119,9 @@ const UploadExercise = ({
                 );
                 console.log(response);
                 setSuccess(true);
+                toast.success(`${type} Exercise successfully`, {
+                    position: toast.POSITION.TOP_RIGHT,
+                });
             }
 
             // if (response != null) {

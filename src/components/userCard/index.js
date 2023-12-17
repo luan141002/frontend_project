@@ -75,12 +75,12 @@ const UserCard = ({ PT }) => {
                 >
                     Assign
                 </button>
-                <button
+                {/* <button
                     type="button"
                     className="bg-gray-700 text-white h-[40px] w-[120px] hover:border-3  hover:opacity-80"
                 >
                     Trainer Info
-                </button>
+                </button> */}
             </div>
         </div>
     );
