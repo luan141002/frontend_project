@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { CircleSlider } from 'react-circle-slider';
 import { useForm, Controller } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,12 +18,18 @@ const CaloriesCalculator = ({ type }) => {
     } = useForm();
     const account = useSelector((state) => state.account);
     console.log(account.hasProgram);
+
     const navigate = useNavigate();
     const [age, setAge] = useState(25);
     const [height, setHeight] = useState(165);
     const [weight, setWeight] = useState(50);
     const [result, setResult] = useState(null);
-
+    useMemo(() => {
+        setAge(25);
+        setHeight(165);
+        setWeight(50);
+        setResult(null);
+    }, [type]);
     const onSubmit = async (data) => {
         // Xử lý logic khi form được submit
         try {
@@ -481,8 +487,8 @@ const CaloriesCalculator = ({ type }) => {
                                     disabled={isSubmitting}
                                     onClick={() => {
                                         if (
-                                            account.hasProgram === false ||
-                                            account.hasProgram === null
+                                            account.hasProgram === null ||
+                                            account.hasProgram === false
                                         ) {
                                             navigate('/trainer-pick');
                                         }

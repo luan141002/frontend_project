@@ -208,7 +208,29 @@ const SideBar = () => {
                                     <li
                                         key={index}
                                         className={`text-gray-300 text-sm flex items-center justify-center duration-200 gap-x-4 mx-auto cursor-pointer p-4 hover:bg-gray-500 rounded-md mt-2`}
-                                        onClick={() => navigate(subMenu.link)}
+                                        onClick={() => {
+                                            if (
+                                                account.roles[0].name !==
+                                                    'MEMBER' ||
+                                                (account.hasProgram === true &&
+                                                    account.roles[0].name ===
+                                                        'MEMBER') ||
+                                                subMenu.title ===
+                                                    'Calories Calculator'
+                                            ) {
+                                                navigate(subMenu.link);
+                                            } else {
+                                                toast.error(
+                                                    'Please wait for a little bit, our trainer will set up a workout program for you right away.Thank you so much',
+                                                    {
+                                                        position:
+                                                            toast.POSITION
+                                                                .TOP_RIGHT,
+                                                    },
+                                                );
+                                            }
+                                            // navigate(subMenu.link)
+                                        }}
                                     >
                                         <span className="text-2xl block float-left  ">
                                             {subMenu.icon}
