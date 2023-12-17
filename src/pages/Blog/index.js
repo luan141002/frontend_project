@@ -135,13 +135,13 @@ const Blog = () => {
                         </button>
                         <p class="block font-sans text-base antialiased font-normal leading-relaxed text-gray-200">
                             Page <strong class="text-white">{page + 1}</strong>{' '}
-                            of <strong class="text-white">4</strong>
+                            of <strong class="text-white">10</strong>
                         </p>
                         <button
                             class="relative h-8 max-h-[32px] w-8 max-w-[32px] select-none rounded-lg border border-gray-900 text-center align-middle font-sans text-xs font-medium uppercase text-white transition-all hover:opacity-75 focus:ring focus:ring-gray-300 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                             type="button"
                             onClick={() => setPage((state) => state + 1)}
-                            disabled={page === 3}
+                            disabled={page === 9}
                         >
                             <span class="absolute transform -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                                 <svg

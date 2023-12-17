@@ -437,7 +437,7 @@ const UploadExercise = ({
                                             Select Exercise Type
                                         </option>
                                         <option
-                                            value="Scardio"
+                                            value="Cardio"
                                             selected={
                                                 defaultExercise?.type ===
                                                 'Cardio'
@@ -453,6 +453,23 @@ const UploadExercise = ({
                                             }
                                         >
                                             Strength
+                                        </option>
+                                        <option
+                                            value="Hypertrophy"
+                                            selected={
+                                                defaultExercise?.type ===
+                                                'Hypertrophy'
+                                            }
+                                        >
+                                            Hypertrophy
+                                        </option>
+                                        <option
+                                            value="Core"
+                                            selected={
+                                                defaultExercise?.type === 'Core'
+                                            }
+                                        >
+                                            Core
                                         </option>
                                         {/* Thêm các option khác tương tự */}
                                     </select>
